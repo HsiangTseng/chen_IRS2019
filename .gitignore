@@ -1,0 +1,24 @@
+# ignore IDE/hidden/OS cache files
+.*
+*~
+nbproject
+nb-configuration.xml
+Session.vim
+*.tmproj
+*.tmproject
+tmtags
+Thumbs.db
+Desktop.ini
+
+# ignore Composer downloads
+/vendor/*
+
+#the dir that save upload data
+upload/
+connects.php
+
+# keep some hiddens
+!.htaccess
+!/.gitignore
+!/.travis.yml
+
