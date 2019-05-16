@@ -184,12 +184,7 @@ if($_SESSION['username'] == null)
                                     $SPNumber = mysqli_fetch_object($db->query($sql))->SPNumber;
                                     $sql = "SELECT count(No) AS MPNumber FROM `QuestionList` WHERE QA='Q' AND type='PICTURE' AND single_or_multi='multi'";
                                     $MPNumber = mysqli_fetch_object($db->query($sql))->MPNumber;
-                                    echo $SWNumber."  ";
-                                    echo $MWNumber."  ";
-                                    echo $SVNumber."  ";
-                                    echo $MVNumber."  ";
-                                    echo $SPNumber."  ";
-                                    echo $MPNumber."  ";
+
                                     //GET THE QUESTIONG CONTNET IN THE ARRAY question_content and QUESTION NUMBER IN ARRAY question_number
                                 ?>
 

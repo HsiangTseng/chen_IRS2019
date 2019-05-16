@@ -65,9 +65,9 @@
 		<div class="container body"  style="height:100%">
 			<div class="main_container"  style="height:100%">
 			<!-- page content################################# -->
-				<div class="right_col" role="main"  style="height:100%">	
+				<div class="x_panel" role="main"  style="height:100%">	
 
-					<form method="post" action="submit_answer.php">
+					<form method="post" action="submit_answer.php" style="height:100%">
 						<!-- Question -->												
 							
 							<script>
@@ -118,7 +118,7 @@
 										}
 									});
 								}
-								setInterval(set_question,1000);
+								setInterval(set_question,300);
 							</script>		 
                             <?php
 								include("connects.php");

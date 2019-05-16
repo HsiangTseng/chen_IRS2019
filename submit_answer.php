@@ -36,6 +36,9 @@
 		//獲得此題答案
 		if(!empty($_POST['value'])){						
 			foreach($_POST['value'] as $value){
+				if($This_answer_get != ''){
+					$This_answer_get = $This_answer_get.',';
+				}
 				$This_answer_get = $This_answer_get.$value;
 			}
 		}

@@ -4,8 +4,8 @@
 ?>
 <?php
 	include("connects.php");
-	$sql = "SELECT * FROM `Now_state`";
-	$temp = "SELECT * FROM `temp_for_state`";
+	$sql = "SELECT * FROM Now_state";
+	$temp = "SELECT * FROM temp_for_state";
 	$now = 0;
 	$last = 0;
 	if($stmt = $db->query($sql)){
@@ -15,9 +15,12 @@
 			$stmt = $db->query($temp);
 			$result = mysqli_fetch_object($stmt);
 			$last = $result->No_temp;
-			$UUID_last = $result->UUID;			
+			$UUID_last = $result->UUID;
+
 		}
 	}	
+
+
 ?>
 <html lang="en" style="height:100%">
 	<head>
@@ -107,17 +110,22 @@
 			}
 			$_SESSION['username'] = $WhosAnswer;
 
-			
+				
 		?>
 		
+
+
 		<script>
 			var get_last = <?php echo "$last";?>;
 			var get_now =  <?php echo "$now";?>;
-			var get_last_UUID = '<?php echo "$UUID_last";?>';
-			var get_now_UUID = '<?php echo "$UUID_now";?>';
+			var get_last_UUID = '<?php echo $UUID_last;?>';
+			var get_now_UUID = '<?php echo $UUID_now;?>';
 			
+
 			function set_status(){
-				if(get_last_UUID != get_now_UUID){
+				if(get_now_UUID.trim()!=get_last_UUID.trim()){
+			//		alert(get_last_UUID.length);
+			//		alert(get_now_UUID.length);
 					$.ajax(
 					{
 						type:"POST",
@@ -126,7 +134,7 @@
 					).done(function(msg){});
 					window.location.reload();
 				}
-				if(get_last != get_now){										
+				if(get_last != 0){
 					//跳至下一題
 					$.ajax(
 					{
@@ -138,6 +146,14 @@
 				}
 				$.ajax(
 				{
+					type:"POST",
+					url:"client_wait_reset.php",
+					success:function(data){
+						get_last_UUID = data;
+					}
+				});
+				$.ajax(
+				{	
 					type:"POST",
 					url:"mobile_reset.php",
 					success:function(data){

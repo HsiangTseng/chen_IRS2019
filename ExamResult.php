@@ -189,7 +189,7 @@ if($_SESSION['username'] == null)
                         </tr-->
 
                         <?php 
-                        $index = 2;
+                        $index = 1;
                         include("connects.php");
                         $sql = "SELECT WhosAnswer,ExamTime FROM ExamResult WHERE UUID = '$UID'";
                         if($stmt = $db->query($sql))
@@ -226,9 +226,9 @@ if($_SESSION['username'] == null)
                                          <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                                        </td>';
                                 echo '</tr>';
+                                $index ++;
                               }
                             }
-
                          ?>
 
 
@@ -331,7 +331,6 @@ if($_SESSION['username'] == null)
                       $score += 10 ;
                   }
                 }
-                print_r($student_array);
                 return $score;
               }
 

@@ -1,30 +1,49 @@
-<?
-	include("connects.php");
-	
-	$sql_nowstate = "select * from Now_state";
-	
-	//取得現在題號、現在的試卷號碼
-	if($stmt = $db->query($sql_nowstate))
-	{
-		while($result = mysqli_fetch_object($stmt))
-		{
-			$sql_number_show = $result->No;
-			$sql_number = $sql_number_show-1;
-			$sql_quiz = $result->ExamNumber;			
-		}
-	}
-	
-	//取得每一題在Questionlist的號碼
-	$sql_quiz = "SELECT * FROM ExamList WHERE No like '$sql_quiz'";
-	$result = mysqli_fetch_object($db->query($sql_quiz));
-    $q_list = array();
-    $temp_string = $result->question_list;
-    $q_list = mb_split(",",$temp_string);
-	
-	//取得此題的答案數量
-	$sql_number_quiz = "select count(QA) AS Count from QuestionList where No like '".$q_list[$sql_number]."'";
-	$stmt = $db->query($sql_number_quiz);
-	$number_quiz = mysqli_fetch_object($stmt);
-	echo $number_quiz->Count;
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Image preview on realtime</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+    
+    <h3>即時預覽Image</h3>
+    <form name="form0" id="form0" >
+        <input type="file" name="file0" id="file0" multiple="multiple" /><br>
+        <img src="" id="img0">
+    </form>
 
-?>
+    <script>    
+    /**
+     * 使用HTML5 File API, 來即時預覽image
+     */
+    $("#file0").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#img0").attr("src", objUrl) ;
+        }
+        var Img = document.getElementById('img0');
+        Img.style.height = '200px';
+        Img.style.width = '200px';
+    }) ;
+    
+    /**
+     * 建立一個可存取到該file的url
+     * PS: 瀏覽器必須支援HTML5 File API
+     */
+    function getObjectURL(file) {
+        var url = null ; 
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+        console.log( url )
+    }
+    </script>
+</body>
+</html>

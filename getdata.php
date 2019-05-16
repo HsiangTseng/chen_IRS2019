@@ -51,13 +51,13 @@
 					if($quiz_type == 'WORD'){
 						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
 						$result = mysqli_fetch_object($db->query($sql_word));
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -67,7 +67,7 @@
 						$result = mysqli_fetch_object($db->query($sql_video));
 						$video_type = $result->picture_ext; //抓圖片型態		
 						$video_alt = $result->picture_alt; //抓圖片alt
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
@@ -76,7 +76,7 @@
 							echo "<video controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$video_type."' type='video/mp4'>";//來源還沒寫
 							echo "</video>";
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";					
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";					
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -86,13 +86,13 @@
 						$result = mysqli_fetch_object($db->query($sql_picture));
 						$picture_type = $result->picture_ext; //抓圖片型態		
 						$picture_alt = $result->picture_alt; //抓圖片alt	
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."'>";
 								echo "<img src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt.">";
 							echo "</label>";
@@ -106,13 +106,13 @@
 					if($quiz_type == 'WORD'){
 						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
 						$result = mysqli_fetch_object($db->query($sql_word));
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -122,7 +122,7 @@
 						$result = mysqli_fetch_object($db->query($sql_video));
 						$video_type = $result->picture_ext; //抓圖片型態		
 						$video_alt = $result->picture_alt; //抓圖片alt
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
@@ -131,7 +131,7 @@
 							echo "<video controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$video_type."' type='video/mp4'>";//來源還沒寫
 							echo "</video>";
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";					
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";					
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -141,14 +141,14 @@
 						$result = mysqli_fetch_object($db->query($sql_picture));
 						$picture_type = $result->picture_ext; //抓圖片型態		
 						$picture_alt = $result->picture_alt; //抓圖片alt	
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:45%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:45%'>";
 
 						if($result->audio != NULL){
 							echo "<audio controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."'>";
 								echo "<img src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt.">";
 							echo "</label>";
@@ -164,7 +164,7 @@
 				//文字題
 				for( $i = 1 ; $i <= $number_quiz ; $i++){
 					if($i % 4 == 1){
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:22.5%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:22.5%'>";
 					}				
 					if($quiz_type == 'WORD'){
 						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
@@ -175,7 +175,7 @@
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -194,7 +194,7 @@
 							echo "<video controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$video_type."' type='video/mp4'>";//來源還沒寫
 							echo "</video>";
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";					
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";					
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -210,7 +210,7 @@
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."'>";
 								echo "<img src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt.">";
 							echo "</label>";
@@ -225,7 +225,7 @@
 			else{
 				for( $i = 1 ; $i <= $number_quiz ; $i++){
 					if($i % 4 == 1){
-						echo "<div class='col-md-6 col-sm-6 col-xs-6' stlye='height:22.5%'>";
+						echo "<div class='col-md-6 col-sm-6 col-xs-6' style='height:22.5%'>";
 					}				
 					if($quiz_type == 'WORD'){
 						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
@@ -236,7 +236,7 @@
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -255,7 +255,7 @@
 							echo "<video controls>";
 								echo "<source src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$video_type."' type='video/mp4'>";//來源還沒寫
 							echo "</video>";
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";					
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";					
 								echo "<label for='A".$i."' style='font-size:20px'>".$result->Content."</label>";
 						echo "</div>";
 					}
@@ -271,7 +271,7 @@
 								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='".$i."'>";
+							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."'>";
 								echo "<img src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt.">";
 							echo "</label>";
