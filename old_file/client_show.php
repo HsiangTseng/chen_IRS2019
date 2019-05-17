@@ -9,12 +9,15 @@
 	$temp = "SELECT * FROM `temp_for_state`";
 	$now = 0;
 	$last = 0;
+	$check = 0;
 	if($stmt = $db->query($sql)){
 		while($result = mysqli_fetch_object($stmt)){
 			$now = $result->No;
+			$check = $result->check_answer;
 			$stmt = $db->query($temp);
 			$result = mysqli_fetch_object($stmt);
-			$last = $result->No_temp;	
+			$last = $result->No_temp;
+			
 		}
 	}
 	if($now==0)
@@ -58,92 +61,74 @@
 		<link href="../build/css/custom.min.css" rel="stylesheet">						
 	</head>
 
-	<body class="nav-md"  style="height:100%">	
+	<body class="nav-md"  style="height:100%">
 		<div class="container body"  style="height:100%">
 			<div class="main_container"  style="height:100%">
 			<!-- page content################################# -->
-				<div class="x_panel" role="main"  style="height:100%">
+				<div class="x_panel" role="main"  style="height:100%">	
+
 					<form method="post" action="submit_answer.php" style="height:100%">
-						<!-- Question -->																			
-						<script>
-							var get_last = <?php echo "$last";?>;
-							var get_now =  <?php echo "$now";?>;
+						<!-- Question -->												
 							
-							function set_question(){
-								if(get_now == 0){
-									document.location.href="wait.php";
-								}
-								if(get_last != get_now){
-									//new
-									//若get_check=0為未回答
-									//           =1為已回答
-									/*if((get_check == 0)&&(get_now>1)){
-										//將回答填入N
+							<script>
+								var get_last = <?php echo "$last";?>;
+								var get_now =  <?php echo "$now";?>;
+								var get_check = <?php echo "$check";?>;
+								
+								function set_question(){
+									if(get_now == 0){
+										document.location.href="wait.php";
+									}
+									if(get_last != get_now){
+										//new
+										//若get_check=0為未回答
+										//           =1為已回答
+										/*if((get_check == 0)&&(get_now>1)){
+											//將回答填入N
+											$.ajax(
+											{
+												type:"POST",
+												url:"Set_No_Answer.php"															
+											}
+											).done(function(msg){});
+										} 
+										
+										//將check欄位填為0
 										$.ajax(
 										{
 											type:"POST",
-											url:"Set_No_Answer.php"															
+											url:"Status_Reset.php"															
+										}
+										).done(function(msg){});*/											
+										//跳至下一題
+										$.ajax(
+										{
+											type:"POST",
+											url:"mobile_reset.php"															
 										}
 										).done(function(msg){});
-									} 
-									
-									//將check欄位填為0
+										window.location.reload();															
+									}
 									$.ajax(
 									{
 										type:"POST",
-										url:"Status_Reset.php"															
-									}
-									).done(function(msg){});*/											
-									//跳至下一題
-									$.ajax(
-									{
-										type:"POST",
-										url:"mobile_reset.php"															
-									}
-									).done(function(msg){});
-									window.location.reload();															
+										url:"mobile_reset.php",
+										success:function(data){
+											get_last = data;
+										}
+									});
 								}
-								$.ajax(
-								{
-									type:"POST",
-									url:"mobile_reset.php",
-									success:function(data){
-										get_last = data;
-									}
-								});
-							}
-							setInterval(set_question,300);
-						</script>		 
-						<?php
-							include("connects.php");
-							include("getdata.php");
-						?>
-						<input type="submit" value="確定" name="submit" width="50%">							
+								setInterval(set_question,300);
+							</script>		 
+                            <?php
+								include("connects.php");
+								include("getdata.php");
+							?>
+							<input type="submit" value="確定" name="submit" width="50%">
+							
 					</form>
 					<!-- question form-->
-					
-					<!-- 邏輯順序題的回答 -->
-					<script>
-						var arrshow = [];
-						var arrvalue = [];
-						function show_order(value,id,placeholder){
-							if (document.getElementById(id).checked){
-								arrshow.push(placeholder);
-								arrvalue.push(value);
-							}
-							else{
-								for (var i = 0; i < arrshow.length; i++) {
-									if (arrshow[i] == placeholder) {
-										arrshow.splice(i, 1);
-										arrvalue.splice(i, 1);
-									}
-								}	
-							}
-							
-							document.getElementById("input").value=arrshow;
-							alert(arrvalue);
-						}
-					</script>	
+
 
 				</div>			
 			</div>

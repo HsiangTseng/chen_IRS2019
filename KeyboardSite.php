@@ -125,8 +125,8 @@ if($_SESSION['username'] == null)
                 <!-- MakeOut Form -->
                 <div class="" role="tabpanel" data-example-id="togglable-tabs">
                       <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#tab_content1" id="setKeyboard" role="tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-paint-brush" aria-hidden="true"></i>設計Keyboard</a></li>
-                        <li role="presentation" class=""><a href="#tab_content2" id="setQuestion" role="tab" data-toggle="tab" aria-expanded="false"><i class="fas fa-pencil-alt" aria-hidden="true"></i>Keyboard題目</a></li>
+                        <li role="presentation" class="active"><a href="#tab_content1" id="setQuestion" role="tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-pencil-alt" aria-hidden="true"></i>Keyboard題目</a></li>
+                        <li role="presentation" class=""><a href="#tab_content2" id="setKeyboard" role="tab" data-toggle="tab" aria-expanded="false"><i class="fas fa-paint-brush" aria-hidden="true"></i>設計Keyboard</a></li>
                       </ul>
                 </div>
 
@@ -135,9 +135,42 @@ if($_SESSION['username'] == null)
                 <!-- WORD TAB-->
                 <div id="myTabContent" class="tab-content">
 
+                    <!-- setQuestion TAB -->
+                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="setQuestion">
+                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}"> 
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                                <div class="col-md-3">
+                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group required">
+                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1"><label>A選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A5"><label>E選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A6"><label>F選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A7"><label>G選項</label>
+                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A8"><label>H選項</label>
+                            </div>
+
+                            <clearfix>
+                            
+                            <div class="col-md-3 col-sm-3 col-xs-6 ">
+                                <button type="submit" class="btn btn-success">送出</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- setQuestion TAB -->
+
                     <!-- setKeyboard TAB -->
-                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="setKeyboard">
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="setKeyboard">
+                            <form class="form-horizontal form-label-left" method="post" action="updateKeyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
 
 
 
@@ -149,19 +182,19 @@ if($_SESSION['username'] == null)
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file1"/>
+                                    <input type="file" name="file1" id="file1"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img1" src="" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file2"/>
+                                    <input type="file" name="file2" id="file2"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img2" src="" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file3"/>
+                                    <input type="file" name="file3" id="file3"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img3" src="" alt="">
                                     </div>
@@ -173,25 +206,25 @@ if($_SESSION['username'] == null)
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file4"/>
+                                    <input type="file" name="file4" id="file4"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img4" src="" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file5"/>
+                                    <input type="file" name="file5" id="file5"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img5" src="" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file6"/>
+                                    <input type="file" name="file6" id="file6"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img6" src="" alt="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="file" name="file0" id="file7"/>
+                                    <input type="file" name="file7" id="file7"/>
                                     <div class="thumbnail" style="border-style: outset;">
                                       <img id="img7" src="" alt="">
                                     </div>
@@ -294,7 +327,7 @@ if($_SESSION['username'] == null)
 
                             <label class="control-label col-md-3" for="first-name">Keyboard名稱 :<span class="required"></span></label>
                                 <div class="col-md-3">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                                    <input type="text"  name="KeyboardName" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             <div class="col-md-3 col-sm-3 col-xs-6 ">
                                 <button type="submit" class="btn btn-success">送出</button>
@@ -303,21 +336,7 @@ if($_SESSION['username'] == null)
                     </div>
                     <!-- setKeyboard TAB -->
 
-                    <!-- setQuestion TAB -->
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="setQuestion">
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-
-                            <H2>EDIT QUESTION</H2>
-    
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- setQuestion TAB -->
+                    
 
                 </div>
                 <!-- WORD TAB-->
