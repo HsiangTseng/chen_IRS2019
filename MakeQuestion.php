@@ -131,7 +131,8 @@ if($_SESSION['username'] == null)
                         <li role="presentation" class=""><a href="#tab_content4" role="tab" id="multi-picture-tab" data-toggle="tab" aria-expanded="false">多選圖片</a></li>
                         <li role="presentation" class=""><a href="#tab_content5" role="tab" id="single-video-tab" data-toggle="tab" aria-expanded="false">單選影片</a></li>
                         <li role="presentation" class=""><a href="#tab_content6" role="tab" id="multi-video-tab" data-toggle="tab" aria-expanded="false">多選影片</a></li>
-
+                        <li role="presentation" class=""><a href="#tab_content7" role="tab" id="logic-word-tab" data-toggle="tab" aria-expanded="false">文字順序</a></li>
+                        <li role="presentation" class=""><a href="#tab_content8" role="tab" id="logic-picture-tab" data-toggle="tab" aria-expanded="false">圖片順序</a></li>
                       </ul>
                 </div>
 
@@ -663,6 +664,7 @@ if($_SESSION['username'] == null)
                     <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN VIDEO TAB -->
 
                     <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN VIDEO TAB -->
+
                     <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="multi-video-tab">
                         <form class="form-horizontal form-label-left" method="post" action="updateQuestion_video.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
                             <div class="form-group">
@@ -744,6 +746,187 @@ if($_SESSION['username'] == null)
                     </div>
                     <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN VIDEO TAB -->
 
+
+                    <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN WORD TAB -->
+
+                    
+
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="logic-word-tab">
+
+                            <div class="form-horizontal form-label-left">
+                              <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">增減選項 : </label>
+                                <button class="btn btn-success" onclick="addInput()">+</button>
+                                <button class="btn btn-danger" onclick="subInput()">-</button>
+                              </div>
+                            </div>
+                            
+                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logicWord.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
+                                <label class="control-label">
+                                    <?php
+                                        include("connects.php");
+                              
+                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                                        $result = mysqli_fetch_object($db->query($sql));
+                                        $max_number = $result->max;
+                                        echo $max_number+1;
+                                    ?>
+                                </label>
+                            </div>
+                            
+                          <div id="message"></div>
+
+                          <script type="text/javascript">
+
+
+                          var create_input_number = 0;
+
+                          function addInput() {
+                                    create_input_number++;
+                                    var div_form = document.createElement("DIV");
+                                    div_form.setAttribute("class","form-group");
+                                    name = 'div_q'+create_input_number;
+                                    div_form.setAttribute("id",name);
+                                    
+
+                                    var lb = '<label class="control-label col-md-3" for="first-name">選項' + create_input_number +' :<span class="required"></span></label>';
+                                    var md5 = '<div class="col-md-5">';
+                                    var input_q =  '<input type="text"  name="Answer[]" required="required" class="form-control col-md-7 col-xs-12">';
+                                    div_form.innerHTML = lb+md5+input_q;
+                                    document.getElementById("message").appendChild(div_form);
+                                    }
+
+                          function subInput() {
+                                      if(create_input_number>1)
+                                        {
+                                          _name = 'div_q'+create_input_number;
+                                        document.getElementById(_name).remove();
+                                        create_input_number--;
+                                        }
+                                    }
+                          
+                          addInput();          
+                          </script>
+                            <HR>
+                            <HR>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                                <div class="col-md-5">
+                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
+                                <div class="col-md-5">
+                                    <input type="text"  name="CA" placeholder="EX : 正確語序若為選項1-3-2-4，請填 A1,A3,A2,A4" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+
+                            <clearfix>
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button class="btn btn-primary" type="reset">重填</button>
+                                <button type="submit" class="btn btn-success">送出</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN WORD TAB -->
+
+                    <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN PICTURE TAB -->
+
+
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content8" aria-labelledby="logic-picture-tab">
+                            <div class="form-horizontal form-label-left">
+                              <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">增減選項 : </label>
+                                <button class="btn btn-success" onclick="addInputPic()">+</button>
+                                <button class="btn btn-danger" onclick="subInputPic()">-</button>
+                              </div>
+                            </div>
+
+                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logicPic.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
+                                <label class="control-label">
+                                    <?php
+                                        include("connects.php");
+                              
+                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                                        $result = mysqli_fetch_object($db->query($sql));
+                                        $max_number = $result->max;
+                                        echo $max_number+1;
+                                    ?>
+                                </label>
+                            </div>
+                                                  
+
+                          <div id="messagePic"></div>
+
+
+                            <HR>
+                            <HR>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                                <div class="col-md-5">
+                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
+                                <div class="col-md-5">
+                                    <input type="text"  name="CA" placeholder="正解順序 例如: A1-A3-A2-A4" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="picture_number"  id="picture_number">
+
+                            <script type="text/javascript"></script>
+                            <clearfix>
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button class="btn btn-primary" type="reset">重填</button>
+                                <button type="submit" class="btn btn-success">送出</button>
+                            </div>
+                        </form>
+                    </div>
+
+                          <script type="text/javascript">
+                          var pic_create_input_number = 0;
+
+                          function addInputPic() {
+                                    pic_create_input_number++;
+                                    var div_form = document.createElement("DIV");
+                                    div_form.setAttribute("class","form-group");
+                                    name = 'div_qpic'+pic_create_input_number;
+                                    div_form.setAttribute("id",name);
+                                    
+
+                                    var lb = '<label class="control-label col-md-3" for="first-name">圖片' + pic_create_input_number +' :<span class="required"></span></label>';
+                                    var md5 = '<div class="col-md-3">';
+                                    var input_q =  '<input type="file" name="A'+pic_create_input_number+'_file" />';
+                                    div_form.innerHTML = lb+md5+input_q;
+                                    document.getElementById("messagePic").appendChild(div_form);
+                                    document.getElementById("picture_number").value=pic_create_input_number;
+                                    }
+
+                          function subInputPic() {
+                                      if(pic_create_input_number>1)
+                                        {
+                                          _name = 'div_qpic'+pic_create_input_number;
+                                        document.getElementById(_name).remove();
+                                        pic_create_input_number--;
+                                        document.getElementById("picture_number").value=pic_create_input_number;
+                                        }
+                                    }
+                          
+                          addInputPic();
+                          
+                          </script>
+
+                    <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN PICTURE TAB -->
 
                 </div>
                 <!-- WORD TAB-->

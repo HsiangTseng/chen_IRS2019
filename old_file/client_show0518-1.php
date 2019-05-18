@@ -58,7 +58,7 @@
 		<link href="../build/css/custom.min.css" rel="stylesheet">						
 	</head>
 
-	<body class="nav-nd"  style="height:100%">	
+	<body class="nav-md"  style="height:100%">	
 		<style>
       html, body {
         height: 100%;
@@ -119,7 +119,7 @@
       }
     </style>
 		<div class="container body"  style="height:100%">
-			<div class="main_container" style="height:100%">
+			<div class="main_container"  style="height:100%">
 			<!-- page content################################# -->
 				<div class="x_panel test" role="main"  style="height:100%">
 					<form method="post" action="submit_answer.php" style="height:100%">
@@ -177,8 +177,8 @@
 							include("connects.php");
 							include("getdata.php");
 						?>
-						<div class="col-md-12 col-sm-12 col-xs-12" style="height:10%; position:fixed; bottom:0; z-index:1;">
-							<input type="submit" value="確定" name="submit" style="width:25%; height:100%;">							
+						<div class="col-md-12 col-sm-12 col-xs-12" style="height:10%;">
+							<input type="submit" value="確定" name="submit" style="width:50%;">							
 						</div>
 					</form>
 					<!-- question form-->

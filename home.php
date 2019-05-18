@@ -221,6 +221,14 @@ if($_SESSION['username'] == null)
                 <!-- title bar-->
 
 
+                <!-- style for img-->
+                <style>
+                .responsive {
+                  width: 100%;
+                  max-width: 650px;
+                  height: auto;
+                }
+                </style>
                 <!-- Question content-->
                 <div class="x_content">
                       <div class="bs-example" data-example-id="simple-jumbotron">
@@ -234,6 +242,7 @@ if($_SESSION['username'] == null)
                                     {
                                         while($result = mysqli_fetch_object($stmt))
                                         {
+                                          $q_type=$result->type;
                                           echo '<p><b>題號: '.$question_number.'</b></p>';
                                           echo '<p><b>'.$result->Content.'</b></p>';
                                           if ($result->type == 'VIDEO')
@@ -254,80 +263,88 @@ if($_SESSION['username'] == null)
                                         }
 
                                     }
+                                    
+                                    if($q_type!='KEYBOARD'&&$q_type!='LWORD')
+                                    {
+                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A1'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            if($result->type == 'PICTURE')
+                                            {
+                                              echo '<div class="col-lg-3 col-md-3">';
+                                              echo '<p><b>[A]</b></p>';
+                                              echo '<img src="upload/Q';
+                                              echo $q_list[$exam_index];
+                                              echo 'A1.';
+                                              echo $result->picture_ext;
+                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '</div>';
+                                            }
+                                            else if($result->type == 'WORD')
+                                            {
+                                              echo '<p><b>[A]  '.$result->Content.'</b></p>';
 
-                                    $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A1'";
-                                    $result = mysqli_fetch_object($db->query($sql));
-                                    if($result->type == 'PICTURE')
-                                    {
-                                      echo '<div class="col-lg-3 col-md-3">';
-                                      echo '<p><b>[A]</b></p>';
-                                      echo '<img src="upload/Q';
-                                      echo $q_list[$exam_index];
-                                      echo 'A1.';
-                                      echo $result->picture_ext;
-                                      echo '" style="width:300px;height:300px;">';
-                                      echo '</div>';
-                                    }
-                                    else if($result->type == 'WORD')
-                                    {
-                                      echo '<p><b>[A]  '.$result->Content.'</b></p>';
+                                            }
+                                            else{}
 
-                                    }
+                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A2'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            if($result->type == 'PICTURE')
+                                            {
+                                              echo '<div class="col-lg-3 col-md-3">';
+                                              echo '<p><b>[B]</b></p>';
+                                              echo '<img src="upload/Q';
+                                              echo $q_list[$exam_index];
+                                              echo 'A2.';
+                                              echo $result->picture_ext;
+                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '</div>';
+                                            }
+                                            else if($result->type == 'WORD')
+                                            {
+                                              echo '<p><b>[B]  '.$result->Content.'</b></p>';
+                                            }
+                                            else{}
 
-                                    $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A2'";
-                                    $result = mysqli_fetch_object($db->query($sql));
-                                    if($result->type == 'PICTURE')
-                                    {
-                                      echo '<div class="col-lg-3 col-md-3">';
-                                      echo '<p><b>[B]</b></p>';
-                                      echo '<img src="upload/Q';
-                                      echo $q_list[$exam_index];
-                                      echo 'A2.';
-                                      echo $result->picture_ext;
-                                      echo '" style="width:300px;height:300px;">';
-                                      echo '</div>';
-                                    }
-                                    else if($result->type == 'WORD')
-                                    {
-                                      echo '<p><b>[B]  '.$result->Content.'</b></p>';
-                                    }
 
-                                    $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A3'";
-                                    $result = mysqli_fetch_object($db->query($sql));
-                                    if($result->type == 'PICTURE')
-                                    {
-                                      echo '<div class="col-lg-3 col-md-3">';
-                                      echo '<p><b>[C]</b></p>';
-                                      echo '<img src="upload/Q';
-                                      echo $q_list[$exam_index];
-                                      echo 'A3.';
-                                      echo $result->picture_ext;
-                                      echo '" style="width:300px;height:300px;">';
-                                      echo '</div>';
-                                    }
-                                    else if($result->type == 'WORD')
-                                    {
-                                      echo '<p><b>[C]  '.$result->Content.'</b></p>';
+                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A3'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            if($result->type == 'PICTURE')
+                                            {
+                                              echo '<div class="col-lg-3 col-md-3">';
+                                              echo '<p><b>[C]</b></p>';
+                                              echo '<img src="upload/Q';
+                                              echo $q_list[$exam_index];
+                                              echo 'A3.';
+                                              echo $result->picture_ext;
+                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '</div>';
+                                            }
+                                            else if($result->type == 'WORD')
+                                            {
+                                              echo '<p><b>[C]  '.$result->Content.'</b></p>';
 
-                                    }
+                                            }
+                                            else{}
 
-                                    $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A4'";
-                                    $result = mysqli_fetch_object($db->query($sql));
-                                    if($result->type == 'PICTURE')
-                                    {
-                                      echo '<div class="col-lg-3 col-md-3">';
-                                      echo '<p><b>[D]</b></p>';
-                                      echo '<img src="upload/Q';
-                                      echo $q_list[$exam_index];
-                                      echo 'A4.';
-                                      echo $result->picture_ext;
-                                      echo '" style="width:300px;height:300px;">';
-                                      echo '</div>';
-                                    }
-                                    else if($result->type == 'WORD')
-                                    {
-                                      echo '<p><b>[D]  '.$result->Content.'</b></p>';
+                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A4'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            if($result->type == 'PICTURE')
+                                            {
+                                              echo '<div class="col-lg-3 col-md-3">';
+                                              echo '<p><b>[D]</b></p>';
+                                              echo '<img src="upload/Q';
+                                              echo $q_list[$exam_index];
+                                              echo 'A4.';
+                                              echo $result->picture_ext;
+                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '</div>';
+                                            }
+                                            else if($result->type == 'WORD')
+                                            {
+                                              echo '<p><b>[D]  '.$result->Content.'</b></p>';
 
+                                            }
+                                            else{}
                                     }
 
                                     $db->close();

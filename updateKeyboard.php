@@ -87,7 +87,7 @@
 	$ext = $a1_ext.'-'.$a2_ext.'-'.$a3_ext.'-'.$a4_ext.'-'.$a5_ext.'-'.$a6_ext.'-'.$a7_ext.'-'.$a8_ext;
 
 
-	$sql2 = "INSERT INTO Keyboard (KeyboardNo, KeyboardName, A1_ext, A2_ext, A3_ext, A4_ext, A5_ext, A6_ext, A7_ext, A8_ext, ext) VALUES ('$max_number', '$keyboardName', '$a1_ext', '$a2_ext', '$a3_ext', '$a4_ext', '$a5_ext', '$a6_ext',	'$a7_ext', '$a8_ext', '$ext')";
+	$sql2 = "INSERT INTO Keyboard (KeyboardNo, KeyboardName, type, ext) VALUES ('$max_number', '$keyboardName', 'Keyboard', '$ext')";
 	$db->query($sql2);
 
 
