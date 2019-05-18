@@ -32,7 +32,7 @@
 	    if ($_FILES[$name]['error'] === UPLOAD_ERR_OK){
 		  $file = $_FILES[$name]['tmp_name'];
 		  $ext[$i] = end(explode('.', $_FILES[$name]['name']));
-		  $dest = 'upload/K'.(string)$max_number.$n.'.'.$ext[$i];
+		  $dest = 'upload/K'.(string)$KeyboardNumber.$n.'.'.$ext[$i];
 		   move_uploaded_file($file, $dest);
 		  }
 		else {

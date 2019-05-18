@@ -264,7 +264,7 @@ if($_SESSION['username'] == null)
 
                                     }
                                     
-                                    if($q_type!='KEYBOARD'&&$q_type!='LWORD')
+                                    if($q_type!='KEYBOARD'&&$q_type!='LWORD'&&$q_type!='LPICTURE')
                                     {
                                             $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A1'";
                                             $result = mysqli_fetch_object($db->query($sql));

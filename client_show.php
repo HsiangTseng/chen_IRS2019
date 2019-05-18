@@ -62,6 +62,7 @@
 		<style>
       html, body {
         height: 100%;
+	background-color:rgba(255,255,255,0.4);
       }
       .test {
         text-align:center;
@@ -74,16 +75,24 @@
 	  .div50{
 		height:50%;
 	  }
+	.test input[type=checkbox] + label{
+        border: 2px solid green;
+        border-radius:10px;
+      }
+ .test input[type=radio] + label{
+        border: 2px solid green;
+        border-radius:10px;
+      }
 
       .test input[type=checkbox]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=checkbox]{
         display:none
       }
       .test input[type=radio]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=radio]{
@@ -95,8 +104,9 @@
       }
       .square-button {
         width: 90%;
-        height: 100%;
-        float: left;
+        height: 90%;
+        display:block;
+        margin:auto;
         position: relative;
         background-color:rgba(255,255,255,0.4);
         border-radius:10px;
@@ -113,7 +123,7 @@
       }
 
       .label-text {
-        font-size:10px;
+        font-size:20px;
         position: relative;				
         top: 90%;		
       }
@@ -121,7 +131,7 @@
 		<div class="container body"  style="height:100%">
 			<div class="main_container" style="height:100%">
 			<!-- page content################################# -->
-				<div class="x_panel test" role="main"  style="height:100%">
+				<div class="test" role="main"  style="height:100%">
 					<form method="post" action="submit_answer.php" style="height:100%">
 						<!-- Question -->																			
 						<script>
