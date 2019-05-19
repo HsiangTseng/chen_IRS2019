@@ -3,7 +3,7 @@
 <?php
 	include("connects.php");
 	
-	$keyboardNo = 1;
+	$keyboardNo =$_POST['KeyboardNo'];
 	$q1 = $_POST['Q1'];
 
 	$sql = "SELECT MAX(No) AS max FROM QuestionList";

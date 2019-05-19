@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 
 <?php
+include("connects.php");
 session_start();
+
 if($_SESSION['username'] == null)
 {
         header ('location: IRS_Login.php');
         exit;
+}
+else if ($_SESSION['type']!='T')
+{
+    header ('location: IRS_Login.php');
+    exit;
 }
 ?>
 <html lang="en">
@@ -76,15 +83,11 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <!--li><a href="home.php"><i class="fas fa-pencil-alt fa-2x" ></i> 考試 </a></li-->
-                  <li><a href="MakeQuestion.php"><i class="fas fa-edit fa-2x" aria-hidden="true"></i> 出題 </a></li>
-                  <li><a href="QuestionList.php"><i class="fas fa-book fa-2x" aria-hidden="true"></i> 題庫 </a></li>
-                  <li><a href="ExamList.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 測驗卷 </a></li>
-                  <li><a href="ExamHistory.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 考試紀錄 </a></li>
-                  <li><a href="logout.php"><i class="fas fa-arrow-alt-circle-left fa-2x" aria-hidden="true"></i> 登出 </a></li>
+                  <?php 
+                  include("side_bar_menu.php");
+                  echo side_bar();
+                  ?>
                 </ul>
-
-
               </div>
             </div>
             <!-- /sidebar menu -->
@@ -138,13 +141,60 @@ if($_SESSION['username'] == null)
                     <!-- setQuestion TAB -->
                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="setQuestion">
                             <form class="form-horizontal form-label-left" method="post" action="updateQuestion_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}"> 
-                            
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">請先選擇Keyboard : </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                  <select class="select2_single form-control" name="KeyboardNo" tabindex="-1" required>
+                                        <?php  
+                                            $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            $KeyboardNum = $result->KeyboardNumber;
+                                            
+                                            echo $KeyboardNum;
+                                            $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
+                                            $_KeyboardNo = array();
+                                            $_KeyboardName = array();
+                                            $index = 0;
+
+                                            if($stmt = $db->query($sql2))
+                                            {
+                                                while ($result = mysqli_fetch_object($stmt))
+                                                {
+                                                    $_KeyboardNo[$index] = $result->KeyboardNo;
+                                                    $_KeyboardName[$index] = $result->KeyboardName;
+                                                    $index++;
+                                                }
+                                            }
+
+                                            for($i=0 ; $i<$KeyboardNum ; $i++)
+                                            {
+                                                echo "<option value=";
+                                                echo "\"";
+                                                echo $_KeyboardNo[$i];
+                                                echo "\"";
+                                                echo ">";
+                                                echo $_KeyboardName[$i];
+                                                echo "</option>";
+                                            }
+                                            $db->close();
+                                        ?>                                  
+                                </select>
+
+                                </div>
+                            </div>
+
+
+
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
                                 <div class="col-md-3">
                                     <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
+
+                                
 
 
                             <div class="form-group required">

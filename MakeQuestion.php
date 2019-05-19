@@ -2,11 +2,18 @@
 
 <?php
 session_start();
+
 if($_SESSION['username'] == null)
 {
         header ('location: IRS_Login.php');
         exit;
 }
+else if ($_SESSION['type']!='T')
+{
+    header ('location: IRS_Login.php');
+    exit;
+}
+
 ?>
 <html lang="en">
           <head>
@@ -76,15 +83,11 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <!--li><a href="home.php"><i class="fas fa-pencil-alt fa-2x" ></i> 考試 </a></li-->
-                  <li><a href="MakeQuestion.php"><i class="fas fa-edit fa-2x" aria-hidden="true"></i> 出題 </a></li>
-                  <li><a href="QuestionList.php"><i class="fas fa-book fa-2x" aria-hidden="true"></i> 題庫 </a></li>
-                  <li><a href="ExamList.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 測驗卷 </a></li>
-                  <li><a href="ExamHistory.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 考試紀錄 </a></li>
-                  <li><a href="logout.php"><i class="fas fa-arrow-alt-circle-left fa-2x" aria-hidden="true"></i> 登出 </a></li>
+                  <?php 
+                  include("side_bar_menu.php");
+                  echo side_bar();
+                  ?>
                 </ul>
-
-
               </div>
             </div>
             <!-- /sidebar menu -->

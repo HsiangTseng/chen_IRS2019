@@ -12,16 +12,23 @@ $pw = $_POST['pwd'];
 $sql = "SELECT * FROM UserList where id = '$pid'";
 $stmt = $db->query($sql);
 $result = mysqli_fetch_object($stmt);
-//$result = mysql_query($sql);
-//$row = @mysql_fetch_row($result);
-
+$type = $result->type;
 //判斷帳號與密碼是否為空白
 //以及MySQL資料庫裡是否有這個會員
 if($pid != null && $pw != null && $result->id == $pid && $result->password == $pw)
 {
         //將帳號寫入session，方便驗證使用者身份
         $_SESSION['username'] = $pid;
-        header ('location: ExamList.php');
+        $_SESSION['type'] = $type;
+
+        if($type == 'T')
+        {
+        	header ('location: ExamList.php');
+        }
+        if($type == 'S')
+        {
+        	header ('location: wait.php');
+        }
         //echo '<meta http-equiv=REFRESH CONTENT=1;url=home.php>';
 }
 else
