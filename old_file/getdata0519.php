@@ -39,17 +39,10 @@
 	//判斷題目是否為邏輯順序題
 	//題目為邏輯順序題
 	if(strpos($quiz_type,'L')!== false){
-		if(strpos($quiz_type,'WORD')!== false){
-			echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:10%; position:fixed; top:0; z-index:1;'>";
-				echo "<input <input type='text' id='input' style='font-size:30px;'>";
-			echo "</div>";		
-		}
-		else{
-			echo "<div id='input' class='col-md-12 col-sm-12 col-xs-12' style='height:10%; position:fixed; top:0; z-index:1;'>";
-				
-			echo "</div>";
-		}
-		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:80%;margin-top:10%;margin-bottom:20%;'>";	
+		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:10%; position:fixed; top:0; z-index:1;'>";
+			echo "<input <input type='text' id='input' style='font-size:30px;height:100%;width:100%;'>";
+		echo "</div>";		
+		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:80%;margin-top:5%;margin-bottom:20%;'>";	
 		$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 		$result = mysqli_fetch_object($db->query($sql_catch_exam));
 		
@@ -61,7 +54,7 @@
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
 				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='".$Arr[$i]."' onclick='show_order(this.value,this.id,this.placeholder)'>";
-				echo "<label style='word-wrap:break-word;font-size:20px;' class='square-button' for='A".$answer_index."'>".$Arr[$i]."</label>";
+				echo "<label style='word-wrap:break-word;font-size:40px;' class='square-button' for='A".$answer_index."'>".$Arr[$i]."</label>";
 				echo "</div>";
 			}
 		}

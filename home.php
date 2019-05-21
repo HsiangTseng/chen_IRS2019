@@ -276,7 +276,7 @@ if($_SESSION['username'] == null)
                                               echo $q_list[$exam_index];
                                               echo 'A1.';
                                               echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
                                               echo '</div>';
                                             }
                                             else if($result->type == 'WORD')
@@ -296,7 +296,7 @@ if($_SESSION['username'] == null)
                                               echo $q_list[$exam_index];
                                               echo 'A2.';
                                               echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
                                               echo '</div>';
                                             }
                                             else if($result->type == 'WORD')
@@ -316,7 +316,7 @@ if($_SESSION['username'] == null)
                                               echo $q_list[$exam_index];
                                               echo 'A3.';
                                               echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
                                               echo '</div>';
                                             }
                                             else if($result->type == 'WORD')
@@ -336,7 +336,7 @@ if($_SESSION['username'] == null)
                                               echo $q_list[$exam_index];
                                               echo 'A4.';
                                               echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-height:100%;border-style: outset;">';
+                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
                                               echo '</div>';
                                             }
                                             else if($result->type == 'WORD')

@@ -58,11 +58,11 @@
 		<link href="../build/css/custom.min.css" rel="stylesheet">						
 	</head>
 
-	<body class="nav-md"  style="height:100%">	
-		<style>		
+	<body class="nav-nd"  style="height:100%">	
+		<style>
       html, body {
         height: 100%;
-		background-color:rgba(255,255,255,0.4);
+	background-color:rgba(255,255,255,0.4);
       }
       .test {
         text-align:center;
@@ -75,26 +75,24 @@
 	  .div50{
 		height:50%;
 	  }
-	.test input[type=radio] + label{
-       	 border: 2px solid gray;
-       	 border-radius:10px;
-      }
-	
 	.test input[type=checkbox] + label{
-        border: 2px solid gray;
+        border: 2px solid green;
+        border-radius:10px;
+      }
+ .test input[type=radio] + label{
+        border: 2px solid green;
         border-radius:10px;
       }
 
-
       .test input[type=checkbox]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=checkbox]{
         display:none
       }
       .test input[type=radio]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=radio]{
@@ -102,16 +100,13 @@
       }
 
       audio{
-	top: 50%;
-        left: 50%;
-	display:block;
-        margin:auto;
-        width:80%;
+        width:100%;
       }
       .square-button {
-        width: 80%;
-        height: 80%;
-        float: left;
+        width: 90%;
+        height: 90%;
+        display:block;
+        margin:auto;
         position: relative;
         background-color:rgba(255,255,255,0.4);
         border-radius:10px;
@@ -128,17 +123,16 @@
       }
 
       .label-text {
-        font-size:10px;
+        font-size:20px;
         position: relative;				
         top: 90%;		
       }
     </style>
 		<div class="container body"  style="height:100%">
-			<div class="main_container"  style="height:100%">
+			<div class="main_container" style="height:100%">
 			<!-- page content################################# -->
-				<div class="x_panel test" role="main"  style="height:100%">
+				<div class="test" role="main"  style="height:100%">
 					<form method="post" action="submit_answer.php" style="height:100%">
-						<input type="hidden" id="hidden_value" name="hidden" value=""/>
 						<!-- Question -->																			
 						<script>
 							var get_last = <?php echo "$last";?>;
@@ -216,35 +210,11 @@
 									}
 								}	
 							}
-							document.getElementById("hidden_value").value=arrvalue;
-							document.getElementById("input").value=arrshow;							
-						}
-						
-						function picture_order(value,id,placeholder){
-						if (document.getElementById(id).checked){
-							var div_form = document.createElement("label");
-							div_form.setAttribute("class","col-md-2 col-xs-2 col-sm-2 square-button");
-							newid = 'show' + id;
-							div_form.setAttribute("id",newid);
-							var lb = '<img class="small-img" src=' + placeholder + '>';
-							div_form.innerHTML = lb;	
-							document.getElementById("input").appendChild(div_form);							
-							arrvalue.push(value);							
-						}
-						else{
-							newid = 'show' + id;
-							document.getElementById(newid).remove();
-							for (var i = 0; i < arrvalue.length; i++) {
-								if (arrvalue[i] == value) {
-									arrvalue.splice(i, 1);
-								}
-							}							
-						}
-;						document.getElementById("hidden_value").value=arrvalue;
+							
+							document.getElementById("input").value=arrshow;
+							//alert(arrvalue);
 						}
 					</script>	
-					
-					
 
 				</div>			
 			</div>

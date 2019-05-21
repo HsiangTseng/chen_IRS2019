@@ -22,8 +22,6 @@
 	$Answer_number = $result->Answer_count;
 
 
-
-
 	if(isset($_POST['submit'])){
 		//更新答案
 		//獲得資料庫內之答案
@@ -34,14 +32,21 @@
 		
 		$This_answer_get='';
 		//獲得此題答案
-		if(!empty($_POST['value'])){						
+		if(!empty($_POST['hidden'])){
+			$This_answer_get = $_POST['hidden'];
+			foreach($_POST['hidden'] as $value){
+				$This_answer_get = $This_answer_get.$value;
+			}
+		}
+		elseif(!empty($_POST['value'])){						
 			foreach($_POST['value'] as $value){
 				if($This_answer_get != ''){
 					$This_answer_get = $This_answer_get.',';
 				}
 				$This_answer_get = $This_answer_get.$value;
 			}
-		}
+
+		}		
 		if($This_answer_get != ''){
 		$Answer_arr = mb_split("-",$Answer_get);
 		for( $i = 0 ; $i < count($Answer_arr) ; $i++ ){
