@@ -66,11 +66,12 @@
       }
       .test {
         text-align:center;
+	vertical-align:middle;
       }
 	  
 	  .div25{
 		height:25%;
-	  }
+	}
 	  
 	  .div50{
 		height:50%;
@@ -87,14 +88,14 @@
 
 
       .test input[type=checkbox]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=checkbox]{
         display:none
       }
       .test input[type=radio]:checked + label{									
-        border: 2px solid red;
+        border: 3px solid red;
         border-radius:10px;
       }		
       input[type=radio]{
@@ -102,23 +103,25 @@
       }
 
       audio{
-	top: 50%;
-        left: 50%;
 	display:block;
-        margin:auto;
+        margin:0 auto;
+	clear: both;
         width:80%;
       }
       .square-button {
         width: 80%;
         height: 80%;
-        float: left;
+	display:block;
+        margin:auto;
         position: relative;
         background-color:rgba(255,255,255,0.4);
         border-radius:10px;
+	font-size:40px;
+	vertical-align: middle;
       }
       .small-img {
-        max-width: 80%;
-        max-height: 80%;
+        max-width: 90%;
+        max-height: 90%;
         position: absolute;
         display:block; 
         margin:auto;
@@ -126,13 +129,7 @@
         left: 50%;
         transform: translate(-50%,-50%);
       }
-
-      .label-text {
-        font-size:10px;
-        position: relative;				
-        top: 90%;		
-      }
-    </style>
+     </style>
 		<div class="container body"  style="height:100%">
 			<div class="main_container"  style="height:100%">
 			<!-- page content################################# -->
@@ -201,6 +198,7 @@
 					
 					<!-- 邏輯順序題的回答 -->
 					<script>
+						var audios = document.getElementsByTagName("audio");
 						var arrshow = [];
 						var arrvalue = [];
 						function show_order(value,id,placeholder){
@@ -217,13 +215,14 @@
 								}	
 							}
 							document.getElementById("hidden_value").value=arrvalue;
-							document.getElementById("input").value=arrshow;							
+							document.getElementById("input").value=arrshow.join(" ");							
 						}
 						
 						function picture_order(value,id,placeholder){
 						if (document.getElementById(id).checked){
 							var div_form = document.createElement("label");
-							div_form.setAttribute("class","col-md-2 col-xs-2 col-sm-2 square-button");
+							div_form.setAttribute("class","col-md-2 col-xs-2 col-sm-2");
+							div_form.setAttribute("style","height:100%;")
 							newid = 'show' + id;
 							div_form.setAttribute("id",newid);
 							var lb = '<img class="small-img" src=' + placeholder + '>';
@@ -240,8 +239,20 @@
 								}
 							}							
 						}
-;						document.getElementById("hidden_value").value=arrvalue;
+						document.getElementById("hidden_value").value=arrvalue;
 						}
+
+
+						function pauseAll() {
+        						var self = this;
+						        [].forEach.call(audios, function (i) {
+								 i !== self && i.pause();
+						        })
+      						}
+						[].forEach.call(audios, function (i) {
+						        i.addEventListener("play", pauseAll.bind(i));
+					        })
+
 					</script>	
 					
 					

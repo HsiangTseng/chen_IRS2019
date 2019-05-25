@@ -52,10 +52,12 @@ else if ($_SESSION['type']!='T')
 
             <!-- Bootstrap -->
             <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+           <!-- Font Awesome -->
+            <!-- link href="../vendors/font-awesome/css/fontawesome-all.css" rel="stylesheet" -->
             <!-- Font Awesome -->
-            <link href="../vendors/font-awesome/css/fontawesome-all.css" rel="stylesheet">
-            <!-- Font Awesome -->
-            <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+            <!-- link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" -->
+
+            <link href="..//vendors/fontawesome-free-5.8.2-web/css/all.css" rel="stylesheet">
             <!-- NProgress -->
             <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
             <!-- iCheck -->

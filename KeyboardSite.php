@@ -282,7 +282,11 @@ else if ($_SESSION['type']!='T')
                             </div>
 
 
-                            <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+                            <script
+                              src="https://code.jquery.com/jquery-1.9.0.js"
+                              integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+                              crossorigin="anonymous">
+                            </script>
                             <script>    
                             
                             $("#file0").change(function(){

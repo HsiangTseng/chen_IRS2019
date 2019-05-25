@@ -213,6 +213,7 @@ if($_SESSION['username'] == null)
                       <b>題目</b>
                       <!--button type="button" id="zeroquiz" class="btn btn-success btn-lg" style="float: right;">歸零(test)</button-->
                       <button type="button" class="btn btn-success btn-lg" onClick = "timedMsg()" style="float: right;">5秒換題</button>
+                      <button type="button" id="lastquiz" class="btn btn-danger btn-lg" style="float: right;">前一題</button>
                       <button type="button" id="nextquiz" class="btn btn-success btn-lg" style="float: right;">換題</button>
                   </h1>
 
@@ -375,11 +376,11 @@ if($_SESSION['username'] == null)
                        (
                           {
                           type: "POST",
-                          url: "change.php",
+                          url: "changeNext.php",
                           data: { name: "Next" }
                           }
                        ).done(function( msg ) {});  
-                       location.reload(); 
+                       //location.reload(); 
             }
 
 
@@ -459,13 +460,28 @@ if($_SESSION['username'] == null)
                          (
                             {
                             type: "POST",
-                            url: "change.php",
+                            url: "changeNext.php",
                             data: { name: "Next" }
                             }
                          ).done(function( msg ) {});  
-                         location.reload();
-                         location.reload(); 
+                         //location.reload();
+                         setTimeout('location.reload();',300);
                       }
+                    });
+
+                 $('#lastquiz').click(function() 
+                    {
+                       $.ajax
+                       (
+                          {
+                          type: "POST",
+                          url: "changeLast.php",
+                          data: { name: "Last" }
+                          }
+                       ).done(function( msg ) {});  
+                       //location.reload();
+                      setTimeout('location.reload();',300);
+
                     });
 
                  $('#zeroquiz').click(function() 

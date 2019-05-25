@@ -41,7 +41,7 @@
 	if(strpos($quiz_type,'L')!== false){
 		if(strpos($quiz_type,'WORD')!== false){
 			echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:10%; position:fixed; top:0; z-index:1;'>";
-				echo "<input <input type='text' id='input' style='font-size:30px;'>";
+				echo "<input type='text' id='input' style='height:100%;width:100%;font-size:30px;'>";
 			echo "</div>";		
 		}
 		else{
@@ -49,7 +49,7 @@
 				
 			echo "</div>";
 		}
-		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:80%;margin-top:10%;margin-bottom:20%;'>";	
+		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:80%;margin-top:8%;margin-bottom:15%;'>";	
 		$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 		$result = mysqli_fetch_object($db->query($sql_catch_exam));
 		
@@ -61,7 +61,7 @@
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
 				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='".$Arr[$i]."' onclick='show_order(this.value,this.id,this.placeholder)'>";
-				echo "<label style='word-wrap:break-word;font-size:20px;' class='square-button' for='A".$answer_index."'>".$Arr[$i]."</label>";
+				echo "<label style='word-wrap:break-word;' class='square-button' for='A".$answer_index."'>".$Arr[$i]."</label>";
 				echo "</div>";
 			}
 		}
@@ -72,7 +72,7 @@
 				$answer_index = $i;
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
-				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='".$Arr[$i]."' onclick='show_order(this.value,this.id,this.placeholder)'>";
+				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 				echo "<label class='square-button' for='A".$answer_index."'>";
 				echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 				echo "</label>";
@@ -103,7 +103,7 @@
 							echo "</audio>";
 						}
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' >";
-								echo "<label  for='A".$i."' style='font-size:20px;word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
+								echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
 						echo "</div>";
 					}
 					//影音題
@@ -125,7 +125,7 @@
 							echo "</video>";
 						}
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";					
-								echo "<label for='A".$i."' style='font-size:20px;word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
+								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
 						echo "</div>";
 					}
 					//圖片題
@@ -161,7 +161,7 @@
 							echo "</audio>";
 						}
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
-								echo "<label for='A".$i."' style='font-size:20px; word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
+								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
 						echo "</div>";
 					}
 					//影音題
@@ -182,7 +182,7 @@
 							echo "</video>";
 						}
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";					
-								echo "<label for='A".$i."' style='font-size:20px;word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
+								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button'>".$result->Content."</label>";
 						echo "</div>";
 					}
 					//圖片題
