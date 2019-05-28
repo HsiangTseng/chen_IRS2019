@@ -127,12 +127,36 @@ if($_SESSION['username'] == null)
                       <th>題目</th>
                     </tr>
                   </thead>
+                  <?php
+                    include("connects.php");
+                    $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                    $result = mysqli_fetch_object($db->query($sql));
+                    $max_number = $result->max;
+                    $content = array();
+                    $type = array();
+                    for ( $a = 1 ; $a<=$max_number ; $a++)
+                    {
+                      $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
+                      $result2 = mysqli_fetch_object($db->query($sql2));
+                      $content[$a] = $result2->Content;
+                      $type[$a] = $result2->type;
+                      $content_to_json=json_encode((array)$content);
+                      $type_to_json=json_encode((array)$type);
 
+                    }
+                  ?>
                   <tbody>
                     <tr>
+                      <?php
+                      echo '<td>1</td>';
+                      if($type[1]=='WORD')echo '<td>文字</td>';
+                      else if($type[1]=='PICTURE')echo '<td>圖片</td>';
+                      else if($type[1]=='VIDEO')echo '<td>影片</td>';
+                      echo '<td>'.$content[1].'</td>';
+                      ?>
+                      <!--td></td>
                       <td></td>
-                      <td></td>
-                      <td></td>
+                      <td></td-->
                     </tr>
 
                   </tbody>
@@ -243,7 +267,7 @@ if($_SESSION['username'] == null)
                           var content_fromPHP=<? echo $content_to_json ?>;
                           var type_fromPHP=<? echo $type_to_json ?>;
                           var t = $('#q_list').DataTable();
-                          for (var i=1 ; i<= <?php echo "$max_number";?> ; i++)
+                          for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
                           {
 
                             if(type_fromPHP[i]=="WORD")

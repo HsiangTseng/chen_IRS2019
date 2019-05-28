@@ -27,9 +27,11 @@ if($_SESSION['username'] == null)
             <!-- Bootstrap -->
             <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
             <!-- Font Awesome -->
-            <link href="../vendors/font-awesome/css/fontawesome-all.css" rel="stylesheet">
+            <!-- link href="../vendors/font-awesome/css/fontawesome-all.css" rel="stylesheet" -->
             <!-- Font Awesome -->
-            <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+            <!-- link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" -->
+
+            <link href="..//vendors/fontawesome-free-5.8.2-web/css/all.css" rel="stylesheet">
             <!-- NProgress -->
             <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
             <!-- iCheck -->
@@ -77,14 +79,11 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <!--li><a href="home.php"><i class="fas fa-pencil-alt fa-2x" ></i> 考試 </a></li-->
-                  <li><a href="MakeQuestion.php"><i class="fas fa-edit fa-2x" aria-hidden="true"></i> 出題 </a></li>
-                  <li><a href="QuestionList.php"><i class="fas fa-book fa-2x" aria-hidden="true"></i> 題庫 </a></li>
-                  <li><a href="ExamList.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 測驗卷 </a></li>
-                  <li><a href="logout.php"><i class="fas fa-arrow-alt-circle-left fa-2x" aria-hidden="true"></i> 登出 </a></li>
+                  <?php 
+                  include("side_bar_menu.php");
+                  echo side_bar();
+                  ?>
                 </ul>
-
-
               </div>
             </div>
             <!-- /sidebar menu -->

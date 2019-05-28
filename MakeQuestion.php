@@ -909,7 +909,7 @@ else if ($_SESSION['type']!='T')
 
                                     var lb = '<label class="control-label col-md-3" for="first-name">圖片' + pic_create_input_number +' :<span class="required"></span></label>';
                                     var md5 = '<div class="col-md-3">';
-                                    var input_q =  '<input type="file" name="A'+pic_create_input_number+'_file" />';
+                                    var input_q =  '<input type="file" name="A'+pic_create_input_number+'_file" required />';
                                     div_form.innerHTML = lb+md5+input_q;
                                     document.getElementById("messagePic").appendChild(div_form);
                                     document.getElementById("picture_number").value=pic_create_input_number;

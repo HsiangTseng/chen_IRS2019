@@ -135,12 +135,39 @@ else if ($_SESSION['type']!='T')
                     </tr>
                   </thead>
 
+
+                  <?php
+                    include("connects.php");
+                    $sql = "SELECT MAX(No) AS max FROM ExamList";
+                    $result = mysqli_fetch_object($db->query($sql));
+                    $max_number = $result->max;
+                    $title = array();
+                    $teacher = array();
+                    $note = array();
+                    for ( $a = 1 ; $a<=$max_number ; $a++)
+                    {
+                      $sql2 = "SELECT `ExamTitle`,`Teacher`,`Note` FROM `ExamList` WHERE `No` =$a";
+                      $result2 = mysqli_fetch_object($db->query($sql2));
+                      $title[$a] = $result2->ExamTitle;
+                      $teacher[$a] = $result2->Teacher;
+                      $note[$a] = $result2->Note;
+                      $title_to_json=json_encode((array)$title);
+                      $teacher_to_json=json_encode((array)$teacher);
+                      $note_to_json=json_encode((array)$note);
+                    }
+                  ?>
                   <tbody>
                     <tr>
+                      <?php
+                      echo '<td>1</td>';
+                      echo '<td>'.$title[1].'</td>';
+                      echo '<td>'.$teacher[1].'</td>';
+                      echo '<td>'.$note[1].'</td>';
+                      ?>
+                      <!--td></td>
                       <td></td>
                       <td></td>
-                      <td></td>
-                      <td></td>
+                      <td></td-->
                     </tr>
 
                   </tbody>
@@ -246,26 +273,7 @@ else if ($_SESSION['type']!='T')
             <script src="../build/js/custom.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
 
-            <?php
-              include("connects.php");
-              $sql = "SELECT MAX(No) AS max FROM ExamList";
-              $result = mysqli_fetch_object($db->query($sql));
-              $max_number = $result->max;
-              $title = array();
-              $teacher = array();
-              $note = array();
-              for ( $a = 1 ; $a<=$max_number ; $a++)
-              {
-                $sql2 = "SELECT `ExamTitle`,`Teacher`,`Note` FROM `ExamList` WHERE `No` =$a";
-                $result2 = mysqli_fetch_object($db->query($sql2));
-                $title[$a] = $result2->ExamTitle;
-                $teacher[$a] = $result2->Teacher;
-                $note[$a] = $result2->Note;
-                $title_to_json=json_encode((array)$title);
-                $teacher_to_json=json_encode((array)$teacher);
-                $note_to_json=json_encode((array)$note);
-              }
-            ?>
+
 
             <script type="text/javascript" class="init">
                 $('#e_list').dataTable( {
@@ -285,7 +293,7 @@ else if ($_SESSION['type']!='T')
                           var teacherfromPHP=<? echo $teacher_to_json ?>;
                           var notefromPHP=<? echo $note_to_json ?>;
                           var t = $('#e_list').DataTable();
-                          for (var i=1 ; i<= <?php echo "$max_number";?> ; i++)
+                          for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
                           {
                             t.row.add(
                             [

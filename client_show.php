@@ -62,12 +62,26 @@
 		<style>		
       html, body {
         height: 100%;
-		background-color:rgba(255,255,255,0.4);
+	background-color:rgba(255,255,255,0.4);
+	font-size:40px;
       }
       .test {
         text-align:center;
 	vertical-align:middle;
       }
+	.rwdtxt {
+				font-size: 10px;
+			}
+			@media (min-width: 400px) and (max-width: 900px) {
+				.rwdtxt {
+					font-size: 20px;
+				}
+			}
+			@media (min-width: 900px) {
+				.rwdtxt {
+					font-size: 30px;
+				}
+			}
 	  
 	  .div25{
 		height:25%;
@@ -101,6 +115,10 @@
       input[type=radio]{
         display:none
       }
+		
+      .logic_graph{
+	 background-color:rgba(200,200,200,0.4);	
+      }
 
       audio{
 	display:block;
@@ -109,19 +127,34 @@
         width:80%;
       }
       .square-button {
-        width: 80%;
-        height: 80%;
+        max-width: 100%;
+        min-height: 80%;
+	max-height:100%;
 	display:block;
         margin:auto;
         position: relative;
         background-color:rgba(255,255,255,0.4);
         border-radius:10px;
-	font-size:40px;
 	vertical-align: middle;
       }
-      .small-img {
-        max-width: 90%;
+       .show-img {
+	border: 1px solid black;
+        border-radius:10px;
+        max-width:90%;
         max-height: 90%;
+        position: absolute;
+        display:block;
+        margin:auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+
+	
+	.small-img {
+	max-width:90%;
+        min-height:90%;
+	max-height:100%;
         position: absolute;
         display:block; 
         margin:auto;
@@ -190,7 +223,7 @@
 							include("connects.php");
 							include("getdata.php");
 						?>
-						<div class="col-md-12 col-sm-12 col-xs-12" style="height:10%; position:fixed; bottom:0; z-index:1;">
+						<div class="col-md-12 col-sm-12 col-xs-12 rwdtxt" style="height:10%; position:fixed; bottom:0; z-index:1;">
 							<input type="submit" value="確定" name="submit" style="width:25%; height:100%;">							
 						</div>
 					</form>
@@ -225,7 +258,7 @@
 							div_form.setAttribute("style","height:100%;")
 							newid = 'show' + id;
 							div_form.setAttribute("id",newid);
-							var lb = '<img class="small-img" src=' + placeholder + '>';
+							var lb = '<img class="show-img" src=' + placeholder + '>';
 							div_form.innerHTML = lb;	
 							document.getElementById("input").appendChild(div_form);							
 							arrvalue.push(value);							
