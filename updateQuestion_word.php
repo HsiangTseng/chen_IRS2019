@@ -19,6 +19,16 @@
     //get the new question's number
 
 
+    //edit block
+    if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+    {
+    	$tag = $_POST['edit_tag'];
+    	$question_number = $_POST['question_number'];
+    	$max_number = $question_number;
+    }
+    
+
+
 
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 
@@ -85,23 +95,51 @@
 	}
 
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'WORD', '$single_or_multi', '$audio_dest')";
-	$db->query($sql2);
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A1', 'WORD', '$a1', '$audio_A1')";
-	$db->query($sql2);
+	// if edit
+	if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+	{
+		$sql2 = "UPDATE QuestionList SET CA='$CA', Content='$q1' WHERE No = '$question_number' AND QA='Q' ";
+		$db->query($sql2);
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A2', 'WORD', '$a2', '$audio_A2')";
-	$db->query($sql2);
+		$sql2 = "UPDATE QuestionList SET Content='$a1' WHERE No = '$question_number' AND QA='A1' ";
+		$db->query($sql2);	
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A3', 'WORD', '$a3', '$audio_A3')";
-	$db->query($sql2);
+		$sql2 = "UPDATE QuestionList SET Content='$a2' WHERE No = '$question_number' AND QA='A2' ";
+		$db->query($sql2);	
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A4', 'WORD', '$a4', '$audio_A4')";
-	$db->query($sql2);
+		$sql2 = "UPDATE QuestionList SET Content='$a3' WHERE No = '$question_number' AND QA='A3' ";
+		$db->query($sql2);	
 
-	$db->close();
+		$sql2 = "UPDATE QuestionList SET Content='$a4' WHERE No = '$question_number' AND QA='A4' ";
+		$db->query($sql2);	
+		$db->close();
+		echo "<script>alert('出題成功'); location.href = 'workspace.php';</script>";
 
-	echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+	}
+
+	else // if not edit , means insert.
+	{
+		echo $max_number;
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'WORD', '$single_or_multi', '$audio_dest')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A1', 'WORD', '$a1', '$audio_A1')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A2', 'WORD', '$a2', '$audio_A2')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A3', 'WORD', '$a3', '$audio_A3')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A4', 'WORD', '$a4', '$audio_A4')";
+		$db->query($sql2);
+		$db->close();
+		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+	}
+
+	
+
 ?>
 

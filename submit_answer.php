@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("connects.php");
 	$Answer_get='';
 	//get answer data from database
@@ -14,7 +15,13 @@
 	}
 	
 	//$WhoAnswer = $_POST['username'];	
-	$WhosAnswer = "A1234";
+	//$WhosAnswer = "A1234";
+	$WhosAnswer = $_SESSION['username'];
+
+	//new 
+	//$answer_start_time = $_SESSION['answer_start_time'];
+	
+
 	
 	$Answer_count_sql = "Select count(Answer) AS Answer_count from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";
 	$stmt1 = $db->query($Answer_count_sql);

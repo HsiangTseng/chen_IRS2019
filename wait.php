@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <?php 
 	session_start(); 
+	$WhosAnswer = $_SESSION['username'];
+	if($_SESSION['username'] == null){
+		echo '12345';
+	}
+	else{
+		//echo $_SESSION['username'];
+	}
 ?>
 <?php
 	include("connects.php");
@@ -57,7 +64,7 @@
 		<h1>等待中</h1>
 	<div>	
 		<?
-			;
+			
 			include("connects.php");
 			
 			$date=date('Y-m-d H:i:s');
@@ -71,7 +78,9 @@
 			}
 
 			//$WhoAnswer = $_POST['username'];	
-			$WhosAnswer = "A1234";
+			//$WhosAnswer = "A1234";
+			$WhosAnswer = $_SESSION['username'];
+			echo $WhosAnswer;
 
 			$Answer_count_sql = "Select count(Answer) AS Answer_count from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";
 			$stmt1 = $db->query($Answer_count_sql);

@@ -7,8 +7,6 @@ if($_SESSION['username'] == null)
         header ('location: IRS_Login.php');
         exit;
 }
-
-$answer_number = 5;
 ?>
 <html lang="en">
           <head>
@@ -17,7 +15,7 @@ $answer_number = 5;
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-          <link rel="icon" href="images/favicon.ico" type="image/ico" />
+            <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
             <title>Chen's IRS | </title>
 
@@ -78,15 +76,11 @@ $answer_number = 5;
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <!--li><a href="home.php"><i class="fas fa-pencil-alt fa-2x" ></i> 考試 </a></li-->
-                  <li><a href="MakeQuestion.php"><i class="fas fa-edit fa-2x" aria-hidden="true"></i> 出題 </a></li>
-                  <li><a href="QuestionList.php"><i class="fas fa-book fa-2x" aria-hidden="true"></i> 題庫 </a></li>
-                  <li><a href="ExamList.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 測驗卷 </a></li>
-                  <li><a href="ExamHistory.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 考試紀錄 </a></li>
-                  <li><a href="logout.php"><i class="fas fa-arrow-alt-circle-left fa-2x" aria-hidden="true"></i> 登出 </a></li>
+                  <?php 
+                  include("side_bar_menu.php");
+                  echo side_bar();
+                  ?>
                 </ul>
-
-
               </div>
             </div>
             <!-- /sidebar menu -->
@@ -119,633 +113,64 @@ $answer_number = 5;
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>出題</b></h1>
+                  <h1><b>題庫</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
 
-                <!-- MakeOut Form -->
-                <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                      <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#tab_content1" id="singel-word-tab" role="tab" data-toggle="tab" aria-expanded="true">單選文字</a></li>
-                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="single-picture-tab" data-toggle="tab" aria-expanded="false">單選圖片</a></li>
-                        <li role="presentation" class=""><a href="#tab_content3" role="tab" id="multi-word-tab" data-toggle="tab" aria-expanded="false">多選文字</a></li>
-                        <li role="presentation" class=""><a href="#tab_content4" role="tab" id="multi-picture-tab" data-toggle="tab" aria-expanded="false">多選圖片</a></li>
-                        <li role="presentation" class=""><a href="#tab_content5" role="tab" id="single-video-tab" data-toggle="tab" aria-expanded="false">單選影片</a></li>
-                        <li role="presentation" class=""><a href="#tab_content6" role="tab" id="multi-video-tab" data-toggle="tab" aria-expanded="false">多選影片</a></li>
-
-                      </ul>
-                </div>
-
-
-
-                <!-- WORD TAB-->
-                <div id="myTabContent" class="tab-content">
-                    
-                    <div class="form-horizontal form-label-left">
-                      <div class="form-group">
-                        <label class="control-label col-md-3" for="first-name">增減選項 : </label>
-                        <button class="btn btn-success" onclick="addInput()">+</button>
-                        <button class="btn btn-danger" onclick="subInput()">-</button>
-                      </div>
-                    </>
-
-                    <!-- MAKE QUESTION w/ SINGLE ANSWER FORM IN WORD TAB -->
-                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="singel-word-tab">
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logic.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-                            
-
-
-
-                            <!--div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                
-                            </div-->
-
-
-
-                          
-
-                          <div id="message"></div>
-
-                          <script type="text/javascript">
-
-
-                          var create_input_number = 0;
-
-                          function addInput() {
-                                    create_input_number++;
-                                    var div_form = document.createElement("DIV");
-                                    div_form.setAttribute("class","form-group");
-                                    name = 'div_q'+create_input_number;
-                                    div_form.setAttribute("id",name);
-                                    
-
-                                    var lb = '<label class="control-label col-md-3" for="first-name">選項' + create_input_number +' :<span class="required"></span></label>';
-                                    var md5 = '<div class="col-md-5">';
-                                    var input_q =  '<input type="text"  name="Answer[]" required="required" class="form-control col-md-7 col-xs-12">';
-                                    div_form.innerHTML = lb+md5+input_q;
-                                    document.getElementById("message").appendChild(div_form);
-                                    }
-
-                          function subInput() {
-                                      if(create_input_number>1)
-                                        {
-                                          _name = 'div_q'+create_input_number;
-                                        document.getElementById(_name).remove();
-                                        create_input_number--;
-                                        }
-                                    }
-                          
-                          addInput();          
-                          </script>
-                            <HR>
-                            <HR>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="CA" placeholder="正解順序 例如: A1-A3-A2-A4" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- MAKE QUESTION w/ SINGLE ANSWER FORM IN WORD TAB -->
-
-                     <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN PICTURE TAB -->
-                     <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="single-picture-tab">
-                        <form class="form-horizontal form-label-left" method="post" action="updateQuestion_picture.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A1_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A1_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A1"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A2_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A2_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A2"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A3_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A3_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A3"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A4_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A4_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A4"/>
-                                </div>
-                            </div>
-
-                            <!--div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">附加音檔(非必要) : <span></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="audio_file"/>
-                                </div>
-                            </div-->
-
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A1" required><label>A選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                            </div>
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-
-                     <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN PICTURE TAB -->
-
-                    <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN WORD TAB -->
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="multi-word-tab">
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" disabled="disabled"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" checked="checked"><label>多選</label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_file"/>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A1"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A2" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A2"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A3" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A3"/>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A4" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A4"/>
-                                </div>
-                            </div>
-
-                            <!--div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">附加音檔(非必要) : <span></span></label>
-                                <div class="col-md-4">
-                                    <input type="file" name="audio_file"/>
-                                </div>
-                            </div-->
-
-
-                            <div class="form-group required">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1"><label>A選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                            </div>
-    
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN WORD TAB -->
-
-
-
-                     <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN PICTURE TAB -->
-                     <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="multi-picture-tab">
-                        <form class="form-horizontal form-label-left" method="post" action="updateQuestion_picture.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" disabled="disabled"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" checked="checked"><label>多選</label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A1_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A1_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A1"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A2_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A2_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A2"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A3_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A3_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A3"/>
-                                </div>
-                            </div>
-                            <HR>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-2">
-                                    <input type="file" name="A4_file" required />
-                                    <label for="last-name">alt :</label>
-                                    <input type="text" name="A4_alt" required="required">
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A4"/>
-                                </div>
-                            </div>
-
-
-                            <!--div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">附加音檔(非必要) : <span></span></label>
-                                <div class="col-md-5">
-                                    <input type="file" name="audio_file"/>
-                                </div>
-                            </div-->
-
-
-                            <div class="form-group required">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1"><label>A選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                            </div>
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-
-                     <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN PICTURE TAB -->
-
-                     <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN VIDEO TAB -->
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="single-video-tab">
-                        <form class="form-horizontal form-label-left" method="post" action="updateQuestion_video.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="Q1" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">上傳影片 <span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="file" name="video_file" required="required" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A2" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A3" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A4" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A1" required><label>A選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="radio" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                            </div>
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN VIDEO TAB -->
-
-                    <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN VIDEO TAB -->
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="multi-video-tab">
-                        <form class="form-horizontal form-label-left" method="post" action="updateQuestion_video.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        include("connects.php");
-                              
-                                        $sql = "SELECT MAX(No) AS max FROM QuestionList";
-                                        $result = mysqli_fetch_object($db->query($sql));
-                                        $max_number = $result->max;
-                                        echo $max_number+1;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" disabled="disabled"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" checked="checked"><label>多選</label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="Q1" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">上傳影片 <span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="file" name="video_file" required="required" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A1" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A2" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A3" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                  <input type="text"  name="A4" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group required">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1"><label>A選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                            </div>
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- MAKE QUESTION w/ MULTI ANSWER FORM IN VIDEO TAB -->
-
-
-                </div>
-                <!-- WORD TAB-->
-
-
-                <!-- MakeOut Form -->
+                <!-- Question List Table -->
+                <table id="q_list" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>題號.</th>
+                      <th>文字/圖片</th>
+                      <th>題目</th>
+                      <th>編輯</th>
+                    </tr>
+                  </thead>
+                  <?php
+                    include("connects.php");
+                    $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                    $result = mysqli_fetch_object($db->query($sql));
+                    $max_number = $result->max;
+                    $content = array();
+                    $type = array();
+                    for ( $a = 1 ; $a<=$max_number ; $a++)
+                    {
+                      $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
+                      $result2 = mysqli_fetch_object($db->query($sql2));
+                      $content[$a] = $result2->Content;
+                      $type[$a] = $result2->type;
+                      $content_to_json=json_encode((array)$content);
+                      $type_to_json=json_encode((array)$type);
+
+                    }
+                  ?>
+                  <tbody>
+                    <tr>
+                      <?php
+                      echo '<td>1</td>';
+                      if($type[1]=='WORD')echo '<td>文字選擇</td>';
+                      else if($type[1]=='PICTURE')echo '<td>圖片選擇</td>';
+                      else if($type[1]=='LWORD')echo '<td>文字順序</td>';
+                      else if($type[1]=='LPICTURE')echo '<td>圖片順序</td>';
+                      else if($type[1]=='VIDEO')echo '<td>影片</td>';
+                      else if($type[1]=='KEYBOARD')echo '<td>KEYBOARD</td>';
+                      
+                      echo '<td>'.$content[1].'</td>';
+                      echo '<td><button type="submit" class="btn btn-info" onclick="btnclk(1)">編輯</button></td>';
+                      ?>
+                      <!--td></td>
+                      <td></td>
+                      <td></td-->
+                    </tr>
+
+                  </tbody>
+                </table>
+                <!-- Question List Table -->
 
             </div>
             <!-- Question -->
-
 
 
 
@@ -808,9 +233,117 @@ $answer_number = 5;
             <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
             <!-- DataTable -->
             <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+            <!--script src="../vendors/DataTables_new/datatables.js"></script-->
 
             <!-- Custom Theme Scripts -->
             <script src="../build/js/custom.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
+
+            <?php
+              include("connects.php");
+              $sql = "SELECT MAX(No) AS max FROM QuestionList";
+              $result = mysqli_fetch_object($db->query($sql));
+              $max_number = $result->max;
+              $content = array();
+              $type = array();
+              for ( $a = 1 ; $a<=$max_number ; $a++)
+              {
+                $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
+                $result2 = mysqli_fetch_object($db->query($sql2));
+                $content[$a] = $result2->Content;
+                $type[$a] = $result2->type;
+                $content_to_json=json_encode((array)$content);
+                $type_to_json=json_encode((array)$type);
+
+              }
+            ?>
+
+            <script type="text/javascript" class="init">
+                $('#q_list').dataTable( {
+                  "columns": [
+                    { "width": "10%" },
+                    { "width": "10%" },
+                    { "width": "75%" },
+                    { "width": "15%" },
+                  ]
+                } );
+
+                function btnclk(q_index)
+                {
+                  var index = q_index;
+                  window.location.href = 'editQuestion_main.php?number='+index;
+                }
+
+
+                $(document).ready
+                (
+                    function() 
+                        {
+                              var content_fromPHP=<? echo $content_to_json ?>;
+                              var type_fromPHP=<? echo $type_to_json ?>;
+                              var bt = "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk()\">編輯</button>";
+                              var t = $('#q_list').DataTable();
+                              for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
+                              {
+                                if(type_fromPHP[i]=="WORD"){type_fromPHP[i]="文字選擇";}
+                                else if(type_fromPHP[i]=="PICTURE"){type_fromPHP[i]="圖片選擇";}
+                                else if(type_fromPHP[i]=="LWORD"){type_fromPHP[i]="文字順序";}
+                                else if(type_fromPHP[i]=="LPICTURE"){type_fromPHP[i]="圖片順序";}
+                                else if(type_fromPHP[i]=="VIDEO"){type_fromPHP[i]="影片";}
+                                else if(type_fromPHP[i]=="KEYBOARD"){type_fromPHP[i]="KEYBOARD";}
+
+                                t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+
+                                /*
+                                if(type_fromPHP[i]=="WORD")
+                                  {
+                                    type_fromPHP[i]="文字";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
+
+                                else if(type_fromPHP[i]=="PICTURE")
+                                  {
+                                    type_fromPHP[i]="圖片";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
+                                  else if(type_fromPHP[i]=="VIDEO")
+                                  {
+                                    type_fromPHP[i]="影片";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
+                                else
+                                {
+                                  
+                                }*/
+                              } 
+                        }
+
+                );
+
+            </script>
   </body>
 </html>

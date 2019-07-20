@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php 
-	session_start(); 
+	session_start();
+	//new
+	//$_SESSION['answer_start_time'] = microtime(true);
 ?>
 
 <?php
