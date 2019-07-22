@@ -15,7 +15,7 @@ if($_SESSION['username'] == null)
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-        	<link rel="icon" href="images/favicon.ico" type="image/ico" />
+            <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
             <title>Chen's IRS | </title>
 
@@ -125,6 +125,7 @@ if($_SESSION['username'] == null)
                       <th>題號.</th>
                       <th>文字/圖片</th>
                       <th>題目</th>
+                      <th>編輯</th>
                     </tr>
                   </thead>
                   <?php
@@ -149,10 +150,15 @@ if($_SESSION['username'] == null)
                     <tr>
                       <?php
                       echo '<td>1</td>';
-                      if($type[1]=='WORD')echo '<td>文字</td>';
-                      else if($type[1]=='PICTURE')echo '<td>圖片</td>';
+                      if($type[1]=='WORD')echo '<td>文字選擇</td>';
+                      else if($type[1]=='PICTURE')echo '<td>圖片選擇</td>';
+                      else if($type[1]=='LWORD')echo '<td>文字順序</td>';
+                      else if($type[1]=='LPICTURE')echo '<td>圖片順序</td>';
                       else if($type[1]=='VIDEO')echo '<td>影片</td>';
+                      else if($type[1]=='KEYBOARD')echo '<td>KEYBOARD</td>';
+                      
                       echo '<td>'.$content[1].'</td>';
+                      echo '<td><button type="submit" class="btn btn-info" onclick="btnclk(1)">編輯</button></td>';
                       ?>
                       <!--td></td>
                       <td></td>
@@ -227,6 +233,7 @@ if($_SESSION['username'] == null)
             <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
             <!-- DataTable -->
             <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+            <!--script src="../vendors/DataTables_new/datatables.js"></script-->
 
             <!-- Custom Theme Scripts -->
             <script src="../build/js/custom.min.js"></script>
@@ -256,61 +263,87 @@ if($_SESSION['username'] == null)
                   "columns": [
                     { "width": "10%" },
                     { "width": "10%" },
-                    { "width": "80%" },
+                    { "width": "75%" },
+                    { "width": "15%" },
                   ]
                 } );
+
+                function btnclk(q_index)
+                {
+                  var index = q_index;
+                  window.location.href = 'editQuestion_main.php?number='+index;
+                }
+
 
                 $(document).ready
                 (
                     function() 
                         {
-                          var content_fromPHP=<? echo $content_to_json ?>;
-                          var type_fromPHP=<? echo $type_to_json ?>;
-                          var t = $('#q_list').DataTable();
-                          for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
-                          {
-
-                            if(type_fromPHP[i]=="WORD")
+                              var content_fromPHP=<? echo $content_to_json ?>;
+                              var type_fromPHP=<? echo $type_to_json ?>;
+                              var bt = "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk()\">編輯</button>";
+                              var t = $('#q_list').DataTable();
+                              for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
                               {
-                                type_fromPHP[i]="文字";
-                                t.row.add(
-                                [
-                                i,
-                                type_fromPHP[i],
-                                content_fromPHP[i],
-                                ]).draw(false);
-                              }
+                                if(type_fromPHP[i]=="WORD"){type_fromPHP[i]="文字選擇";}
+                                else if(type_fromPHP[i]=="PICTURE"){type_fromPHP[i]="圖片選擇";}
+                                else if(type_fromPHP[i]=="LWORD"){type_fromPHP[i]="文字順序";}
+                                else if(type_fromPHP[i]=="LPICTURE"){type_fromPHP[i]="圖片順序";}
+                                else if(type_fromPHP[i]=="VIDEO"){type_fromPHP[i]="影片";}
+                                else if(type_fromPHP[i]=="KEYBOARD"){type_fromPHP[i]="KEYBOARD";}
 
-                            else if(type_fromPHP[i]=="PICTURE")
-                              {
-                                type_fromPHP[i]="圖片";
                                 t.row.add(
-                                [
-                                i,
-                                type_fromPHP[i],
-                                content_fromPHP[i],
-                                ]).draw(false);
-                              }
-                              else if(type_fromPHP[i]=="VIDEO")
-                              {
-                                type_fromPHP[i]="影片";
-                                t.row.add(
-                                [
-                                i,
-                                type_fromPHP[i],
-                                content_fromPHP[i],
-                                ]).draw(false);
-                              }
-                            else
-                            {
-                              
-                            }
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
 
+                                /*
+                                if(type_fromPHP[i]=="WORD")
+                                  {
+                                    type_fromPHP[i]="文字";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
 
-                          } 
+                                else if(type_fromPHP[i]=="PICTURE")
+                                  {
+                                    type_fromPHP[i]="圖片";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
+                                  else if(type_fromPHP[i]=="VIDEO")
+                                  {
+                                    type_fromPHP[i]="影片";
+                                    t.row.add(
+                                    [
+                                    i,
+                                    type_fromPHP[i],
+                                    content_fromPHP[i],
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    ]).draw(false);
+                                  }
+                                else
+                                {
+                                  
+                                }*/
+                              } 
                         }
 
                 );
+
             </script>
   </body>
 </html>

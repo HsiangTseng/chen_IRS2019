@@ -114,7 +114,7 @@
 		$sql2 = "UPDATE QuestionList SET Content='$a4' WHERE No = '$question_number' AND QA='A4' ";
 		$db->query($sql2);	
 		$db->close();
-		echo "<script>alert('出題成功'); location.href = 'workspace.php';</script>";
+		echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
 
 	}
 

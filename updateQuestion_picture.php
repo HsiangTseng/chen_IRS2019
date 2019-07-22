@@ -18,6 +18,38 @@
     $max_number = $max_number+1;
     //get the new question's number.
 
+    //edit block
+    if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+    {
+    	$tag = $_POST['edit_tag'];
+    	$question_number = $_POST['question_number'];
+    	$max_number = $question_number;
+
+
+    	// if edit , must DELETE OLD FILE first!!!
+    	$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A1'";
+        $result = mysqli_fetch_object($db->query($sql));
+        $ext = $result->picture_ext;
+        unlink('upload/Q'.$question_number.'A1.'.$ext);
+
+    	$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A2'";
+        $result = mysqli_fetch_object($db->query($sql));
+        $ext = $result->picture_ext;
+        unlink('upload/Q'.$question_number.'A2.'.$ext);
+
+        $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A3'";
+        $result = mysqli_fetch_object($db->query($sql));
+        $ext = $result->picture_ext;
+        unlink('upload/Q'.$question_number.'A3.'.$ext);
+
+        $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A4'";
+        $result = mysqli_fetch_object($db->query($sql));
+        $ext = $result->picture_ext;
+        unlink('upload/Q'.$question_number.'A4.'.$ext);
+
+    }
+
+
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 	  $file = $_FILES['audio_file']['tmp_name'];
 	  $a1_ext = end(explode('.', $_FILES['audio_file']['name']));
@@ -120,7 +152,48 @@
 		$audio_A4 = '';
 	}
 
+	if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+	{
+		$sql2 = "UPDATE QuestionList SET CA='$CA', Content='$q1' WHERE No = '$question_number' AND QA='Q' ";
+		$db->query($sql2);
 
+		$sql2 = "UPDATE QuestionList SET picture_alt='$a1_alt', picture_ext='$a1_ext' WHERE No = '$question_number' AND QA='A1' ";
+		$db->query($sql2);	
+
+		$sql2 = "UPDATE QuestionList SET picture_alt='$a2_alt', picture_ext='$a2_ext' WHERE No = '$question_number' AND QA='A2' ";
+		$db->query($sql2);	
+
+		$sql2 = "UPDATE QuestionList SET picture_alt='$a3_alt', picture_ext='$a3_ext' WHERE No = '$question_number' AND QA='A3' ";
+		$db->query($sql2);	
+
+		$sql2 = "UPDATE QuestionList SET picture_alt='$a4_alt', picture_ext='$a4_ext' WHERE No = '$question_number' AND QA='A4' ";
+		$db->query($sql2);	
+		$db->close();
+		echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
+
+	}
+
+	else // if not edit , means insert.
+	{
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'PICTURE', '$single_or_multi', '$audio_dest')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A1', 'PICTURE', '$a1_alt' ,'$a1_ext', '$audio_A1')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A2', 'PICTURE', '$a2_alt' ,'$a2_ext', '$audio_A2')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A3', 'PICTURE', '$a3_alt' ,'$a3_ext', '$audio_A3')";
+		$db->query($sql2);
+
+		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A4', 'PICTURE', '$a4_alt' ,'$a4_ext', '$audio_A4')";
+		$db->query($sql2);
+		$db->close();
+		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+	}
+
+/*
 	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'PICTURE', '$single_or_multi', '$audio_dest')";
 	$db->query($sql2);
 
@@ -144,5 +217,6 @@
 	$db->close();
 
 	echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+*/
 ?>
 
