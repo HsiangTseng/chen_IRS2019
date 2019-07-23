@@ -33,12 +33,12 @@
 
     else if ($type=='LWORD')
     {
-        header("Location: editQuestion_Lword.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_logicWord.php?ms=$single_or_multi&number=$question_number"); 
     }
 
     else if ($type=='LPICTURE')
     {
-        header("Location: editQuestion_Lpicture.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_logicPic.php?ms=$single_or_multi&number=$question_number"); 
     }
 
     else if ($type=='VIDEO')

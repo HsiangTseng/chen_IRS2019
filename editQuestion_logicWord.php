@@ -19,9 +19,10 @@
     $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
     $result = mysqli_fetch_object($db->query($sql));
     $CA = $result->CA;
-    $CA_list = mb_split(",",$CA);
+    //$CA_list = mb_split(",",$CA);
     //echo $CA;
     //print_r($CA_list);
+
 
 
 ?>
@@ -132,151 +133,120 @@
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>文字選擇題編輯</b></h1>
+                  <h1><b>文字順序題編輯</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
 
-                		<form class="form-horizontal form-label-left" method="post" action="updateQuestion_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+
+                            <div class="form-horizontal form-label-left">
+                              <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">增減選項 : </label>
+                                <button class="btn btn-success" onclick="addInput()">+</button>
+                                <button class="btn btn-danger" onclick="subInput()">-</button>
+                              </div>
+                            </div>
+                            
+                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logicWord.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
                                 <label class="control-label">
                                     <?php
-                                    	echo $question_number;
+                                        echo $question_number;
                                     ?>
                                 </label>
                             </div>
+                            
+                          <div id="message"></div>
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <?php
-                                	if($multi_or_single == 'SINGLE')
-                                	{
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>';
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label>';
-                                	}
-                                	else if ($multi_or_single == 'MULTI')
-                                	{
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" disabled="disabled"><label>單選</label>';
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" checked="checked"><label>多選</label>';
-                                	}
-                                ?>
-                                <!--input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label-->
-                            </div>
-							
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
+                          <script type="text/javascript">
+
+
+                          var create_input_number = 0;
+
+                          function addInput(optionAnswer) {//the parameter "optionAnswer" JUST FOR EDIT SITE !!! BE CAREFUL
+                                    create_input_number++;
+                                    if(optionAnswer==null)optionAnswer="";
+                                    var div_form = document.createElement("DIV");
+                                    div_form.setAttribute("class","form-group");
+                                    name = 'div_q'+create_input_number;
+                                    div_form.setAttribute("id",name);
+                                    
+
+                                    var lb = '<label class="control-label col-md-3" for="first-name">選項' + create_input_number +' :<span class="required"></span></label>';
+                                    var md5 = '<div class="col-md-5">';
+                                    var input_q =  '<input type="text"  name="Answer[]" required="required" class="form-control col-md-7 col-xs-12" value="'+optionAnswer+'">';
+                                    div_form.innerHTML = lb+md5+input_q;
+                                    document.getElementById("message").appendChild(div_form);
+                                    }
+
+                          function subInput() {
+                                      if(create_input_number>1)
+                                        {
+                                          _name = 'div_q'+create_input_number;
+                                        document.getElementById(_name).remove();
+                                        create_input_number--;
+                                        }
+                                    }
+                          
+                          //addInput();          
+                          </script>
+
+                                
+                            <?php //EDIT SETTING BLOCK.
+                                $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
+                                $result = mysqli_fetch_object($db->query($sql));
+                                $KeyboardNumber = $result->KeyboardNo;
+
+                                $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNumber'";
+                                $result = mysqli_fetch_object($db->query($sql));
+                                $optionString = $result->wordQuestion;
+
+                                //GET Number of Answer Options.
+                                $optionNumber = substr_count($optionString,"^&")+1;
+
+                                // optionArray have each option in the array.
+                                // optionArray[0]=> I , optionArray[1]=>have,...
+                                $optionArray = explode("^&",$optionString);
+
+                                //Create options and setting each option's default text.
+                                for ($i=0; $i<$optionNumber ; $i++)
+                                {
+                                    echo    '<script type="text/javascript">',
+                                            'addInput("'.$optionArray[$i].'");',
+                                            '</script>'
+                                            ;
+                                }
+
+                            ?>
+
+                            <HR>
+                            <HR>
+
+                            <?php
+                                $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
+                                $result = mysqli_fetch_object($db->query($sql));
+                                $Content = $result->Content;
+                            ?>
+
+                            <!-- EDIT BLOCK-->
+                            <input type="hidden" name="edit_tag" value="edit"/>
+                            <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
+                            <input type="hidden" name="KeyboardNo" <?php echo 'value="'.$KeyboardNumber.'" >';?>
+
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
                                 <div class="col-md-5">
                                     <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
                                 </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_file"/>
-                                </div>
                             </div>
 
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A1'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
                             <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
+                                <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
                                 <div class="col-md-5">
-                                    <input type="text"  name="A1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A1"/>
+                                    <input type="text"  name="CA" placeholder="EX : 正確語序若為選項1-3-2-4，請填 A1,A3,A2,A4" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$CA.'"';?> >
                                 </div>
                             </div>
-
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A2'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A2" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A2"/>
-                                </div>
-                            </div>
-
-
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A3'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A3" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A3"/>
-                                </div>
-                            </div>
-
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A4'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A4" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A4"/>
-                                </div>
-                            </div>
-
-							<!-- EDIT BLOCK-->
-                            <input type="hidden" name="edit_tag" value="edit"/>
-                            <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
-
-
-
-
-
-							<?php
-								if($multi_or_single == 'SINGLE')
-								{
-									echo'<div class="form-group">';
-			                        	echo'<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A1" required '; if (strpos($CA, 'A1') !== false) {echo 'checked="true" ';} echo'><label>A選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A2" '; if (strpos($CA, 'A2') !== false) {echo 'checked="true" ';} echo'><label>B選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A3" '; if (strpos($CA, 'A3') !== false) {echo 'checked="true" ';} echo'><label>C選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A4" '; if (strpos($CA, 'A4') !== false) {echo 'checked="true" ';} echo'><label>D選項</label>';
-			                        echo'</div>';
-								}
-
-								else if ($multi_or_single == 'MULTI')
-								{
-									echo'<div class="form-group required">
-			                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1" '; if (strpos($CA, 'A1') !== false) {echo 'checked="true" ';} echo'><label>A選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2" '; if (strpos($CA, 'A2') !== false) {echo 'checked="true" ';} echo'><label>B選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3" '; if (strpos($CA, 'A3') !== false) {echo 'checked="true" ';} echo'><label>C選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4" '; if (strpos($CA, 'A4') !== false) {echo 'checked="true" ';} echo'><label>D選項</label>
-			                            </div>';
-								}
-							?>
-                            
 
                             <clearfix>
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
