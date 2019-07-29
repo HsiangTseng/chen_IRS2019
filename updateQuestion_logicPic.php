@@ -24,6 +24,39 @@
 
     $ext = array();
 
+    //edit block
+    if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+    {
+        $tag = $_POST['edit_tag'];
+        $question_number = $_POST['question_number'];
+        $KeyboardNumber = $_POST['KeyboardNo'];
+        $max_number = $question_number;
+        
+
+        $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNumber'";
+        $result = mysqli_fetch_object($db->query($sql));
+        $extString = $result->ext;
+
+        //GET Number of Answer Options.
+        $old_pictureNumber = substr_count($extString,"-")+1;
+        $extArray =  mb_split("-",$extString);
+
+        /*echo 'Q'.$max_number;
+        echo 'K'.$KeyboardNo;
+        echo 'picture_number'.$old_pictureNumber;
+        echo 'ext'.$extString;*/
+
+        
+        // if edit , must DELETE OLD FILE first!!!
+        for ($i=1;$i<=$old_pictureNumber;$i++)
+        {
+            $$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A1'";
+            $unlinkstring = 'upload/K'.$KeyboardNumber.'A'.$i.'.'.$extArray[$i-1];
+            unlink($unlinkstring);
+        }
+
+    }
+
 
     for ($i=1; $i<=$number ; $i++ )
     {
@@ -44,14 +77,37 @@
     {
     	$ext_string = $ext_string.'-'.$ext[$i];
     }
-    $sql2 = "INSERT INTO Keyboard (KeyboardNo,type, ext) VALUES ('$KeyboardNumber', 'Logic', '$ext_string')";
-	$db->query($sql2);
 
-	$sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LPICTURE', 'MULTI', '$KeyboardNumber')";
-	$db->query($sqlQuestion);
-	$db->close();
+    //if edit
+    if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+    {
 
-	echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+        $sql = "UPDATE Keyboard SET ext='$ext_string' WHERE KeyboardNo = '$KeyboardNumber'";
+        $db->query($sql);
+
+        $sqlQuestion = "UPDATE QuestionList SET CA = '$CA', Content = '$Q1' WHERE No= '$max_number'";
+        $db->query($sqlQuestion);
+
+        $db->close();
+
+        echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
+
+    }
+
+    else
+    {
+        $sql2 = "INSERT INTO Keyboard (KeyboardNo,type, ext) VALUES ('$KeyboardNumber', 'Logic', '$ext_string')";
+        $db->query($sql2);
+
+        $sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LPICTURE', 'MULTI', '$KeyboardNumber')";
+        $db->query($sqlQuestion);
+        $db->close();
+
+        echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
+    }
+
+
+    
 
 	
 ?>

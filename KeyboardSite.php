@@ -152,7 +152,7 @@ else if ($_SESSION['type']!='T')
                                             $result = mysqli_fetch_object($db->query($sql));
                                             $KeyboardNum = $result->KeyboardNumber;
                                             
-                                            echo $KeyboardNum;
+                                            //echo $KeyboardNum;
                                             $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
                                             $_KeyboardNo = array();
                                             $_KeyboardName = array();
@@ -174,6 +174,7 @@ else if ($_SESSION['type']!='T')
                                                 echo "\"";
                                                 echo $_KeyboardNo[$i];
                                                 echo "\"";
+                                                if($_KeyboardNo[$i]==$oldKeyboard) echo " selected ";
                                                 echo ">";
                                                 echo $_KeyboardName[$i];
                                                 echo "</option>";

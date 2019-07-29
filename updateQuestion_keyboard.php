@@ -14,14 +14,37 @@
     $CA = $_POST['answer'];
     $CA = implode (",", $CA);
 
+    //edit block
+    if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+    {
+    	$tag = $_POST['edit_tag'];
+    	$question_number = $_POST['question_number'];
+    	$max_number = $question_number;
+
+    }
+
+    
+    // if edit
+	if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
+	{
+		$sql = "UPDATE QuestionList SET CA = '$CA', Content='$q1', KeyboardNo='$keyboardNo' WHERE No = '$max_number' AND QA = 'Q'";
+		$db->query($sql);
+		$db->close();
+
+		echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
+	}
+
+	else // if not edit , means insert.
+	{
+	  	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$q1', 'KEYBOARD', 'MULTI', '$keyboardNo')";
+		$db->query($sql2);
 
 
-	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$q1', 'KEYBOARD', 'MULTI', '$keyboardNo')";
-	$db->query($sql2);
+		$db->close();
+
+		echo "<script>alert('出題成功'); location.href = 'KeyboardSite.php';</script>";	
+	}
 
 
-	$db->close();
-
-	echo "<script>alert('出題成功'); location.href = 'KeyboardSite.php';</script>";
 ?>
 
