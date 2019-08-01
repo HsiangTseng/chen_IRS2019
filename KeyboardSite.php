@@ -174,7 +174,7 @@ else if ($_SESSION['type']!='T')
                                                 echo "\"";
                                                 echo $_KeyboardNo[$i];
                                                 echo "\"";
-                                                if($_KeyboardNo[$i]==$oldKeyboard) echo " selected ";
+                                                //if($_KeyboardNo[$i]==$oldKeyboard) echo " selected ";
                                                 echo ">";
                                                 echo $_KeyboardName[$i];
                                                 echo "</option>";
