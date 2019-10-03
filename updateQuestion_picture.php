@@ -8,6 +8,7 @@
 	$a2_alt = $_POST['A2_alt'];
 	$a3_alt = $_POST['A3_alt'];
 	$a4_alt = $_POST['A4_alt'];
+	$q1_alt = $_POST['Q1_alt'];
 	$CA = $_POST['answer'];
 	$CA = implode (",", $CA);
 	$single_or_multi = $_POST['single_or_multi'];
@@ -50,6 +51,8 @@
     }
 
 
+	
+
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 	  $file = $_FILES['audio_file']['tmp_name'];
 	  $a1_ext = end(explode('.', $_FILES['audio_file']['name']));
@@ -58,6 +61,17 @@
 	  }
 	else {
 		$audio_dest = '';
+	}
+
+
+	//Q1 PICTURE
+    if ($_FILES['Q1_file']['error'] === UPLOAD_ERR_OK){
+	  $file = $_FILES['Q1_file']['tmp_name'];
+	  $q1_ext = end(explode('.', $_FILES['Q1_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'Q1.'.$q1_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
 	}
 
 	if ($_FILES['A1_file']['error'] === UPLOAD_ERR_OK){
@@ -175,7 +189,12 @@
 
 	else // if not edit , means insert.
 	{
-		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'PICTURE', '$single_or_multi', '$audio_dest')";
+		if(empty($q1_ext)||is_null($q1_ext))
+		{
+			$q1_ext = '';//if no image, init the q1_ext
+		}
+
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, picture_alt, picture_ext, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', '$q1_alt', '$q1_ext', 'PICTURE', '$single_or_multi', '$audio_dest')";
 		$db->query($sql2);
 
 		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A1', 'PICTURE', '$a1_alt' ,'$a1_ext', '$audio_A1')";
@@ -190,6 +209,8 @@
 		$sql2 = "INSERT INTO QuestionList (No, QA,  type, picture_alt, picture_ext, audio) VALUES ('$max_number', 'A4', 'PICTURE', '$a4_alt' ,'$a4_ext', '$audio_A4')";
 		$db->query($sql2);
 		$db->close();
+
+		//echo $max_number.$a1_ext.$a1_alt;
 		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
 	}
 

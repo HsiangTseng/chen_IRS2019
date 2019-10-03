@@ -23,7 +23,7 @@ if($pid != null && $pw != null && $result->id == $pid && $result->password == $p
 
         if($type == 'T')
         {
-        	header ('location: ExamList.php');
+        	header ('location: LandingPage.php');
         }
         if($type == 'S')
         {

@@ -10,6 +10,12 @@
 	$a4 = $_POST['A4'];
 	$CA = $_POST['answer'];
     $CA = implode (",", $CA);
+    $q1_alt = $_POST['Q1_alt'];
+    //echo $q1_alt;
+    if(is_null($q1_alt) || empty($q1_alt))
+    {
+    	$q1_alt='';
+    }
     $single_or_multi = $_POST['single_or_multi'];
 
 	$sql = "SELECT MAX(No) AS max FROM QuestionList";
@@ -26,6 +32,17 @@
     	$question_number = $_POST['question_number'];
     	$max_number = $question_number;
     }
+
+
+    //Q1 PICTURE
+    if ($_FILES['Q1_file']['error'] === UPLOAD_ERR_OK){
+	  $file = $_FILES['Q1_file']['tmp_name'];
+	  $q1_ext = end(explode('.', $_FILES['Q1_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'Q1.'.$q1_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
+	}
     
 
 
@@ -120,8 +137,12 @@
 
 	else // if not edit , means insert.
 	{
-		echo $max_number;
-		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'WORD', '$single_or_multi', '$audio_dest')";
+		if(empty($q1_ext)||is_null($q1_ext))
+		{
+			$q1_ext = '';//if no image, init the q1_ext
+		}
+		//echo $max_number;
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, picture_alt, picture_ext, type, single_or_multi, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', '$q1_alt', '$q1_ext', 'WORD', '$single_or_multi', '$audio_dest')";
 		$db->query($sql2);
 
 		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio) VALUES ('$max_number', 'A1', 'WORD', '$a1', '$audio_A1')";

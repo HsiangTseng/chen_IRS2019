@@ -242,8 +242,23 @@ if($_SESSION['username'] == null)
                                         while($result = mysqli_fetch_object($stmt))
                                         {
                                           $q_type=$result->type;
+                                          $picture_ext = $result->picture_ext;
                                           echo '<p><b>題號: '.$question_number.'</b></p>';
                                           echo '<p><b>'.$result->Content.'</b></p>';
+                                          if(!(empty($picture_ext)||is_null($picture_ext)))//if have picture in the question
+                                          {
+                                            if(strpos($picture_ext,'upload') === false)
+                                            {
+                                              echo '<div class="col-lg-6 col-md-6">';
+                                              echo '<p></p>';
+                                              echo '<img src="upload/Q';
+                                              echo $q_list[$exam_index];
+                                              echo 'Q1.';
+                                              echo $result->picture_ext;
+                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
+                                              echo '</div>';
+                                            }
+                                          }
                                           if ($result->type == 'VIDEO')
                                           {
                                             echo '<div style="text-align: center;">';

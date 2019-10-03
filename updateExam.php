@@ -19,6 +19,7 @@
 	$db->query($sql2);
 
 	$db->close();
+	//echo $max_number.$exam_title;
     header ('location: ExamList.php');
     exit;
 

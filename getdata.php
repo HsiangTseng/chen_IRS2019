@@ -72,9 +72,9 @@
 				$answer_index = $i;
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
-				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
+				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 				echo "<label class='square-button rwdtxt' for='A".$answer_index."'>";
-				echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+				echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 				echo "</label>";
 				echo "</div>";
 			}						
@@ -99,7 +99,7 @@
 						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' >";
@@ -116,12 +116,12 @@
 						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 						if($video_type != NULL){
 							echo "<video controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$video_type."' type='video/mp4'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$video_type."' type='video/mp4'>";
 							echo "</video>";
 						}
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";					
@@ -137,12 +137,12 @@
 						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
-								echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
+								echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
 							echo "</label>";
 						echo "</div>";
 					}
@@ -157,7 +157,7 @@
 						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
@@ -173,12 +173,12 @@
 						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 						if($video_type != NULL){
 							echo "<video controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$video_type."' type='video/mp4'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$video_type."' type='video/mp4'>";
 							echo "</video>";
 						}
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";					
@@ -195,12 +195,12 @@
 
 						if($result->audio != NULL){
 							echo "<audio controls>";
-								echo "<source src='http://10.16.1.13/chen_IRS/".$result->audio."' type='audio/mpeg'>";
+								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
 							echo "</audio>";
 						}
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
-								echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
+								echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
 							echo "</label>";
 						echo "</div>";
 					}
@@ -222,7 +222,7 @@
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 					echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 					echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
-						echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+						echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 					echo "</label>";
 					echo "</div>";
 					
@@ -236,7 +236,7 @@
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 					echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 					echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
-						echo "<img class='small-img' src='http://10.16.1.13/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+						echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 					echo "</label>";
 					echo "</div>";
 				}

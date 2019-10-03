@@ -8,6 +8,10 @@
 	$a2 = $_POST['A2'];
 	$a3 = $_POST['A3'];
 	$a4 = $_POST['A4'];
+	$a1_alt = $_POST['a1_alt'];
+	$a2_alt = $_POST['a2_alt'];
+	$a3_alt = $_POST['a3_alt'];
+	$a4_alt = $_POST['a4_alt'];
 	$CA = $_POST['answer'];
     $CA = implode (",", $CA);
     $single_or_multi = $_POST['single_or_multi'];
@@ -42,14 +46,53 @@
 
 	  $file = $_FILES['video_file']['tmp_name'];
 
-	  $a1_ext = end(explode('.', $_FILES['video_file']['name']));
-	  $dest = 'upload/Q'.(string)$max_number.'.mp4';
+	  $video_ext = end(explode('.', $_FILES['video_file']['name']));
+	  $video_dest = 'upload/Q'.(string)$max_number.'.'.$video_ext;
 	   # 將檔案移至指定位置
-	   move_uploaded_file($file, $dest);
+	   move_uploaded_file($file, $video_dest);
 	  }
 	else {
 	  //echo '錯誤代碼：' . $_FILES['A1_file']['error'] . '<br/>';
 	}
+
+
+	if ($_FILES['a1_file']['error'] === UPLOAD_ERR_OK){
+	  $file = $_FILES['a1_file']['tmp_name'];
+	  $a1_ext = end(explode('.', $_FILES['a1_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'A1.'.$a1_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
+	}
+
+	if ($_FILES['a2_file']['error'] === UPLOAD_ERR_OK){
+	  $file = $_FILES['a2_file']['tmp_name'];
+	  $a2_ext = end(explode('.', $_FILES['a2_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'A2.'.$a2_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
+	}
+
+	if ($_FILES['a3_file']['error'] === UPLOAD_ERR_OK){
+	  $file = $_FILES['a3_file']['tmp_name'];
+	  $a3_ext = end(explode('.', $_FILES['a3_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'A3.'.$a3_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
+	}
+
+	if ($_FILES['a4_file']['error'] === UPLOAD_ERR_OK){
+
+	  $file = $_FILES['a4_file']['tmp_name'];
+	  $a4_ext = end(explode('.', $_FILES['a4_file']['name']));
+	  $dest = 'upload/Q'.(string)$max_number.'A4.'.$a4_ext;
+	   move_uploaded_file($file, $dest);
+	  }
+	else {
+	}
+
 
 
 	// if edit
@@ -75,25 +118,26 @@
 
 	else //insert
 	{
-		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, picture_ext) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$dest')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, picture_ext) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$video_dest')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content) VALUES ('$max_number', 'A1', 'VIDEO', '$a1')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A1', 'VIDEO', '$a1', '$a1_alt', '$a1_ext')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content) VALUES ('$max_number', 'A2', 'VIDEO', '$a2')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A2', 'VIDEO', '$a2', '$a2_alt', '$a2_ext')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content) VALUES ('$max_number', 'A3', 'VIDEO', '$a3')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A3', 'VIDEO', '$a3', '$a3_alt', '$a3_ext')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content) VALUES ('$max_number', 'A4', 'VIDEO', '$a4')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A4', 'VIDEO', '$a4', '$a4_alt', '$a4_ext')";
 		$db->query($sql2);
 
 		$db->close();
 
 		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";	
 	}
+	echo $a1_alt.$a1_ext.$a2_alt.$a2_ext.$a3_alt.$a3_ext.$a4_alt.$a4_ext;
 
 
 ?>
