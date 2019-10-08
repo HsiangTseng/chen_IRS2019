@@ -249,7 +249,7 @@ if($_SESSION['username'] == null)
                                           {
                                             if(strpos($picture_ext,'upload') === false)
                                             {
-                                              echo '<div class="col-lg-6 col-md-6">';
+                                              echo '<div class="col-lg-4 col-md-4">';
                                               echo '<p></p>';
                                               echo '<img src="upload/Q';
                                               echo $q_list[$exam_index];

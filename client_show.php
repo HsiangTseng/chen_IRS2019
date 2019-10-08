@@ -65,7 +65,6 @@
       html, body {
         height: 100%;
 	background-color:rgba(255,255,255,0.4);
-	font-size:40px;
       }
       .test {
         text-align:center;
@@ -84,6 +83,29 @@
 					font-size: 30px;
 				}
 			}
+	.rwdonlytxt {
+        	font-size: 60px;
+        }
+  	@media (min-width: 400px) and (max-width: 900px) {
+	       .rwdonlytxt {
+  		      font-size: 80px;
+              	}
+        }
+        @media (min-width: 900px) and (max-width: 1000px) {
+               .rwdonlytxt {
+	               font-size: 100px;
+               }
+        }
+	@media (min-width: 1000px) {
+               .rwdonlytxt {
+                       font-size: 120px;
+               }
+        }
+
+
+
+
+
 	  
 	  .div25{
 		height:25%;
@@ -154,13 +176,21 @@
 
 	
 	.small-img {
-	max-width:90%;
-        min-height:90%;
-	max-height:100%;
+	max-width:85%;
+        min-height:80%;
+	max-height:85%;
         position: absolute;
         display:block; 
         margin:auto;
-        top: 50%;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+	.show-text{
+        position: absolute;
+        display:block; 
+        margin:auto;
+        top: 95%;
         left: 50%;
         transform: translate(-50%,-50%);
       }

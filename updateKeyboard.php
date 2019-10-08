@@ -84,6 +84,59 @@
 	}
 
 
+		//---------WMF Covert to JPG--------------
+	include("convert_wmf.php");
+	if($a1_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A1';
+		convert_wmf($name);
+		$a1_ext="jpg";
+	}
+	if($a2_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A2';
+		convert_wmf($name);
+		$a2_ext="jpg";
+	}
+	if($a3_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A3';
+		convert_wmf($name);
+		$a3_ext="jpg";
+	}
+	if($a4_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A4';
+		convert_wmf($name);
+		$a4_ext="jpg";
+	}
+	if($a5_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A5';
+		convert_wmf($name);
+		$a5_ext="jpg";
+	}
+	if($a6_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A6';
+		convert_wmf($name);
+		$a6_ext="jpg";
+	}
+	if($a7_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A7';
+		convert_wmf($name);
+		$a7_ext="jpg";
+	}
+	if($a8_ext=="wmf")
+	{
+		$name = 'K'.(string)$max_number.'A8';
+		convert_wmf($name);
+		$a8_ext="jpg";
+	}
+
+	//---------WMF Covert to JPG--------------
+
 	$ext = $a1_ext.'-'.$a2_ext.'-'.$a3_ext.'-'.$a4_ext.'-'.$a5_ext.'-'.$a6_ext.'-'.$a7_ext.'-'.$a8_ext;
 
 

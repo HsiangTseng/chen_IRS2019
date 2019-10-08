@@ -2,7 +2,8 @@
 
 <?php
 	include("connects.php");
-	
+    include("convert_wmf.php");
+
 
 
     $Q1 = $_POST['Q1'];
@@ -58,6 +59,7 @@
     }
 
 
+
     for ($i=1; $i<=$number ; $i++ )
     {
     	$name = 'A'.$i.'_file';
@@ -70,6 +72,15 @@
 		  }
 		else {
 		}
+            
+        //---------WMF Covert to JPG--------------
+        if($ext[$i]=="wmf")
+        {
+            $name = 'K'.(string)$KeyboardNumber.$n;
+            convert_wmf($name);
+            $ext[$i]="jpg";
+        }
+        //---------WMF Covert to JPG--------------
     }
 
     $ext_string = $ext[1];

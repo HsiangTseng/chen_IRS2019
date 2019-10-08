@@ -19,7 +19,6 @@
 	$q_list = array();
 	$temp_string = $result->question_list;
 	$q_list = explode(",",$temp_string);
-
 	
 	//取得此題的答案數量
 	$sql_number_quiz = "select count(QA) AS Count from QuestionList where No like '".$q_list[$sql_number-1]."'";
@@ -53,29 +52,30 @@
 		$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 		$result = mysqli_fetch_object($db->query($sql_catch_exam));
 		
+		
 		if(strpos($quiz_type,'WORD')!== false){
 			$keyboard = $result->wordQuestion;			
-			$Arr = explode("^&",$keyboard);
-			for( $i = 0 ; $i < count($Arr) ; $i++){
+			$Arr_text = explode("^&",$keyboard);
+			for( $i = 0 ; $i < count($Arr_text) ; $i++){
 				$answer_index = $i;
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
-				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='".$Arr[$i]."' onclick='show_order(this.value,this.id,this.placeholder)'>";
-				echo "<label style='word-wrap:break-word;' class='square-button rwdtxt' for='A".$answer_index."'>".$Arr[$i]."</label>";
+					echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='".$Arr_text[$i]."' onclick='show_order(this.value,this.id,this.placeholder)'>";
+						echo "<label style='word-wrap:break-word;' class='square-button rwdtxt' for='A".$answer_index."'>".$Arr_text[$i]."</label>";
 				echo "</div>";
 			}
 		}
 		else{
 			$keyboard = $result->ext;			
-			$Arr = explode("-",$keyboard);
-			for( $i = 0 ; $i < count($Arr) ; $i++){
+			$Arr_img = explode("-",$keyboard);
+			for( $i = 0 ; $i < count($Arr_img) ; $i++){
 				$answer_index = $i;
 				$answer_index+=1;			
 				echo "<div class='col-md-2 col-sm-2 col-xs-2 div25'>";
-				echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
-				echo "<label class='square-button rwdtxt' for='A".$answer_index."'>";
-				echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
-				echo "</label>";
+					echo "<input type='checkbox' id='A".$answer_index."' name='value[]' value='A".$answer_index."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_img[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
+						echo "<label class='square-button rwdtxt' for='A".$answer_index."'>";
+							echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr_img[$i]."'>";
+						echo "</label>";
 				echo "</div>";
 			}						
 		}
@@ -91,122 +91,83 @@
 		if($number_quiz == 5){
 			//單選題						
 			if($exam_type == 'SINGLE'){
-				//文字題
 				for( $i = 1 ; $i <= 4 ; $i++){
-					if(strpos($quiz_type,'WORD')!== false){
-						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_word));
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
-						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' >";
-								echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</label>";
-						echo "</div>";
+					$sql_data = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
+					$result = mysqli_fetch_object($db->query($sql_data));
+					echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
+					//聲音
+					if(!empty($result->audio)&&!is_null($result->audio)){
+						echo "<audio controls>";
+							echo "<source src='upload/'".$result->audio."' type='audio/mpeg'>";
+						echo "</audio>";
 					}
-					//影音題
-					elseif(strpos($quiz_type,'VIDEO')!== false){
-						$sql_video = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_video));
-						$video_type = $result->picture_ext;	
-						$video_alt = $result->picture_alt;
-						
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
+					//圖片
+					if(!empty($result->picture_ext)&&!is_null($result->picture_ext)){
+						//有圖有文字
+						if(!empty($result->Content)&&!is_null($result->Content)){
+							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
+								echo "<label for='A".$i."' class='square-button rwdtxt'>";
+									echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
+									echo "<p style='word-wrap:break-word;' class='show-text rwdtxt'>".$result->Content."</p>";
+								echo "</label>";
 						}
-						if($video_type != NULL){
-							echo "<video controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$video_type."' type='video/mp4'>";
-							echo "</video>";
-						}
-							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";					
-								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</label>";
-						echo "</div>";
-					}
-					//圖片題
-					else{				
-						$sql_picture = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_picture));
-						$picture_type = $result->picture_ext; //抓圖片型態		
-						$picture_alt = $result->picture_alt; //抓圖片alt	
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
-						}
+						//有圖沒文字
+						else{
 							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
-								echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
+								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
 							echo "</label>";
-						echo "</div>";
+						}
+					}	
+					//文字
+					elseif(empty($result->picture_ext)||is_null($result->picture_ext)){
+						echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' >";
+							echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$result->Content."</label>";
 					}
+					echo "</div>";
 				}
 			}	
 			//多選題		
 			else{
 				for( $i = 1 ; $i <= 4 ; $i++){
-					if(strpos($quiz_type,'WORD')!== false){
-						$sql_word = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_word));
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
-						}
+					$sql_data = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
+					$result = mysqli_fetch_object($db->query($sql_data));
+					echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
+					//聲音
+					if(!empty($result->audio)&&!is_null($result->audio)){
+						echo "<audio controls>";
+							echo "<source src='upload/'".$result->audio."' type='audio/mpeg'>";
+						echo "</audio>";
+					}
+					//圖片
+					if(!empty($result->picture_ext)&&!is_null($result->picture_ext)){
+						//有圖有文字
+						if(!empty($result->Content)&&!is_null($result->Content)){
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
-								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</label>";
-						echo "</div>";
-					}
-					//影音題
-					elseif(strpos($quiz_type,'VIDEO')!== false){
-						$sql_video = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_video));
-						$video_type = $result->picture_ext; //抓圖片型態		
-						$video_alt = $result->picture_alt; //抓圖片alt
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
+								echo "<label for='A".$i."' class='square-button rwdtxt'>";
+									echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
+									echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</p>";
+								echo "</label>";
 						}
-						if($video_type != NULL){
-							echo "<video controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$video_type."' type='video/mp4'>";
-							echo "</video>";
-						}
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";					
-								echo "<label for='A".$i."' style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</label>";
-						echo "</div>";
-					}
-					//圖片題
-					else{				
-						$sql_picture = "select * FROM QuestionList WHERE No like '".$q_list[$sql_number-1]."' AND QA like 'A".$i."'";
-						$result = mysqli_fetch_object($db->query($sql_picture));
-						$picture_type = $result->picture_ext; //抓圖片型態		
-						$picture_alt = $result->picture_alt; //抓圖片alt	
-						echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
-
-						if($result->audio != NULL){
-							echo "<audio controls>";
-								echo "<source src='http://120.113.173.180/chen_IRS/".$result->audio."' type='audio/mpeg'>";
-							echo "</audio>";
-						}
+						//有圖沒文字
+						else{
 							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
-								echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/Q".$q_list[$sql_number-1]."A".$i.".".$picture_type."' alt='".$picture_alt."'>";
+								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
 							echo "</label>";
-						echo "</div>";
+						}
+					}	
+					//沒圖片有文字
+					elseif(empty($result->picture_ext)||is_null($result->picture_ext)){
+						echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."' >";
+							echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$result->Content."</label>";
 					}
+					echo "</div>";
 				}
 			}			
 		}
+		
+		
 		//keyboard模式
 		else{
 			//拿ext字串
@@ -214,16 +175,36 @@
 			$result = mysqli_fetch_object($db->query($sql_catch_exam));
 			$keyboard = $result->ext;			
 			$Arr = explode("-",$keyboard);
+			//wordQuestion字串
+			$keyboard = $result->wordQuestion;			
+			$Arr_text = explode("^&",$keyboard);
 			//單選題
 			if($exam_type == 'SINGLE'){						
 				for( $i = 0 ; $i < count($Arr) ; $i++){
 					$answer_index = $i;
 					$answer_index+=1;
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
-					echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
-					echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
-						echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
-					echo "</label>";
+						echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+							//有圖片
+							if(!empty($Arr[$i])&&!is_null($Arr[$i])){	
+								//有文字
+								if(!empty($Arr_text[$i])&&!is_null($Arr_text[$i])){		
+									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+										echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+									echo "</label>";
+								}
+								//無文字
+								else{
+									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+									echo "</label>";
+								}
+							}
+							//單純文字
+							else{
+								echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+							}
 					echo "</div>";
 					
 				}
@@ -234,10 +215,27 @@
 					$answer_index = $i;
 					$answer_index+=1;
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
-					echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
-					echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
-						echo "<img class='small-img' src='http://120.113.173.180/chen_IRS/upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
-					echo "</label>";
+						echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+							//有圖片
+							if(!empty($Arr[$i])&&!is_null($Arr[$i])){
+								//有文字
+								if(!empty($Arr_text[$i])&&!is_null($Arr_text[$i])){		
+									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+										echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+									echo "</label>";
+								}
+								//無文字
+								else{
+									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+									echo "</label>";
+								}
+							}
+							//單純文字
+							else{
+								echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+							}
 					echo "</div>";
 				}
 			}

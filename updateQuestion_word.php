@@ -43,6 +43,15 @@
 	  }
 	else {
 	}
+		//---------WMF Covert to JPG--------------
+	include("convert_wmf.php");
+	if($q1_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'Q1';
+		convert_wmf($name);
+		$q1_ext="jpg";
+	}
+	//---------WMF Covert to JPG--------------
     
 
 

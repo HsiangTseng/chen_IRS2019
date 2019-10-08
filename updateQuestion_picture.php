@@ -111,6 +111,41 @@
 	else {
 	}
 
+	//---------WMF Covert to JPG--------------
+	include("convert_wmf.php");
+	if($q1_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'Q1';
+		convert_wmf($name);
+		$q1_ext="jpg";
+	}
+	if($a1_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A1';
+		convert_wmf($name);
+		$a1_ext="jpg";
+	}
+	if($a2_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A2';
+		convert_wmf($name);
+		$a2_ext="jpg";
+	}
+	if($a3_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A3';
+		convert_wmf($name);
+		$a3_ext="jpg";
+	}
+	if($a4_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A4';
+		convert_wmf($name);
+		$a4_ext="jpg";
+	}
+
+	//---------WMF Covert to JPG--------------
+
 
 
 	// AUDIO

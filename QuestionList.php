@@ -139,11 +139,17 @@ if($_SESSION['username'] == null)
                     {
                       $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
                       $result2 = mysqli_fetch_object($db->query($sql2));
-                      $content[$a] = $result2->Content;
-                      $type[$a] = $result2->type;
-                      $content_to_json=json_encode((array)$content);
-                      $type_to_json=json_encode((array)$type);
-
+                      if(!empty($result2->Content))
+                      {
+                        if(!is_null($result2->Content))
+                        {
+                          $content[$a] = $result2->Content;
+                          $type[$a] = $result2->type;
+                          $content_to_json=json_encode((array)$content);
+                          $type_to_json=json_encode((array)$type);
+                        }
+                      }
+                      
                     }
                   ?>
                   <tbody>
@@ -256,6 +262,7 @@ if($_SESSION['username'] == null)
                 $type_to_json=json_encode((array)$type);
 
               }
+              
             ?>
 
             <script type="text/javascript" class="init">
