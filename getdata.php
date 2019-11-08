@@ -173,11 +173,14 @@
 			//拿ext字串
 			$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 			$result = mysqli_fetch_object($db->query($sql_catch_exam));
-			$keyboard = $result->ext;			
+			
+			$keyboard = $result->ext;
 			$Arr = explode("-",$keyboard);
+			
 			//wordQuestion字串
-			$keyboard = $result->wordQuestion;			
+			$keyboard = $result->wordQuestion;
 			$Arr_text = explode("^&",$keyboard);
+			
 			//單選題
 			if($exam_type == 'SINGLE'){						
 				for( $i = 0 ; $i < count($Arr) ; $i++){

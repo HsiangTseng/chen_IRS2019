@@ -60,9 +60,99 @@
 		<!-- Custom Theme Style -->
 		<link href="../build/css/custom.min.css" rel="stylesheet">						
 	</head>
-	<body class="nav-md" style="height:100%">
-		<h1>等待中</h1>
-	<div>	
+	<body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"> <span>AAC使用者語言測驗</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+            <br />
+
+
+
+          </div>
+        </div>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3></h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                  </div>
+                  <div class="x_content">
+                      <h1>等待進入考試中,請稍後</h1>
+			            <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
+	                        <div class="well profile_view">
+	                          <div class="col-sm-12">
+	                            <h4 class="brief">個人資料</h4>
+	                            <div class="left col-xs-7">
+	                              <h1><strong>王小明</strong></h1>
+	                              	<p><strong>學校: </strong> 嘉大附小</p>
+	                                <p><i class="fa fa-building"></i><strong>學號： </strong>1012345</p>
+	                                <p><i class="fa fa-building"></i><strong>班級： </strong>二年甲班</p>
+	                            </div>
+	                            <div class="right col-xs-5 text-center">
+	                              <img src="images/user.png" alt="" class="img-circle img-responsive">
+	                            </div>
+	                          </div>
+	                          <div class="col-xs-12 bottom text-center">
+	                            <div class="col-xs-12 col-sm-6 emphasis">
+	                              <p class="ratings">
+	                                <a></a>
+	                              </p>
+	                            </div>
+	                            
+	                          </div>
+	                        </div>
+	                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+  </body>
+
 		<?
 			
 			include("connects.php");

@@ -61,7 +61,7 @@ else if ($_SESSION['type']!='T')
         <!--<h1><a href="#hero">Regna</a></h1>-->
       </div>
 
-      <nav id="nav-menu-container">
+      <!--nav id="nav-menu-container">
         <ul class="nav-menu">
           <li class="menu-active"><a href="#hero">Home</a></li>
           <li><a href="#about">About Us</a></li>
@@ -87,7 +87,7 @@ else if ($_SESSION['type']!='T')
           </li>
           <li><a href="#contact">Contact Us</a></li>
         </ul>
-      </nav><!-- #nav-menu-container -->
+      </nav--><!-- #nav-menu-container -->
     </div>
   </header><!-- #header -->
 
@@ -97,7 +97,7 @@ else if ($_SESSION['type']!='T')
   <section id="hero">
     <div class="hero-container">
       <h1>AAC使用者語言測驗</h1>
-      <h2>副標題</h2>
+      <!--h2>副標題</h2-->
       <a href="ExamList.php" class="btn-get-started">進入網頁</a>
     </div>
   </section><!-- #hero -->

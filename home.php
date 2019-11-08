@@ -243,8 +243,8 @@ if($_SESSION['username'] == null)
                                         {
                                           $q_type=$result->type;
                                           $picture_ext = $result->picture_ext;
-                                          echo '<p><b>題號: '.$question_number.'</b></p>';
-                                          echo '<p><b>'.$result->Content.'</b></p>';
+                                          echo '<p style="font-size:60px;"><b>題號: '.$question_number.'</b></p>';
+                                          echo '<p style="font-size:60px;"><b>'.$result->Content.'</b></p>';
                                           if(!(empty($picture_ext)||is_null($picture_ext)))//if have picture in the question
                                           {
                                             if(strpos($picture_ext,'upload') === false)
