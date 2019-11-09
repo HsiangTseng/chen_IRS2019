@@ -117,7 +117,7 @@ else if ($_SESSION['type']!='T')
             <!-- PAGE TITLE -->
             <div class="page-title">
               <div class="title_left">
-                <h3>Form Elements</h3>
+                <h3>學生註冊頁</h3>
               </div>
             </div>
             <div class="clearfix"></div>
@@ -129,24 +129,86 @@ else if ($_SESSION['type']!='T')
               <div class="col-md-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Form Design <small>different form elements</small></h2>
+                    <h2>學生註冊頁 <small>敬請完整填寫各項資料，皆為必填。</small></h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
+
+                    <form class="form-horizontal form-label-left input_mask" method="post" action="updateSignUpStudent.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
 
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">學生姓名 :</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">學生帳號 :</label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input type="text" class="form-control" placeholder="請輸入學生姓名" required="required">
+                          <input type="text" class="form-control" name="account" placeholder="請輸入欲註冊之帳號" required="required">
                         </div>
                       </div>
 
                       <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">學生密碼 :</label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input type="password" id="pwd" class="form-control" name="password" onkeyup="check_same_pwd()" placeholder="請輸入密碼" required="required">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">確認密碼 :</label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input type="password" id="check_pwd" class="form-control" onkeyup="check_same_pwd()" placeholder="請再輸入一次密碼" required="required">
+                        </div>
+                        <span id = "confirm-msg"></span>
+                      </div>
+
+                      <script type="text/javascript">
+                          function check_same_pwd()
+                          {
+                            var password = document.getElementById("pwd");
+                            var check_password = document.getElementById("check_pwd");
+
+                            var message = document.getElementById("confirm-msg");
+
+                            var good_color = "#39ac39";
+                            var bad_color = "#ff6666";
+                            var btn = document.getElementById("btn_submit");
+                            if(password.value == check_password.value)
+                            {
+                                if(password.value.length>0)
+                                {
+                                    check_password.style.backgroundColor = good_color;
+                                    message.style.color = good_color;
+                                    message.innerHTML = "密碼驗證成功";
+                                    btn.disabled = false;
+                                }
+                                                                
+                            }
+                            else
+                            {
+                                check_password.style.backgroundColor = bad_color;
+                                message.style.color = bad_color;
+                                message.innerHTML = "密碼驗證失敗，請確認後重新輸入。";
+
+                                btn.disabled = true;
+
+                            }
+                            
+
+                          }
+                      </script>
+
+                      <div class="ln_solid"></div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">學生姓名 :</label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input type="text" class="form-control" name="name" placeholder="請輸入學生姓名" required="required">
+                        </div>
+                      </div>
+
+
+                      <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀學校 :</label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input type="text" class="form-control" placeholder="請輸入校名" required="required">
+                          <input type="text" class="form-control" name="school" placeholder="請輸入校名" required="required">
                         </div>
                         <div class="col-md-1 col-sm-1 col-xs-2">
                             <label class="control-label">國小</label>
@@ -156,7 +218,7 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀年級 :</label>
                         <div class="col-md-2 col-sm-2">
-                          <select id="grade" class="form-control" required>
+                          <select id="grade" name="grade" class="form-control" required>
                             <option value="1">一</option>
                             <option value="2">二</option>
                             <option value="3">三</option>
@@ -171,7 +233,7 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀班級 :</label>
                         <div class="col-md-2 col-sm-2">
-                          <input type="text" class="form-control" placeholder="請輸入班級" required="required">
+                          <input type="text" class="form-control" name="class" placeholder="請輸入班級" required="required">
                         </div>
                         <label class="control-label">班</label>
                       </div>
@@ -179,7 +241,7 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">座號 :</label>
                         <div class="col-md-2 col-sm-2">
-                          <input type="text" class="form-control" placeholder="請輸入座號" required="required">
+                          <input type="text" class="form-control" name="seatnumber" placeholder="請輸入座號" required="required">
                         </div>
                         <label class="control-label">號</label>
                       </div>
@@ -220,7 +282,7 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗日期 :</label>
                         <div class="col-md-4 col-sm-4">
-                          <input type="date" class="form-control" value="2000-01-01" required="required">
+                          <input type="date" class="form-control" name="test_time" value="2000-01-01" required="required">
                         </div>
                       </div>
 
@@ -233,7 +295,28 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">施測人員 :</label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input type="text" class="form-control" required="required">
+                          <input type="text" class="form-control" name="test_teacher" required="required">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">障礙類別 :</label>
+                        <div class="col-md-4 col-sm-4">
+                          <select id="category" name="category" class="form-control" required>
+                            <option value="0">無 (一般生)</option>
+                            <option value="1">智能障礙</option>
+                            <option value="2">視覺障礙</option>
+                            <option value="3">聽覺障礙</option>
+                            <option value="4">語言障礙</option>
+                            <option value="5">腦性麻痺 (Cerbral Palsy)</option>
+                            <option value="6">肢體障礙</option>
+                            <option value="7">身體病弱</option>
+                            <option value="8">情緒行為障礙</option>
+                            <option value="9">學習障礙</option>
+                            <option value="10">多重障礙</option>
+                            <option value="11">自閉症</option>
+                            <option value="12">發展遲緩</option>
+                          </select>
                         </div>
                       </div>
 
@@ -241,9 +324,7 @@ else if ($_SESSION['type']!='T')
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          <button type="button" class="btn btn-primary">Cancel</button>
-                           <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success">Submit</button>
+                          <button type="submit" id="btn_submit" class="btn btn-success">註冊</button>
                         </div>
                       </div>
 
