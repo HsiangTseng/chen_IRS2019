@@ -3,6 +3,11 @@
 <?php
 	include("connects.php");
 	
+	$sql = "SELECT MAX(StudentNumber) AS max FROM UserList WHERE type = 'S'";
+    $result = mysqli_fetch_object($db->query($sql));
+    $max_number = $result->max;
+    $max_number+=1;
+
 	$account = $_POST['account'];
 	$password = $_POST['password'];
 	$name = $_POST['name'];
@@ -18,12 +23,12 @@
     $category = $_POST['category'];
 
 
-    echo $account;
 
-    $sql2 = "INSERT INTO UserList (id, password, type, Name, School, Grage, Class, Seatnumber, Gender, Birth, TestTime, TestWay, TestTeacher, Category) VALUES ('$account', '$password', 'S', '$name', '$school', '$grade', '$class', '$seatnumber', '$gender', '$bday', '$test_time', '$test_type', '$test_teacher', '$category')";
 
-    $sql = "INSERT INTO `UserList`(`id`, `password`, `type`, `Name`, `School`, `Grade`, `Class`, `Seatnumber`, `Gender`, `Birth`, `TestTime`, `TestWay`, `TestTeacher`, `Category`) VALUES ('$account', '$password', 'S', '$name', '$school', '$grade', '$class', '$seatnumber', '$gender', '$bday', '$test_time', '$test_type', '$test_teacher', '$category')";
+    $sql = "INSERT INTO `UserList`(`StudentNumber`,`id`, `password`, `type`, `Name`, `School`, `Grade`, `Class`, `Seatnumber`, `Gender`, `Birth`, `TestTime`, `TestWay`, `TestTeacher`, `Category`) VALUES ('$max_number','$account', '$password', 'S', '$name', '$school', '$grade', '$class', '$seatnumber', '$gender', '$bday', '$test_time', '$test_type', '$test_teacher', '$category')";
 	$db->query($sql);
 	$db->close();
+
+	echo "<script>alert('出題成功'); location.href = 'StudentList.php';</script>";
 
 ?>
