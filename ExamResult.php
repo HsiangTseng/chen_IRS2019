@@ -16,8 +16,21 @@ else if ($_SESSION['type']!='T')
 
 <?php
   include("connects.php");
-  
-  $result_number = $_POST['result_number'];
+
+  $get_index = $_POST['result_number']-1;
+
+  $ResultNo = array();
+  $sql_b = "SELECT No FROM `ExamResult` GROUP BY UUID ORDER BY No ASC";
+  if($stmt_b = $db->query($sql_b))
+  {
+    while($result_b = mysqli_fetch_object($stmt_b))
+    {
+      array_push($ResultNo,$result_b->No);
+    }
+  }
+
+  $result_number = $ResultNo[$get_index];
+  //echo $result_number;
   $sql = "SELECT ExamNo,UUID,Answer,ExamTime FROM ExamResult WHERE No = '$result_number'";
   $result = mysqli_fetch_object($db->query($sql));
 
@@ -33,6 +46,7 @@ else if ($_SESSION['type']!='T')
   $Teacher = $result->Teacher;
 
   //echo $Teacher.'  '.$Title;
+  //echo $UID;
   $db->close();
 
 
@@ -104,7 +118,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -137,7 +151,7 @@ else if ($_SESSION['type']!='T')
         <div class="right_col" role="main">
           <div class="">
 
-            
+
             <div class="clearfix"></div>
 
             <div class="row">
@@ -192,19 +206,26 @@ else if ($_SESSION['type']!='T')
                           </td>
                         </tr-->
 
-                        <?php 
+                        <?php
                         $index = 1;
                         include("connects.php");
-                        $sql = "SELECT WhosAnswer,ExamTime FROM ExamResult WHERE UUID = '$UID'";
+                        include("CalculateScore.php");
+
+
+                        $sql = "SELECT * FROM ExamResult WHERE UUID = '$UID'";
                         if($stmt = $db->query($sql))
                             {
                               while($result = mysqli_fetch_object($stmt))
                               {
-                                //echo '<p>No： '.$result->WhosAnswer.'，Time：'.$result->ExamTime.'</p>';
+                                $whosid = $result->WhosAnswer;
+                                $sql_user = "SELECT * FROM UserList WHERE id = '$whosid'";
+                                $stmtu = $db->query($sql_user);
+                                $resultu = mysqli_fetch_object($stmtu);
+                                $whosname = $resultu->Name;
                                 echo '<tr>';
                                 echo   '<td>'.$index.'</td>';
                                 echo   '<td>';
-                                echo     '<a>'.'Name'.'</a><br />';
+                                echo     '<a>'.$whosname.'</a><br />';
                                 echo     '<small>'.$result->WhosAnswer.'</small>';
                                 echo   '</td>';
                                 echo   '<td>';
@@ -212,7 +233,9 @@ else if ($_SESSION['type']!='T')
                                 echo   '</td>';
                                 echo   '<td class="project_progress">';
                                 echo     '<div class="progress progress_sm">';
-                                $point = get_score($UID,$result->WhosAnswer);
+
+                                $point = calScore($result->No,$result->ExamNo);
+                                
                                 if($point >= 60){$state = 'bg-green';}
                                 else {$state = 'bg-red';}
                                 echo       '<div class="progress-bar '.$state.'" role="progressbar" data-transitiongoal="'.$point.'"></div>';
@@ -222,13 +245,13 @@ else if ($_SESSION['type']!='T')
                                 echo   '<td>';
                                 if ($point >=60){$button_state = ' btn-success btn-xs">及格</button>';}
                                 else {$button_state = ' btn-danger btn-xs">不及格</button>';}
-                                echo     '<button type="button" class="btn'.$button_state; 
+                                echo     '<button type="button" class="btn'.$button_state;
                                 echo   '</td>';
-                                echo   '<td>
-                                         <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                                         <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                                         <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                                       </td>';
+                                echo   '<td>';
+                                         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$result_number.'&WhosAnswer='.$whosid.'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>';
+                                         echo '<a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>';
+                                         echo '<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>';
+                                echo    '</td>';
                                 echo '</tr>';
                                 $index ++;
                               }

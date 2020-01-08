@@ -14,6 +14,13 @@ else if ($_SESSION['type']!='T')
     exit;
 }
 ?>
+
+<?php
+$ExamResultNo = $_GET['ExamResultNo'];
+$WhosAnswer = $_GET['WhosAnswer'];
+//echo $_GET['ExamResultNo'];
+//echo $_GET['WhosAnswer'];
+?>
 <html lang="en">
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -119,111 +126,109 @@ else if ($_SESSION['type']!='T')
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>學生清單</b></h1>
+                  <h1><b>測驗卷</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
 
-                <!-- Student List Table -->
+                <!-- Exam List Table -->
                 <table id="e_list" class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                      <th>姓名</th>
-                      <th>性別</th>
-                      <th>學校</th>
-                      <th>年級</th>
-                      <th>施測時間</th>
-                      <th>施測人員</th>
-                      <th>障礙類別</th>
+                      <th>題號</th>
+                      <th>題型</th>
+                      <th>題目</th>
+                      <th>正確答案</th>
+                      <th>學生答案</th>
+                      <th>作答時間(秒)</th>
                     </tr>
                   </thead>
 
 
                   <?php
                     include("connects.php");
-                    $sql = "SELECT COUNT(Name) AS max FROM UserList WHERE type = 'S'";
+
+                    //GET STUDENT ANSWER
+                    $sql = "SELECT * FROM ExamResult WHERE No=$ExamResultNo";
                     $result = mysqli_fetch_object($db->query($sql));
-                    $max_number = $result->max;
-                    $name = array();
-                    $school = array();
-                    $gender = array();
-                    $grade = array();
-                    $test_time = array();
-                    $teacher = array();
-                    $category = array();
-                    for ( $a = 1 ; $a<=$max_number ; $a++)
-                    {
-                      $sql2 = "SELECT * FROM `UserList` WHERE `type` ='S' AND `StudentNumber` = $a";
-                      $result2 = mysqli_fetch_object($db->query($sql2));
-                      $name[$a] = $result2->Name;
-                      $school[$a] = $result2->School;
-                      $gender[$a] = $result2->Gender;
-                      if($gender[$a]=='boy')$gender[$a]='男';
-                      else $gender[$a]='女';
-                      $grade[$a] = $result2->Grade;
-                      $test_time[$a] = $result2->TestTime;
-                      $teacher[$a] = $result2->TestTeacher;
-                      $category[$a] = $result2->Category;
+                    $ExamListNumber = $result->ExamNo;
+                    $student_answer = $result->Answer;
+                    $sa_array = explode('-', $student_answer);
+                    $answer_time = $result->AnswerTime;
+                    $answer_time_array = explode('-',$answer_time);
 
-                      if($category[$a]=='0'){$category[$a]='一般生';}
-                      if($category[$a]=='1'){$category[$a]='智能障礙';}
-                      if($category[$a]=='2'){$category[$a]='視覺障礙';}
-                      if($category[$a]=='3'){$category[$a]='聽覺障礙';}
-                      if($category[$a]=='4'){$category[$a]='語言障礙';}
-                      if($category[$a]=='5'){$category[$a]='腦性麻痺';}
-                      if($category[$a]=='6'){$category[$a]='肢體障礙';}
-                      if($category[$a]=='7'){$category[$a]='身體病弱';}
-                      if($category[$a]=='8'){$category[$a]='情緒行為障礙';}
-                      if($category[$a]=='9'){$category[$a]='學習障礙';}
-                      if($category[$a]=='10'){$category[$a]='多重障礙';}
-                      if($category[$a]=='11'){$category[$a]='自閉症';}
-                      if($category[$a]=='12'){$category[$a]='發展遲緩';}
+                    //GET CORRECT ANSWER AND QUESTION
+                    $sql_ca = "SELECT * FROM ExamList WHERE No = $ExamListNumber";
+                    $result_ca = mysqli_fetch_object($db->query($sql_ca));
+                    $question_list = $result_ca->question_list;
+                    $question_array = explode(",", $question_list);
 
-                      $name_to_json=json_encode((array)$name);
-                      $school_to_json=json_encode((array)$school);
-                      $gender_to_json=json_encode((array)$gender);
-                      $grade_to_json=json_encode((array)$grade);
-                      $test_time_to_json=json_encode((array)$test_time);
-                      $teacher_to_json=json_encode((array)$teacher);
-                      $category_to_json=json_encode((array)$category);
+                    $answer_string = "";
+                    $question_string = "";
+                    $type_string = "";
+                    $single_or_multi_string = "";
+                    foreach ($question_array as $value) {
+                      $sql_a = "SELECT * FROM QuestionList WHERE QA='Q' AND No = $value";
+                      $result_a = mysqli_fetch_object($db->query($sql_a));
+                      $answer_string = $answer_string.$result_a->CA.'-';
+                      $question_string = $question_string.$result_a->Content.'*-*';
+                      $type_string = $type_string.$result_a->type.'-';
+                      $single_or_multi_string = $single_or_multi_string.$result_a->single_or_multi.'-';
                     }
+                    $answer_string = substr($answer_string, 0,-1);//DELETE THE LAST '-' CHARACTER
+                    $ca_array = explode('-', $answer_string);
+
+                    $type_string = substr($type_string, 0,-1);
+                    $type_array = explode('-', $type_string);
+
+                    $single_or_multi_string = substr($single_or_multi_string, 0,-1);
+                    $single_or_multi_array = explode('-', $single_or_multi_string);
+
+                    $question_string = substr($question_string, 0,-3);
+                    $q_array = explode('*-*', $question_string);
+                    //print_r($q_array);
+
+
+                    /*
+                    variable table
+                    sa_array ==> student's answer [ARRAY]
+                    ca_array ==> correct answer [ARRAY]
+                    q_array ==> question content [ARRAY]
+                    answer_time_array ==> the answer time that student use [ARRAY]
+                    ExamListNumber ==> which exam [var]
+                    ExamResultNo ==> Sequence number in examresult [var]
+
+                    */
+
+                    $Q_TO_JSON = json_encode((array)$q_array);
+                    $SA_TO_JSON = json_encode((array)$sa_array);
+                    $CA_TO_JSON = json_encode((array)$ca_array);
+                    $ANSWERTIME_TO_JSON = json_encode((array)$answer_time_array);
+                   
                   ?>
 
                   <tbody>
                     <tr>
                       <?php
-                      echo '<td>'.$name[1].'</td>';
-                      echo '<td>'.$gender[1].'</td>';
-                      echo '<td>'.$school[1].'</td>';
-                      echo '<td>'.$grade[1].'</td>';
-                      echo '<td>'.$test_time[1].'</td>';
-                      echo '<td>'.$teacher[1].'</td>';
-                      echo '<td>'.$category[1].'</td>';
+                      echo '<td>1</td>';
+                      echo '<td>TYPE</td>';
+                      echo '<td>'.$q_array[0].'</td>';
+                      echo '<td>'.$ca_array[0].'</td>';
+                      echo '<td>'.$sa_array[0].'</td>';
+                      echo '<td>'.$answer_time_array[0].'</td>';
                       ?>
                     </tr>
 
                   </tbody>
                 </table>
-                <!-- Student List Table -->
+                <!-- Exam List Table -->
 
             </div>
             <!-- Exam -->
 
-    
-
-          
-
-
-
-
 
 
         <!-- page content################################# -->
-
-        <!-- footer content -->
-        <!--footer>
-        <!--/footer>
-        <!-- /footer content -->
 
 
       </div>
@@ -284,13 +289,12 @@ else if ($_SESSION['type']!='T')
             <script type="text/javascript" class="init">
                 $('#e_list').dataTable( {
                   "columns": [
-                    { "width": "20%" },
                     { "width": "5%" },
-                    { "width": "15%" },
-                    { "width": "5%" },
-                    { "width": "20%" },
-                    { "width": "20%" },
-                    { "width": "15%" },
+                    { "width": "10%" },
+                    { "width": "25%" },
+                    { "width": "25%" },
+                    { "width": "25%" },
+                    { "width": "10%" },
                   ]
                 } );
 
@@ -298,25 +302,21 @@ else if ($_SESSION['type']!='T')
                 (
                     function() 
                         {
-                          var namefromPHP=<? echo $name_to_json ?>;
-                          var schoolfromPHP=<? echo $school_to_json ?>;
-                          var genderfromPHP=<? echo $gender_to_json ?>;
-                          var gradefromPHP=<? echo $grade_to_json ?>;
-                          var test_timefromPHP=<? echo $test_time_to_json ?>;
-                          var teacherfromPHP=<? echo $teacher_to_json ?>;
-                          var categoryfromPHP=<? echo $category_to_json ?>;
+                          var QfromPHP=<? echo $Q_TO_JSON ?>;
+                          var CAfromPHP=<? echo $CA_TO_JSON ?>;
+                          var SAfromPHP=<? echo $SA_TO_JSON ?>;
+                          var ASTfromPHP=<? echo $ANSWERTIME_TO_JSON ?>;
                           var t = $('#e_list').DataTable();
-                          for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
+                          for (var i=1 ; i<= <?php echo count($ca_array)-1;?> ; i++)
                           {
                             t.row.add(
                             [
-                            namefromPHP[i],
-                            genderfromPHP[i],
-                            schoolfromPHP[i],
-                            gradefromPHP[i],
-                            test_timefromPHP[i],
-                            teacherfromPHP[i],
-                            categoryfromPHP[i],
+                            i,
+                            "TYPE",
+                            QfromPHP[i],
+                            CAfromPHP[i],
+                            SAfromPHP[i],
+                            ASTfromPHP[i],
                             ]).draw(false);
                           } 
                         }

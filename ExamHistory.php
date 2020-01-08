@@ -82,7 +82,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -114,7 +114,7 @@ else if ($_SESSION['type']!='T')
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Exam -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -135,12 +135,55 @@ else if ($_SESSION['type']!='T')
                     </tr>
                   </thead>
 
+                  <?php
+                    include("connects.php");
+                    $sql = "SELECT COUNT(DISTINCT UUID) AS max FROM ExamResult";
+                    $result = mysqli_fetch_object($db->query($sql));
+                    $max_number = $result->max;
+                    $ExamNo = array();
+                    $ExamTime = array();
+                    $ExamTitle = array();
+                    $Teacher = array();
+                    $ResultNo = array();
+                    $sql_b = "SELECT No FROM `ExamResult` GROUP BY UUID ORDER BY No ASC";
+                    if($stmt_b = $db->query($sql_b))
+                    {
+                      while($result_b = mysqli_fetch_object($stmt_b))
+                      {
+                        array_push($ResultNo,$result_b->No);
+                      }
+                    }
+
+                    //print_r($ResultNo);
+                    for ( $a = 1 ; $a<=$max_number ; $a++)
+                    {
+                      $b = $a-1;
+                      $sql2 = "SELECT `ExamNo`,`ExamTime` FROM `ExamResult` WHERE `No` =$ResultNo[$b]";
+                      $result2 = mysqli_fetch_object($db->query($sql2));
+                      $ExamNo[$a] = $result2->ExamNo;
+                      $ExamTime[$a] = $result2->ExamTime;
+
+
+                      $sql = "SELECT ExamTitle,Teacher,Note FROM ExamList WHERE No = '$ExamNo[$a]'";
+                      $result = mysqli_fetch_object($db->query($sql));
+                      $ExamTitle[$a] = $result->ExamTitle;
+                      $Teacher[$a] = $result->Teacher;
+
+                      $ExamTitle_to_json=json_encode((array)$ExamTitle);
+                      $ExamNo_to_json=json_encode((array)$ExamNo);
+                      $ExamTime_to_json=json_encode((array)$ExamTime);
+                      $Teacher_to_json=json_encode((array)$Teacher);
+                    }
+                  ?>
+
                   <tbody>
                     <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <?php
+                      echo '<td>1</td>';
+                      echo '<td>'.$ExamTitle[1].'</td>';
+                      echo '<td>'.$Teacher[1].'</td>';
+                      echo '<td>'.$ExamTime[1].'</td>';
+                      ?>
                     </tr>
 
                   </tbody>
@@ -163,7 +206,7 @@ else if ($_SESSION['type']!='T')
           </div>
 
 
-          
+
 
 
 
@@ -231,34 +274,7 @@ else if ($_SESSION['type']!='T')
             <script src="../build/js/custom.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
 
-            <?php
-              include("connects.php");
-              $sql = "SELECT MAX(No) AS max FROM ExamResult";
-              $result = mysqli_fetch_object($db->query($sql));
-              $max_number = $result->max;
-              $ExamNo = array();
-              $ExamTime = array();
-              $ExamTitle = array();
-              $Teacher = array();
-              for ( $a = 1 ; $a<=$max_number ; $a++)
-              {
-                $sql2 = "SELECT `ExamNo`,`ExamTime` FROM `ExamResult` WHERE `No` =$a";
-                $result2 = mysqli_fetch_object($db->query($sql2));
-                $ExamNo[$a] = $result2->ExamNo;
-                $ExamTime[$a] = $result2->ExamTime;
 
-
-                $sql = "SELECT ExamTitle,Teacher,Note FROM ExamList WHERE No = '$ExamNo[$a]'";
-                $result = mysqli_fetch_object($db->query($sql));
-                $ExamTitle[$a] = $result->ExamTitle;
-                $Teacher[$a] = $result->Teacher;
-
-                $ExamTitle_to_json=json_encode((array)$ExamTitle);
-                $ExamNo_to_json=json_encode((array)$ExamNo);
-                $ExamTime_to_json=json_encode((array)$ExamTime);
-                $Teacher_to_json=json_encode((array)$Teacher);
-              }
-            ?>
 
             <script type="text/javascript" class="init">
                 $('#e_list').dataTable( {
@@ -272,13 +288,13 @@ else if ($_SESSION['type']!='T')
 
                 $(document).ready
                 (
-                    function() 
+                    function()
                         {
                           var ExamTitlefromPHP=<? echo $ExamTitle_to_json ?>;
                           var ExamTimefromPHP=<? echo $ExamTime_to_json ?>;
                           var TeacherfromPHP=<? echo $Teacher_to_json ?>;
                           var t = $('#e_list').DataTable();
-                          for (var i=1 ; i<= <?php echo "$max_number";?> ; i++)
+                          for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
                           {
                             t.row.add(
                             [
@@ -287,7 +303,7 @@ else if ($_SESSION['type']!='T')
                             TeacherfromPHP[i],
                             ExamTimefromPHP[i],
                             ]).draw(false);
-                          } 
+                          }
                         }
 
                 );

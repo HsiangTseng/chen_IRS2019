@@ -194,15 +194,18 @@
 				//echo count($qlist);
 				$exam_num = count($qlist);
 				$Answer = '';
+				$Answertime = '';
 				for( $i = 0 ; $i < $exam_num ; $i++){
 					if($i != 0){
 						$Answer = $Answer.'-N';
+						$Answertime = $Answertime.'-N';
 					}
 					else{
 						$Answer = $Answer.'N';
+						$Answertime = $Answertime.'N';
 					}
 				}
-				$inser_sql = "insert into ExamResult (No,ExamNo,UUID,Answer,WhosAnswer,ExamTime) Values ('".$No."','".$ExamNo."','".$UUID."','".$Answer."','".$WhosAnswer."','".$date."')";
+				$inser_sql = "insert into ExamResult (No,ExamNo,UUID,Answer,WhosAnswer,ExamTime,AnswerTime) Values ('".$No."','".$ExamNo."','".$UUID."','".$Answer."','".$WhosAnswer."','".$date."','".$Answertime."')";
 				//$test_answer = $db->query($inser_sql);
 				//echo $test_answer;
 				$db->query($inser_sql);

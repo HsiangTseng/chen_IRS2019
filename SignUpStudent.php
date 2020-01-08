@@ -83,7 +83,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -126,7 +126,7 @@ else if ($_SESSION['type']!='T')
 
             <!-- SIGN UP -->
             <div class="row">
-              <div class="col-md-6 col-xs-12">
+              <div class="col-md-10 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>學生註冊頁 <small>敬請完整填寫各項資料，皆為必填。</small></h2>
@@ -179,7 +179,7 @@ else if ($_SESSION['type']!='T')
                                     message.innerHTML = "密碼驗證成功";
                                     btn.disabled = false;
                                 }
-                                                                
+
                             }
                             else
                             {
@@ -190,7 +190,7 @@ else if ($_SESSION['type']!='T')
                                 btn.disabled = true;
 
                             }
-                            
+
 
                           }
                       </script>
@@ -233,18 +233,23 @@ else if ($_SESSION['type']!='T')
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀班級 :</label>
                         <div class="col-md-2 col-sm-2">
-                          <input type="text" class="form-control" name="class" placeholder="請輸入班級" required="required">
+                          <select id="class" name="class" class="form-control" required>
+                            <option value="普通班">普通班</option>
+                            <option value="資源班">資源班</option>
+                            <option value="特教班">特教班</option>
+                          </select>
+                          <!--input type="text" class="form-control" name="class" placeholder="請輸入班級" required="required"-->
                         </div>
-                        <label class="control-label">班</label>
+                        <!--label class="control-label">班</label-->
                       </div>
 
-                      <div class="form-group">
+                      <!--div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">座號 :</label>
                         <div class="col-md-2 col-sm-2">
                           <input type="text" class="form-control" name="seatnumber" placeholder="請輸入座號" required="required">
                         </div>
                         <label class="control-label">號</label>
-                      </div>
+                      </div-->
 
                       <div class="form-group">
                         <label class="control-label col-md-3" for="first-name">性別 :<span class="required"></span></label>

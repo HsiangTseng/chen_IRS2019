@@ -2,7 +2,7 @@
 <?php 
 	session_start();
 	//new
-	//$_SESSION['answer_start_time'] = microtime(true);
+	$start_time = microtime(true);
 ?>
 
 <?php
@@ -101,11 +101,6 @@
                        font-size: 120px;
                }
         }
-
-
-
-
-
 	  
 	  .div25{
 		height:25%;
@@ -123,8 +118,6 @@
         border: 2px solid gray;
         border-radius:10px;
       }
-
-
       .test input[type=checkbox]:checked + label{									
         border: 3px solid red;
         border-radius:10px;
@@ -143,7 +136,6 @@
       .logic_graph{
 	 background-color:rgba(200,200,200,0.4);	
       }
-
       audio{
 	display:block;
         margin:0 auto;
@@ -173,7 +165,6 @@
         left: 50%;
         transform: translate(-50%,-50%);
       }
-
 	
 	.small-img {
 	max-width:85%;
@@ -200,6 +191,9 @@
 			<!-- page content################################# -->
 				<div class="x_panel test" role="main"  style="height:100%">
 					<form method="post" action="submit_answer.php" style="height:100%">
+						<?php
+							echo "<input type='hidden' id='hidden_time' name='hidden_time' value='".microtime(true)."'/>";
+						?>
 						<input type="hidden" id="hidden_value" name="hidden" value=""/>
 						<!-- Question -->																			
 						<script>
@@ -306,8 +300,6 @@
 						}
 						document.getElementById("hidden_value").value=arrvalue;
 						}
-
-
 						function pauseAll() {
         						var self = this;
 						        [].forEach.call(audios, function (i) {
@@ -317,7 +309,6 @@
 						[].forEach.call(audios, function (i) {
 						        i.addEventListener("play", pauseAll.bind(i));
 					        })
-
 					</script>	
 					
 					

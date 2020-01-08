@@ -2,7 +2,7 @@
 
 <?php
 	include("connects.php");
-	
+
 	$sql = "SELECT MAX(StudentNumber) AS max FROM UserList WHERE type = 'S'";
     $result = mysqli_fetch_object($db->query($sql));
     $max_number = $result->max;
@@ -25,7 +25,9 @@
 
 
 
-    $sql = "INSERT INTO `UserList`(`StudentNumber`,`id`, `password`, `type`, `Name`, `School`, `Grade`, `Class`, `Seatnumber`, `Gender`, `Birth`, `TestTime`, `TestWay`, `TestTeacher`, `Category`) VALUES ('$max_number','$account', '$password', 'S', '$name', '$school', '$grade', '$class', '$seatnumber', '$gender', '$bday', '$test_time', '$test_type', '$test_teacher', '$category')";
+    $sql = "INSERT INTO `UserList`(`StudentNumber`,`id`, `password`, `type`, `Name`, `School`, `Grade`, `Class`, `Gender`, `Birth`, `TestTime`, `TestWay`,
+			 `TestTeacher`, `Category`) VALUES ('$max_number','$account', '$password', 'S', '$name', '$school', '$grade', '$class', '$gender', '$bday', '$test_time', '$test_type',
+				  '$test_teacher', '$category')";
 	$db->query($sql);
 	$db->close();
 
