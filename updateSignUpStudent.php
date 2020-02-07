@@ -31,6 +31,6 @@
 	$db->query($sql);
 	$db->close();
 
-	echo "<script>alert('出題成功'); location.href = 'StudentList.php';</script>";
+	echo "<script>alert('註冊成功'); location.href = 'StudentList.php';</script>";
 
 ?>

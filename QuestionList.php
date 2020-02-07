@@ -76,7 +76,7 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -108,7 +108,7 @@ if($_SESSION['username'] == null)
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -124,6 +124,7 @@ if($_SESSION['username'] == null)
                     <tr>
                       <th>題號.</th>
                       <th>文字/圖片</th>
+                      <th>測驗型別</th>
                       <th>題目</th>
                       <th>編輯</th>
                     </tr>
@@ -135,6 +136,7 @@ if($_SESSION['username'] == null)
                     $max_number = $result->max;
                     $content = array();
                     $type = array();
+                    $classification = array();
                     for ( $a = 1 ; $a<=$max_number ; $a++)
                     {
                       $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
@@ -145,11 +147,13 @@ if($_SESSION['username'] == null)
                         {
                           $content[$a] = $result2->Content;
                           $type[$a] = $result2->type;
+                          $classification[$a] = $result2->classification;
                           $content_to_json=json_encode((array)$content);
                           $type_to_json=json_encode((array)$type);
+                          $class_to_json=json_encode((array)$classification);
                         }
                       }
-                      
+
                     }
                   ?>
                   <tbody>
@@ -162,7 +166,11 @@ if($_SESSION['username'] == null)
                       else if($type[1]=='LPICTURE')echo '<td>圖片順序</td>';
                       else if($type[1]=='VIDEO')echo '<td>影片</td>';
                       else if($type[1]=='KEYBOARD')echo '<td>KEYBOARD</td>';
-                      
+
+                      if($classification[1]=='0') echo '<td>未選擇</td>';
+                      else if($classification[1]=='1') echo '<td>詞彙理解</td>';
+                      else if($classification[1]=='2') echo '<td>詞彙表達</td>';
+                      else if($classification[1]=='3') echo '<td>語法表現</td>';
                       echo '<td>'.$content[1].'</td>';
                       echo '<td><button type="submit" class="btn btn-info" onclick="btnclk(1)">編輯</button></td>';
                       ?>
@@ -262,7 +270,7 @@ if($_SESSION['username'] == null)
                 $type_to_json=json_encode((array)$type);
 
               }
-              
+
             ?>
 
             <script type="text/javascript" class="init">
@@ -270,7 +278,8 @@ if($_SESSION['username'] == null)
                   "columns": [
                     { "width": "10%" },
                     { "width": "10%" },
-                    { "width": "75%" },
+                    { "width": "10%" },
+                    { "width": "65%" },
                     { "width": "15%" },
                   ]
                 } );
@@ -284,10 +293,11 @@ if($_SESSION['username'] == null)
 
                 $(document).ready
                 (
-                    function() 
+                    function()
                         {
                               var content_fromPHP=<? echo $content_to_json ?>;
                               var type_fromPHP=<? echo $type_to_json ?>;
+                              var class_fromPHP=<? echo $class_to_json ?>;
                               var bt = "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk()\">編輯</button>";
                               var t = $('#q_list').DataTable();
                               for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
@@ -299,10 +309,16 @@ if($_SESSION['username'] == null)
                                 else if(type_fromPHP[i]=="VIDEO"){type_fromPHP[i]="影片";}
                                 else if(type_fromPHP[i]=="KEYBOARD"){type_fromPHP[i]="KEYBOARD";}
 
+                                if(class_fromPHP[i]=="0"){class_fromPHP[i]="未選擇";}
+                                else if(class_fromPHP[i]=="1"){class_fromPHP[i]="詞彙理解";}
+                                else if(class_fromPHP[i]=="2"){class_fromPHP[i]="詞彙表達";}
+                                else if(class_fromPHP[i]=="3"){class_fromPHP[i]="語法表現";}
+
                                 t.row.add(
                                     [
                                     i,
                                     type_fromPHP[i],
+                                    class_fromPHP[i],
                                     content_fromPHP[i],
                                     "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
                                     ]).draw(false);
@@ -344,9 +360,9 @@ if($_SESSION['username'] == null)
                                   }
                                 else
                                 {
-                                  
+
                                 }*/
-                              } 
+                              }
                         }
 
                 );

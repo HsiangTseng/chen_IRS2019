@@ -2,7 +2,7 @@
 
 <?php
 	include("connects.php");
-	
+
 	$q1 = $_POST['Q1'];
 	$a1 = $_POST['A1'];
 	$a2 = $_POST['A2'];
@@ -13,6 +13,8 @@
 	$a3_alt = $_POST['a3_alt'];
 	$a4_alt = $_POST['a4_alt'];
 	$CA = $_POST['answer'];
+	$classification = $_POST['classification'];
+
     $CA = implode (",", $CA);
     $single_or_multi = $_POST['single_or_multi'];
 
@@ -37,7 +39,7 @@
     	unlink($ext);
     }
 
-    
+
 	if ($_FILES['video_file']['error'] === UPLOAD_ERR_OK){
 	  //echo '檔案名稱: ' . $_FILES['A1_file']['name'] . '<br/>';
 	  //echo '檔案類型: ' . $_FILES['A1_file']['type'] . '<br/>';
@@ -130,43 +132,42 @@
 		$db->query($sql2);
 
 		$sql2 = "UPDATE QuestionList SET Content='$a1' WHERE No = '$question_number' AND QA='A1' ";
-		$db->query($sql2);	
+		$db->query($sql2);
 
 		$sql2 = "UPDATE QuestionList SET Content='$a2' WHERE No = '$question_number' AND QA='A2' ";
-		$db->query($sql2);	
+		$db->query($sql2);
 
 		$sql2 = "UPDATE QuestionList SET Content='$a3' WHERE No = '$question_number' AND QA='A3' ";
-		$db->query($sql2);	
+		$db->query($sql2);
 
 		$sql2 = "UPDATE QuestionList SET Content='$a4' WHERE No = '$question_number' AND QA='A4' ";
-		$db->query($sql2);	
+		$db->query($sql2);
 		$db->close();
 		echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
 	}
 
 	else //insert
 	{
-		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, picture_ext) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$video_dest')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, picture_ext, classification) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$video_dest', '$classification[0]')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A1', 'VIDEO', '$a1', '$a1_alt', '$a1_ext')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, classification) VALUES ('$max_number', 'A1', 'VIDEO', '$a1', '$a1_alt', '$a1_ext', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A2', 'VIDEO', '$a2', '$a2_alt', '$a2_ext')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, classification) VALUES ('$max_number', 'A2', 'VIDEO', '$a2', '$a2_alt', '$a2_ext', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A3', 'VIDEO', '$a3', '$a3_alt', '$a3_ext')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, classification) VALUES ('$max_number', 'A3', 'VIDEO', '$a3', '$a3_alt', '$a3_ext', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext) VALUES ('$max_number', 'A4', 'VIDEO', '$a4', '$a4_alt', '$a4_ext')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, classification) VALUES ('$max_number', 'A4', 'VIDEO', '$a4', '$a4_alt', '$a4_ext', '0')";
 		$db->query($sql2);
 
 		$db->close();
 
-		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";	
+		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
 	}
 	echo $a1_alt.$a1_ext.$a2_alt.$a2_ext.$a3_alt.$a3_ext.$a4_alt.$a4_ext;
 
 
 ?>
-

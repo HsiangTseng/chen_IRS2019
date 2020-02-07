@@ -83,7 +83,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -115,7 +115,7 @@ else if ($_SESSION['type']!='T')
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -140,18 +140,18 @@ else if ($_SESSION['type']!='T')
 
                     <!-- setQuestion TAB -->
                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="setQuestion">
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}"> 
+                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
 
 
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">請先選擇Keyboard : </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                   <select class="select2_single form-control" name="KeyboardNo" tabindex="-1" required>
-                                        <?php  
+                                        <?php
                                             $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
                                             $result = mysqli_fetch_object($db->query($sql));
                                             $KeyboardNum = $result->KeyboardNumber;
-                                            
+
                                             //echo $KeyboardNum;
                                             $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
                                             $_KeyboardNo = array();
@@ -180,7 +180,7 @@ else if ($_SESSION['type']!='T')
                                                 echo "</option>";
                                             }
                                             $db->close();
-                                        ?>                                  
+                                        ?>
                                 </select>
 
                                 </div>
@@ -195,7 +195,7 @@ else if ($_SESSION['type']!='T')
                                 </div>
                             </div>
 
-                                
+
 
 
                             <div class="form-group required">
@@ -209,9 +209,14 @@ else if ($_SESSION['type']!='T')
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A7"><label>G選項</label>
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A8"><label>H選項</label>
                             </div>
-
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
                             <clearfix>
-                            
+
                             <div class="col-md-3 col-sm-3 col-xs-6 ">
                                 <button type="submit" class="btn btn-success">送出</button>
                             </div>
@@ -288,8 +293,8 @@ else if ($_SESSION['type']!='T')
                               integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
                               crossorigin="anonymous">
                             </script>
-                            <script>    
-                            
+                            <script>
+
                             $("#file0").change(function(){
                                 var objUrl = getObjectURL(this.files[0]) ;
                                 console.log("objUrl = "+objUrl) ;
@@ -362,10 +367,10 @@ else if ($_SESSION['type']!='T')
                                 var Img = document.getElementById('img7');
                                 document.getElementById("img7").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
                             }) ;
-                            
+
 
                             function getObjectURL(file) {
-                                var url = null ; 
+                                var url = null ;
                                 if (window.createObjectURL!=undefined) { // basic
                                     url = window.createObjectURL(file) ;
                                 } else if (window.URL!=undefined) { // mozilla(firefox)
@@ -391,7 +396,7 @@ else if ($_SESSION['type']!='T')
                     </div>
                     <!-- setKeyboard TAB -->
 
-                    
+
 
                 </div>
                 <!-- WORD TAB-->
@@ -424,7 +429,7 @@ else if ($_SESSION['type']!='T')
 
 
 
-            
+
 
             <!-- jQuery -->
             <script src="../vendors/jquery/dist/jquery.min.js"></script>

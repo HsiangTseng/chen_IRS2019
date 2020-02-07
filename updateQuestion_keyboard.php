@@ -2,7 +2,7 @@
 
 <?php
 	include("connects.php");
-	
+
 	$keyboardNo =$_POST['KeyboardNo'];
 	$q1 = $_POST['Q1'];
 
@@ -13,6 +13,7 @@
     //get the new question's number.
     $CA = $_POST['answer'];
     $CA = implode (",", $CA);
+		$classification = $_POST['classification'];
 
     //edit block
     if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
@@ -23,7 +24,7 @@
 
     }
 
-    
+
     // if edit
 	if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
 	{
@@ -36,15 +37,14 @@
 
 	else // if not edit , means insert.
 	{
-	  	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$q1', 'KEYBOARD', 'MULTI', '$keyboardNo')";
+	  	$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo, classification) VALUES ('$max_number', 'Q', '$CA', '$q1', 'KEYBOARD', 'MULTI', '$keyboardNo', '$classification[0]')";
 		$db->query($sql2);
 
 
 		$db->close();
 
-		echo "<script>alert('出題成功'); location.href = 'KeyboardSite.php';</script>";	
+		echo "<script>alert('出題成功'); location.href = 'KeyboardSite.php';</script>";
 	}
 
 
 ?>
-

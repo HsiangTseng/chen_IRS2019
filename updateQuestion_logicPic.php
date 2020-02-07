@@ -9,6 +9,7 @@
     $Q1 = $_POST['Q1'];
     $CA = $_POST['CA'];
     $number = $_POST['picture_number'];
+		$classification = $_POST['classification'];
 
 
     $sql = "SELECT MAX(KeyboardNo) AS max FROM Keyboard";
@@ -32,7 +33,7 @@
         $question_number = $_POST['question_number'];
         $KeyboardNumber = $_POST['KeyboardNo'];
         $max_number = $question_number;
-        
+
 
         $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNumber'";
         $result = mysqli_fetch_object($db->query($sql));
@@ -47,7 +48,7 @@
         echo 'picture_number'.$old_pictureNumber;
         echo 'ext'.$extString;*/
 
-        
+
         // if edit , must DELETE OLD FILE first!!!
         for ($i=1;$i<=$old_pictureNumber;$i++)
         {
@@ -72,7 +73,7 @@
 		  }
 		else {
 		}
-            
+
         //---------WMF Covert to JPG--------------
         if($ext[$i]=="wmf")
         {
@@ -110,7 +111,7 @@
         $sql2 = "INSERT INTO Keyboard (KeyboardNo,type, ext) VALUES ('$KeyboardNumber', 'Logic', '$ext_string')";
         $db->query($sql2);
 
-        $sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LPICTURE', 'MULTI', '$KeyboardNumber')";
+        $sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo, classification) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LPICTURE', 'MULTI', '$KeyboardNumber', '$classification[0]')";
         $db->query($sqlQuestion);
         $db->close();
 
@@ -118,8 +119,7 @@
     }
 
 
-    
 
-	
+
+
 ?>
-

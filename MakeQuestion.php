@@ -83,7 +83,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -115,7 +115,7 @@ else if ($_SESSION['type']!='T')
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -149,7 +149,7 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label">
                                     <?php
                                         include("connects.php");
-                              
+
                                         $sql = "SELECT MAX(No) AS max FROM QuestionList";
                                         $result = mysqli_fetch_object($db->query($sql));
                                         $max_number = $result->max;
@@ -158,23 +158,23 @@ else if ($_SESSION['type']!='T')
                                 </label>
                             </div>
 
-                            
+
                             <div  class="form-group">
                                 <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
                                 <div style="display: none;">
                                     <input type="radio" id="single_word_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
-                                    <input type="radio" id="multi_word_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">                            
+                                    <input type="radio" id="multi_word_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
                                 </div>
                                 <button class="btn btn-success" onclick="single_word()">單選</button>
                                 <button class="btn btn-success" onclick="multi_word()">多選</button>
                             </div>
 
-                            <script type="text/javascript">                             
+                            <script type="text/javascript">
                                 function single_word()
                                 {
                                     document.getElementById("single_word_radio").checked=true;
                                     document.getElementById("multi_word_radio").checked=false;
-                                    
+
                                     var div_form = document.createElement("DIV");
                                     div_form.setAttribute("class","form-group");
                                     var word = '<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
@@ -189,7 +189,9 @@ else if ($_SESSION['type']!='T')
                                         list.removeChild(list.firstChild);
                                     }
                                     document.getElementById("word_ca").appendChild(div_form);
-                                    
+
+                                    document.getElementById("single_word_submit").disabled = false;
+
                                 }
 
                                 function multi_word()
@@ -211,8 +213,17 @@ else if ($_SESSION['type']!='T')
                                         list.removeChild(list.firstChild);
                                     }
                                     document.getElementById("word_ca").appendChild(div_form);
+                                    document.getElementById("single_word_submit").disabled = false;
+
                                 }
                             </script>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
+
 
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
@@ -284,12 +295,18 @@ else if ($_SESSION['type']!='T')
 
 
 
-    
+
 
                             <clearfix>
+                              <div class="form-group">
+                                  <label class="control-label col-md-6"><font color="red">註1：若"送出"按鈕無法點選，代表尚未選擇答題類型(單選/多選)</font></label>
+                              </div>
+                              <div class="form-group">
+                                  <label class="control-label col-md-5" for="first-name"><font color="red">註2：若選擇"多選"，請務必確認有勾選正解</font></label>
+                              </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
+                                <button type="submit" id="single_word_submit" class="btn btn-success" disabled >送出</button>
                             </div>
                         </form>
                     </div>
@@ -304,7 +321,7 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label">
                                     <?php
                                         include("connects.php");
-                              
+
                                         $sql = "SELECT MAX(No) AS max FROM QuestionList";
                                         $result = mysqli_fetch_object($db->query($sql));
                                         $max_number = $result->max;
@@ -314,16 +331,16 @@ else if ($_SESSION['type']!='T')
                             </div>
 
                             <div  class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>   
+                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
                                 <div style="display: none;">
                                     <input type="radio" id="single_pic_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
-                                    <input type="radio" id="multi_pic_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">                            
-                                </div>                             
+                                    <input type="radio" id="multi_pic_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
+                                </div>
                                 <button class="btn btn-success" onclick="single_pic()">單選</button>
                                 <button class="btn btn-success" onclick="multi_pic()">多選</button>
                             </div>
 
-                            <script type="text/javascript">                             
+                            <script type="text/javascript">
                                 function single_pic()
                                 {
                                     document.getElementById("single_pic_radio").checked=true;
@@ -343,6 +360,8 @@ else if ($_SESSION['type']!='T')
                                         pic_list.removeChild(pic_list.firstChild);
                                     }
                                     document.getElementById("pic_ca").appendChild(pic_div_form);
+                                    document.getElementById("single_pic_submit").disabled = false;
+
                                 }
 
                                 function multi_pic()
@@ -364,9 +383,16 @@ else if ($_SESSION['type']!='T')
                                         pic_list.removeChild(pic_list.firstChild);
                                     }
                                     document.getElementById("pic_ca").appendChild(pic_div_form);
+                                    document.getElementById("single_pic_submit").disabled = false;
+
                                 }
                             </script>
-
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
                                 <div class="col-md-5">
@@ -448,16 +474,22 @@ else if ($_SESSION['type']!='T')
                             <div id="pic_ca"></div>
 
                             <clearfix>
+                              <div class="form-group">
+                                  <label class="control-label col-md-6"><font color="red">註1：若"送出"按鈕無法點選，代表尚未選擇答題類型(單選/多選)</font></label>
+                              </div>
+                              <div class="form-group">
+                                  <label class="control-label col-md-5" for="first-name"><font color="red">註2：若選擇"多選"，請務必確認有勾選正解</font></label>
+                              </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
+                                <button type="submit" id="single_pic_submit" class="btn btn-success" disabled>送出</button>
                             </div>
                         </form>
                     </div>
 
                      <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN PICTURE TAB -->
 
-                    
+
 
                      <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN VIDEO TAB -->
                     <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="single-video-tab">
@@ -467,7 +499,7 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label">
                                     <?php
                                         include("connects.php");
-                              
+
                                         $sql = "SELECT MAX(No) AS max FROM QuestionList";
                                         $result = mysqli_fetch_object($db->query($sql));
                                         $max_number = $result->max;
@@ -480,18 +512,18 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
                                 <div style="display: none;">
                                     <input type="radio" id="single_video_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
-                                    <input type="radio" id="multi_video_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">                            
+                                    <input type="radio" id="multi_video_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
                                 </div>
                                 <button class="btn btn-success" onclick="single_video()">單選</button>
                                 <button class="btn btn-success" onclick="multi_video()">多選</button>
                             </div>
 
-                            <script type="text/javascript">                             
+                            <script type="text/javascript">
                                 function single_video()
                                 {
                                     document.getElementById("single_video_radio").checked=true;
                                     document.getElementById("multi_video_radio").checked=false;
-                                    
+
                                     var video_div_form = document.createElement("DIV");
                                     video_div_form.setAttribute("class","form-group");
                                     var word = '<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
@@ -506,7 +538,9 @@ else if ($_SESSION['type']!='T')
                                         video_list.removeChild(video_list.firstChild);
                                     }
                                     document.getElementById("video_ca").appendChild(video_div_form);
-                                    
+                                    document.getElementById("single_video_submit").disabled = false;
+
+
                                 }
 
                                 function multi_video()
@@ -528,9 +562,16 @@ else if ($_SESSION['type']!='T')
                                         video_list.removeChild(video_list.firstChild);
                                     }
                                     document.getElementById("video_ca").appendChild(video_div_form);
+                                    document.getElementById("single_video_submit").disabled = false;
+
                                 }
                             </script>
-
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span></span></label>
                                 <div class="col-md-5">
@@ -604,23 +645,29 @@ else if ($_SESSION['type']!='T')
                             <HR>
 
                             <div id="video_ca"></div>
-                            
+
 
                             <clearfix>
+                              <div class="form-group">
+                                  <label class="control-label col-md-6"><font color="red">註1：若"送出"按鈕無法點選，代表尚未選擇答題類型(單選/多選)</font></label>
+                              </div>
+                              <div class="form-group">
+                                  <label class="control-label col-md-5" for="first-name"><font color="red">註2：若選擇"多選"，請務必確認有勾選正解</font></label>
+                              </div>
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
+                                <button type="submit" id="single_video_submit" class="btn btn-success" disabled>送出</button>
                             </div>
                         </form>
                     </div>
                     <!-- MAKE QUESTION w/ SINGEL ANSWER FORM IN VIDEO TAB -->
 
-                
+
 
 
                     <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN WORD TAB -->
 
-                    
+
 
                     <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="logic-word-tab">
 
@@ -631,14 +678,14 @@ else if ($_SESSION['type']!='T')
                                 <button class="btn btn-danger" onclick="subInput()">-</button>
                               </div>
                             </div>
-                            
+
                             <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logicWord.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
                                 <label class="control-label">
                                     <?php
                                         include("connects.php");
-                              
+
                                         $sql = "SELECT MAX(No) AS max FROM QuestionList";
                                         $result = mysqli_fetch_object($db->query($sql));
                                         $max_number = $result->max;
@@ -646,7 +693,7 @@ else if ($_SESSION['type']!='T')
                                     ?>
                                 </label>
                             </div>
-                            
+
                           <div id="message"></div>
 
                           <script type="text/javascript">
@@ -660,7 +707,7 @@ else if ($_SESSION['type']!='T')
                                     div_form.setAttribute("class","form-group");
                                     name = 'div_q'+create_input_number;
                                     div_form.setAttribute("id",name);
-                                    
+
 
                                     var lb = '<label class="control-label col-md-3" for="first-name">選項' + create_input_number +' :<span class="required"></span></label>';
                                     var md5 = '<div class="col-md-5">';
@@ -677,11 +724,17 @@ else if ($_SESSION['type']!='T')
                                         create_input_number--;
                                         }
                                     }
-                          
-                          addInput();          
+
+                          addInput();
                           </script>
                             <HR>
                             <HR>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
                                 <div class="col-md-5">
@@ -724,7 +777,7 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label">
                                     <?php
                                         include("connects.php");
-                              
+
                                         $sql = "SELECT MAX(No) AS max FROM QuestionList";
                                         $result = mysqli_fetch_object($db->query($sql));
                                         $max_number = $result->max;
@@ -732,13 +785,19 @@ else if ($_SESSION['type']!='T')
                                     ?>
                                 </label>
                             </div>
-                                                  
+
 
                           <div id="messagePic"></div>
 
 
                             <HR>
                             <HR>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
+                                <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
                                 <div class="col-md-5">
@@ -773,7 +832,7 @@ else if ($_SESSION['type']!='T')
                                     div_form.setAttribute("class","form-group");
                                     name = 'div_qpic'+pic_create_input_number;
                                     div_form.setAttribute("id",name);
-                                    
+
 
                                     var lb = '<label class="control-label col-md-3" for="first-name">圖片' + pic_create_input_number +' :<span class="required"></span></label>';
                                     var md5 = '<div class="col-md-3">';
@@ -792,9 +851,9 @@ else if ($_SESSION['type']!='T')
                                         document.getElementById("picture_number").value=pic_create_input_number;
                                         }
                                     }
-                          
+
                           addInputPic();
-                          
+
                           </script>
 
                     <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN PICTURE TAB -->

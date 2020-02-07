@@ -2,13 +2,14 @@
 
 <?php
 	include("connects.php");
-	
+
 
 	$Answer = $_POST['Answer'];
     $Answer = implode ("^&", $Answer);
 
     $Q1 = $_POST['Q1'];
     $CA = $_POST['CA'];
+		$classification = $_POST['classification'];
 
         //edit block
     if(isset($_POST['edit_tag'])&&isset($_POST['question_number']))
@@ -40,7 +41,7 @@
 		echo "<script>alert('編輯成功'); location.href = 'QuestionList.php';</script>";
 
 	}
-	
+
 	else // if not edit , means insert.
 	{
 		$sqlKeyboard = "INSERT INTO Keyboard (KeyboardNo, type, wordQuestion) VALUES ('$KeyboardNumber', 'Logic', '$Answer')";
@@ -51,16 +52,15 @@
 	    $max_number = $result->max;
 	    $max_number = $max_number+1;
 
-		$sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LWORD', 'MULTI', '$KeyboardNumber')";
+		$sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo, classification) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LWORD', 'MULTI', '$KeyboardNumber', '$classification[0]')";
 		$db->query($sqlQuestion);
 		$db->close();
-		
+
 		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
 	}
 
 
 
 
-	
-?>
 
+?>
