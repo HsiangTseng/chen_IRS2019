@@ -89,7 +89,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -121,7 +121,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Exam -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -137,6 +137,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
                     <tr>
                       <th>題號</th>
                       <th>題型</th>
+                      <th>測驗型別</th>
                       <th>題目</th>
                       <th>正確答案</th>
                       <th>學生答案</th>
@@ -167,6 +168,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
                     $question_string = "";
                     $type_string = "";
                     $single_or_multi_string = "";
+                    $classification_string = "";
                     foreach ($question_array as $value) {
                       $sql_a = "SELECT * FROM QuestionList WHERE QA='Q' AND No = $value";
                       $result_a = mysqli_fetch_object($db->query($sql_a));
@@ -174,6 +176,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
                       $question_string = $question_string.$result_a->Content.'*-*';
                       $type_string = $type_string.$result_a->type.'-';
                       $single_or_multi_string = $single_or_multi_string.$result_a->single_or_multi.'-';
+                      $classification_string = $classification_string.$result_a->classification.'-';
                     }
                     $answer_string = substr($answer_string, 0,-1);//DELETE THE LAST '-' CHARACTER
                     $ca_array = explode('-', $answer_string);
@@ -183,6 +186,9 @@ $WhosAnswer = $_GET['WhosAnswer'];
 
                     $single_or_multi_string = substr($single_or_multi_string, 0,-1);
                     $single_or_multi_array = explode('-', $single_or_multi_string);
+
+                    $classification_string = substr($classification_string, 0,-1);
+                    $classification_array = explode('-', $classification_string);
 
                     $question_string = substr($question_string, 0,-3);
                     $q_array = explode('*-*', $question_string);
@@ -203,15 +209,35 @@ $WhosAnswer = $_GET['WhosAnswer'];
                     $Q_TO_JSON = json_encode((array)$q_array);
                     $SA_TO_JSON = json_encode((array)$sa_array);
                     $CA_TO_JSON = json_encode((array)$ca_array);
+                    $TYPE_TO_JSON = json_encode((array)$type_array);
+                    $CLASS_TO_JSON = json_encode((array)$classification_array);
+                    $SORM_TO_JSON = json_encode((array)$single_or_multi_array);
                     $ANSWERTIME_TO_JSON = json_encode((array)$answer_time_array);
-                   
+
                   ?>
 
                   <tbody>
                     <tr>
                       <?php
+                      $type = "";
+                      if($single_or_multi_array[0]=="SINGLE") $type="單選";
+                      else if ($single_or_multi_array[0]=="MULTI") $type="多選";
+
+                      if($type_array[0]=="WORD") $type=$type."文字";
+                      else if ($type_array[0]=="PICTURE") $type=$type."圖片";
+                      else if ($type_array[0]=="VIDEO") $type=$type."影片";
+                      else if ($type_array[0]=="KEYBOARD") $type=$type."鍵盤";
+
+                      $class="";
+                      if($classification_array[0]=="0") $class=$class."未設定";
+                      else if ($classification_array[0]=="1") $class=$class."詞彙理解";
+                      else if ($classification_array[0]=="2") $class=$class."詞彙表達";
+                      else if ($classification_array[0]=="3") $class=$class."語法表現";
+
+
                       echo '<td>1</td>';
-                      echo '<td>TYPE</td>';
+                      echo '<td>'.$type.'</td>';
+                      echo '<td>'.$class.'</td>';
                       echo '<td>'.$q_array[0].'</td>';
                       echo '<td>'.$ca_array[0].'</td>';
                       echo '<td>'.$sa_array[0].'</td>';
@@ -291,34 +317,53 @@ $WhosAnswer = $_GET['WhosAnswer'];
                   "columns": [
                     { "width": "5%" },
                     { "width": "10%" },
+                    { "width": "10%" },
                     { "width": "25%" },
-                    { "width": "25%" },
-                    { "width": "25%" },
+                    { "width": "20%" },
+                    { "width": "20%" },
                     { "width": "10%" },
                   ]
                 } );
 
                 $(document).ready
                 (
-                    function() 
+                    function()
                         {
                           var QfromPHP=<? echo $Q_TO_JSON ?>;
+                          var TypefromPHP=<? echo $TYPE_TO_JSON ?>;
+                          var ClassfromPHP=<? echo $CLASS_TO_JSON ?>;
+                          var singleormultifromPHP=<? echo $SORM_TO_JSON ?>;
                           var CAfromPHP=<? echo $CA_TO_JSON ?>;
                           var SAfromPHP=<? echo $SA_TO_JSON ?>;
                           var ASTfromPHP=<? echo $ANSWERTIME_TO_JSON ?>;
                           var t = $('#e_list').DataTable();
                           for (var i=1 ; i<= <?php echo count($ca_array)-1;?> ; i++)
                           {
+                            var ouput_type = "";
+                            if(singleormultifromPHP[i]=="SINGLE") singleormultifromPHP[i]="單選";
+                            else if (singleormultifromPHP[i]=="MULTI") singleormultifromPHP[i]="多選";
+
+                            if(TypefromPHP[i]=="WORD") singleormultifromPHP[i]+="文字";
+                            else if (TypefromPHP[i]=="PICTURE") singleormultifromPHP[i]+="圖片";
+                            else if (TypefromPHP[i]=="VIDEO") singleormultifromPHP[i]+="影片";
+                            else if (TypefromPHP[i]=="KEYBOARD") singleormultifromPHP[i]+="鍵盤";
+
+                            if(ClassfromPHP[i]=="0") ClassfromPHP[i]="未設定";
+                            else if(ClassfromPHP[i]=="1") ClassfromPHP[i]="詞彙理解";
+                            else if(ClassfromPHP[i]=="2") ClassfromPHP[i]="詞彙表達";
+                            else if(ClassfromPHP[i]=="3") ClassfromPHP[i]="語法表現";
+
                             t.row.add(
                             [
-                            i,
-                            "TYPE",
+                            i+1,
+                            singleormultifromPHP[i],
+                            ClassfromPHP[i],
                             QfromPHP[i],
                             CAfromPHP[i],
                             SAfromPHP[i],
                             ASTfromPHP[i],
                             ]).draw(false);
-                          } 
+                          }
                         }
 
                 );

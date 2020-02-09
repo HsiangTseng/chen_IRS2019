@@ -235,7 +235,7 @@ else if ($_SESSION['type']!='T')
                                 echo     '<div class="progress progress_sm">';
 
                                 $point = calScore($result->No,$result->ExamNo);
-                                
+
                                 if($point >= 60){$state = 'bg-green';}
                                 else {$state = 'bg-red';}
                                 echo       '<div class="progress-bar '.$state.'" role="progressbar" data-transitiongoal="'.$point.'"></div>';
@@ -248,9 +248,7 @@ else if ($_SESSION['type']!='T')
                                 echo     '<button type="button" class="btn'.$button_state;
                                 echo   '</td>';
                                 echo   '<td>';
-                                         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$result_number.'&WhosAnswer='.$whosid.'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>';
-                                         echo '<a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>';
-                                         echo '<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>';
+                                         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$result_number.'&WhosAnswer='.$whosid.'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>作答詳情</a>';
                                 echo    '</td>';
                                 echo '</tr>';
                                 $index ++;

@@ -256,6 +256,14 @@ else if ($_SESSION['type']!='T')
                                     <input type="file" name="audio_A1"/>
                                 </div>
                             </div>
+                            <div class="form-group sameline">
+                                <label class="control-label col-md-3" for="last-name">選項(A)附圖 : <span></span></label>
+                                <input type="file" name="a1_file"/>
+                                <label for="last-name">alt :</label>
+                                <input type="text" name="a1_alt">
+                            </div>
+                            <HR />
+
 
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
@@ -267,6 +275,13 @@ else if ($_SESSION['type']!='T')
                                     <input type="file" name="audio_A2"/>
                                 </div>
                             </div>
+                            <div class="form-group sameline">
+                                <label class="control-label col-md-3" for="last-name">選項(B)附圖 : <span></span></label>
+                                <input type="file" name="a2_file"/>
+                                <label for="last-name">alt :</label>
+                                <input type="text" name="a2_alt">
+                            </div>
+                            <HR />
 
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
@@ -278,6 +293,14 @@ else if ($_SESSION['type']!='T')
                                     <input type="file" name="audio_A3"/>
                                 </div>
                             </div>
+                            <div class="form-group sameline">
+                                <label class="control-label col-md-3" for="last-name">選項(C)附圖 : <span></span></label>
+                                <input type="file" name="a3_file"/>
+                                <label for="last-name">alt :</label>
+                                <input type="text" name="a3_alt">
+                            </div>
+                            <HR />
+
 
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
@@ -289,6 +312,14 @@ else if ($_SESSION['type']!='T')
                                     <input type="file" name="audio_A4"/>
                                 </div>
                             </div>
+                            <div class="form-group sameline">
+                                <label class="control-label col-md-3" for="last-name">選項(D)附圖 : <span></span></label>
+                                <input type="file" name="a4_file"/>
+                                <label for="last-name">alt :</label>
+                                <input type="text" name="a4_alt">
+                            </div>
+                            <HR />
+
 
                             <div id="word_ca"></div>
 

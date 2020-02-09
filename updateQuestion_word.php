@@ -44,6 +44,42 @@
 	  }
 	else {
 	}
+	if ($_FILES['a1_file']['error'] === UPLOAD_ERR_OK){
+		$file = $_FILES['a1_file']['tmp_name'];
+		$a1_ext = end(explode('.', $_FILES['a1_file']['name']));
+		$dest = 'upload/Q'.(string)$max_number.'A1.'.$a1_ext;
+		 move_uploaded_file($file, $dest);
+		}
+	else {
+	}
+
+	if ($_FILES['a2_file']['error'] === UPLOAD_ERR_OK){
+		$file = $_FILES['a2_file']['tmp_name'];
+		$a2_ext = end(explode('.', $_FILES['a2_file']['name']));
+		$dest = 'upload/Q'.(string)$max_number.'A2.'.$a2_ext;
+		 move_uploaded_file($file, $dest);
+		}
+	else {
+	}
+
+	if ($_FILES['a3_file']['error'] === UPLOAD_ERR_OK){
+		$file = $_FILES['a3_file']['tmp_name'];
+		$a3_ext = end(explode('.', $_FILES['a3_file']['name']));
+		$dest = 'upload/Q'.(string)$max_number.'A3.'.$a3_ext;
+		 move_uploaded_file($file, $dest);
+		}
+	else {
+	}
+
+	if ($_FILES['a4_file']['error'] === UPLOAD_ERR_OK){
+
+		$file = $_FILES['a4_file']['tmp_name'];
+		$a4_ext = end(explode('.', $_FILES['a4_file']['name']));
+		$dest = 'upload/Q'.(string)$max_number.'A4.'.$a4_ext;
+		 move_uploaded_file($file, $dest);
+		}
+	else {
+	}
 		//---------WMF Covert to JPG--------------
 	include("convert_wmf.php");
 	if($q1_ext=="wmf")
@@ -51,6 +87,30 @@
 		$name = 'Q'.(string)$max_number.'Q1';
 		convert_wmf($name);
 		$q1_ext="jpg";
+	}
+	if($a1_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A1';
+		convert_wmf($name);
+		$a1_ext="jpg";
+	}
+	if($a2_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A2';
+		convert_wmf($name);
+		$a2_ext="jpg";
+	}
+	if($a3_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A3';
+		convert_wmf($name);
+		$a3_ext="jpg";
+	}
+	if($a4_ext=="wmf")
+	{
+		$name = 'Q'.(string)$max_number.'A4';
+		convert_wmf($name);
+		$a4_ext="jpg";
 	}
 	//---------WMF Covert to JPG--------------
 
@@ -151,20 +211,36 @@
 		{
 			$q1_ext = '';//if no image, init the q1_ext
 		}
+		/*if(empty($a1_ext)||is_null($a1_ext))
+		{
+			$a1_ext = '';//if no image, init the q1_ext
+		}
+		if(empty($a2_ext)||is_null($a2_ext))
+		{
+			$a2_ext = '';//if no image, init the q1_ext
+		}
+		if(empty($a3_ext)||is_null($a3_ext))
+		{
+			$a3_ext = '';//if no image, init the q1_ext
+		}
+		if(empty($a4_ext)||is_null($a4_ext))
+		{
+			$a4_ext = '';//if no image, init the q1_ext
+		}*/
 		//echo $max_number;
 		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, picture_alt, picture_ext, type, single_or_multi, audio, classification) VALUES ('$max_number', 'Q', '$CA', '$q1', '$q1_alt', '$q1_ext', 'WORD', '$single_or_multi', '$audio_dest', '$classification[0]')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio, classification) VALUES ('$max_number', 'A1', 'WORD', '$a1', '$audio_A1', '0')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, audio, classification) VALUES ('$max_number', 'A1', 'WORD', '$a1', '$a1_alt', '$a1_ext', '$audio_A1', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio, classification) VALUES ('$max_number', 'A2', 'WORD', '$a2', '$audio_A2', '0')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, audio, classification) VALUES ('$max_number', 'A2', 'WORD', '$a2', '$a2_alt', '$a2_ext', '$audio_A2', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio, classification) VALUES ('$max_number', 'A3', 'WORD', '$a3', '$audio_A3', '0')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, audio, classification) VALUES ('$max_number', 'A3', 'WORD', '$a3', '$a3_alt', '$a3_ext', '$audio_A3', '0')";
 		$db->query($sql2);
 
-		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, audio, classification) VALUES ('$max_number', 'A4', 'WORD', '$a4', '$audio_A4', '0')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, audio, classification) VALUES ('$max_number', 'A4', 'WORD', '$a4', '$a4_alt', '$a4_ext', '$audio_A4', '0')";
 		$db->query($sql2);
 		$db->close();
 		echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";

@@ -48,7 +48,7 @@ function calScore($ExamResultNo,$ExamListNo)
 		else if ($single_or_multi_array[$key]=="MULTI")//MULTI
 		{
 			// SICK SOLUTION
-      if(($type_array[$key]=="PICTURE")||($type_array[$key]=="WORD")||($type_array[$key]=="VIDEO"))
+      if(($type_array[$key]=="PICTURE")||($type_array[$key]=="WORD")||($type_array[$key]=="VIDEO")||($type_array[$key]="KEYBOARD"))
       {
         if((strpos($ca_array[$key],'A1') !== false) && (strpos($sa_array[$key],'A1') !== false))$final_score+=1;
   			if((strpos($ca_array[$key],'A2') !== false) && (strpos($sa_array[$key],'A2') !== false))$final_score+=1;
