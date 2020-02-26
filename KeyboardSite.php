@@ -15,6 +15,28 @@ else if ($_SESSION['type']!='T')
     exit;
 }
 ?>
+
+<?php
+//GET THE KeyboardNo From GET[]
+if(isset($_GET['KeyboardNo']))
+{
+  $GetKeyboardNo = $_GET['KeyboardNo'];
+  if($GetKeyboardNo>0)
+  {
+    $sql = "SELECT * FROM `Keyboard` WHERE KeyboardNo='$GetKeyboardNo'";
+    $result = mysqli_fetch_object($db->query($sql));
+    $GetKeyboardExt = $result->ext;
+  }
+
+}
+else {
+  $GetKeyboardNo = 0;
+}
+
+
+
+?>
+
 <html lang="en">
           <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -146,7 +168,7 @@ else if ($_SESSION['type']!='T')
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">請先選擇Keyboard : </label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="select2_single form-control" name="KeyboardNo" tabindex="-1" required>
+                                  <select class="select2_single form-control" name="KeyboardNo" id="KeyboardNo" onchange="KeyboardOnchange()" tabindex="-1" required>
                                         <?php
                                             $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
                                             $result = mysqli_fetch_object($db->query($sql));
@@ -167,14 +189,14 @@ else if ($_SESSION['type']!='T')
                                                     $index++;
                                                 }
                                             }
-
+                                            echo '<option value="-10">請先選擇Keyboard</option>';
                                             for($i=0 ; $i<$KeyboardNum ; $i++)
                                             {
                                                 echo "<option value=";
                                                 echo "\"";
                                                 echo $_KeyboardNo[$i];
                                                 echo "\"";
-                                                //if($_KeyboardNo[$i]==$oldKeyboard) echo " selected ";
+                                                if($_KeyboardNo[$i]==$GetKeyboardNo) echo " selected ";
                                                 echo ">";
                                                 echo $_KeyboardName[$i];
                                                 echo "</option>";
@@ -185,6 +207,15 @@ else if ($_SESSION['type']!='T')
 
                                 </div>
                             </div>
+                              <script>
+                                function KeyboardOnchange()
+                                {
+                                  var kbnumber = document.getElementById("KeyboardNo").value;
+                                  location.href = 'KeyboardSite.php'+'?KeyboardNo='+kbnumber;
+                                }
+                              </script>
+
+
 
 
 
@@ -204,6 +235,7 @@ else if ($_SESSION['type']!='T')
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
+                                <br />
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A5"><label>E選項</label>
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A6"><label>F選項</label>
                                 <input type="checkbox" class="radio-inline flat" name="answer[]" value="A7"><label>G選項</label>
@@ -216,6 +248,40 @@ else if ($_SESSION['type']!='T')
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
                             </div>
                             <clearfix>
+                            <style>
+                            .responsive {
+                              width: 150px;
+                              height: 150px;
+                              border:5px;
+                              border-color:#A0A0A0;
+                              border-style: double;
+                            }
+                            </style>
+                            <?php
+                            if(isset($_GET['KeyboardNo']))
+                            {
+                              if($GetKeyboardNo>0)
+                              {
+                                $ext_array = array();
+                                $ext_array = explode("-",$GetKeyboardExt);
+
+                                echo '<div class="row">';
+                                echo '<BR />';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A1.'.$ext_array[0].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A2.'.$ext_array[1].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A3.'.$ext_array[2].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A4.'.$ext_array[3].'">';
+                                echo '</div>';
+                                echo '<div class="row">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A5.'.$ext_array[4].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A6.'.$ext_array[5].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A7.'.$ext_array[6].'">';
+                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A8.'.$ext_array[7].'">';
+                                echo '</div>';
+                              }
+
+                            }
+                            ?>
 
                             <div class="col-md-3 col-sm-3 col-xs-6 ">
                                 <button type="submit" class="btn btn-success">送出</button>
