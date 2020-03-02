@@ -25,22 +25,25 @@ if($_SESSION['username'] == null)
       $result = mysqli_fetch_object($db->query($sql));
       $exam_index = $result->No;
       $question_number = $result->No;
-      
 
+      array_push($q_list,"0");
       $q_list_number = sizeof($q_list);
-      $q_list_number = $question_number+1;
-      for ($i = $question_number; $i>0 ; $i--)
+      for ($i = $q_list_number-1; $i>0 ; $i--)
       {
         $q_list[$i] = $q_list[$i-1];
       }
-      if($exam_index==0)
-        {
-          //$exam_index=1;
-          $sql = "UPDATE Now_state SET No =1";
-          $db->query($sql);
-        }
+      $q_list[0] = "0";
+
+      if($exam_index ==0)
+      {
+        $sql = "UPDATE Now_state SET No =1";
+        $db->query($sql);
+        $exam_index = 1;
+      }
+
+      //echo $q_list_number."--".$question_number;
       if($question_number==0)$question_number=1;
-      //echo $exam_index;*/
+
       $db->close();
 
 ?>
@@ -111,7 +114,7 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -140,69 +143,6 @@ if($_SESSION['username'] == null)
 
         <!-- page content################################# -->
         <div class="right_col" role="main">
-          <!-- top tiles -->
-          <!--div class="row tile_count">
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fas fa-edit"></i></div>
-                  <div class="count">
-                  <?php
-                  echo $question_number;
-                  ?>
-                  </div>
-                  <h3>Question</h3>
-                </div>
-            </div>
-
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="tile-stats">
-                  <div class="icon"><i class="far fa-calendar-alt"></i></div>
-                  <div class="count">
-                    <?php
-                    date_default_timezone_set("Asia/Taipei");
-                    $date = date('Y/m/d');
-                    echo $date;  
-                    ?>
-                  </div>
-                  <h3>Date</h3>
-                </div>
-            </div>
-
-            <script>
-              function updateDiv()
-              { 
-                $( "#time_block" ).load(window.location.href + " #time_block" );
-              }
-              setInterval(updateDiv,1000);
-            </script>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fas fa-clock"></i></div>
-                  <div class="count" id="time_block">
-                  <?php
-                  $time = date('H:i:s');
-                  echo $time;  
-                  ?>
-                  </div>
-                  <h3>Time</h3>
-                </div>
-            </div>
-
-            
-
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fas fa-user-edit"></i></div>
-                  <div class="count">
-                  5
-                  </div>
-                  <h3>Students</h3>
-                </div>
-            </div>
-
-          </div-->
-          <!-- /top tiles -->
-            
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -235,7 +175,7 @@ if($_SESSION['username'] == null)
                             <h1>
                                 <?php
                                     include("connects.php");
-                                    
+
                                     $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'Q'";
                                     if($stmt = $db->query($sql))
                                     {
@@ -279,95 +219,9 @@ if($_SESSION['username'] == null)
                                         }
 
                                     }
-                                    
-                                    /*
-                                    if($q_type!='KEYBOARD'&&$q_type!='LWORD'&&$q_type!='LPICTURE')
-                                    {
-                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A1'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            if($result->type == 'PICTURE')
-                                            {
-                                              echo '<div class="col-lg-3 col-md-3">';
-                                              echo '<p><b>[A]</b></p>';
-                                              echo '<img src="upload/Q';
-                                              echo $q_list[$exam_index];
-                                              echo 'A1.';
-                                              echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
-                                              echo '</div>';
-                                            }
-                                            else if($result->type == 'WORD')
-                                            {
-                                              echo '<p><b>[A]  '.$result->Content.'</b></p>';
-
-                                            }
-                                            else{}
-
-                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A2'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            if($result->type == 'PICTURE')
-                                            {
-                                              echo '<div class="col-lg-3 col-md-3">';
-                                              echo '<p><b>[B]</b></p>';
-                                              echo '<img src="upload/Q';
-                                              echo $q_list[$exam_index];
-                                              echo 'A2.';
-                                              echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
-                                              echo '</div>';
-                                            }
-                                            else if($result->type == 'WORD')
-                                            {
-                                              echo '<p><b>[B]  '.$result->Content.'</b></p>';
-                                            }
-                                            else{}
-
-
-                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A3'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            if($result->type == 'PICTURE')
-                                            {
-                                              echo '<div class="col-lg-3 col-md-3">';
-                                              echo '<p><b>[C]</b></p>';
-                                              echo '<img src="upload/Q';
-                                              echo $q_list[$exam_index];
-                                              echo 'A3.';
-                                              echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
-                                              echo '</div>';
-                                            }
-                                            else if($result->type == 'WORD')
-                                            {
-                                              echo '<p><b>[C]  '.$result->Content.'</b></p>';
-
-                                            }
-                                            else{}
-
-                                            $sql = "SELECT * FROM QuestionList WHERE No like '$q_list[$exam_index]' AND QA like 'A4'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            if($result->type == 'PICTURE')
-                                            {
-                                              echo '<div class="col-lg-3 col-md-3">';
-                                              echo '<p><b>[D]</b></p>';
-                                              echo '<img src="upload/Q';
-                                              echo $q_list[$exam_index];
-                                              echo 'A4.';
-                                              echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
-                                              echo '</div>';
-                                            }
-                                            else if($result->type == 'WORD')
-                                            {
-                                              echo '<p><b>[D]  '.$result->Content.'</b></p>';
-
-                                            }
-                                            else{}
-
-                                    }*/
-
                                     $db->close();
 
-                                ?>                          
+                                ?>
                             </h1>
                           <div class="clearfix"></div>
                         </div>
@@ -396,8 +250,8 @@ if($_SESSION['username'] == null)
                           url: "changeNext.php",
                           data: { name: "Next" }
                           }
-                       ).done(function( msg ) {});  
-                       //location.reload(); 
+                       ).done(function( msg ) {});
+                       //location.reload();
             }
 
 
@@ -465,9 +319,9 @@ if($_SESSION['username'] == null)
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
 
             <script type="text/javascript">
-                 $('#nextquiz').click(function() 
+                 $('#nextquiz').click(function()
                     {
-                      if (<?php echo $question_number; ?> == '10')
+                      if (<?php echo $question_number; ?> == <?php echo $q_list_number-1; ?>)
                       {
                         location.href = 'ExamFinish.php';
                       }
@@ -480,13 +334,13 @@ if($_SESSION['username'] == null)
                             url: "changeNext.php",
                             data: { name: "Next" }
                             }
-                         ).done(function( msg ) {});  
+                         ).done(function( msg ) {});
                          //location.reload();
                          setTimeout('location.reload();',300);
                       }
                     });
 
-                 $('#lastquiz').click(function() 
+                 $('#lastquiz').click(function()
                     {
                        $.ajax
                        (
@@ -495,13 +349,13 @@ if($_SESSION['username'] == null)
                           url: "changeLast.php",
                           data: { name: "Last" }
                           }
-                       ).done(function( msg ) {});  
+                       ).done(function( msg ) {});
                        //location.reload();
                       setTimeout('location.reload();',300);
 
                     });
 
-                 $('#zeroquiz').click(function() 
+                 $('#zeroquiz').click(function()
                     {
                          $.ajax
                          (
@@ -510,8 +364,8 @@ if($_SESSION['username'] == null)
                             url: "updateData.php",
                             data: { name: "Zero" }
                             }
-                         ).done(function( msg ) {});  
-                         location.reload();  
+                         ).done(function( msg ) {});
+                         location.reload();
                     });
             </script>
   </body>

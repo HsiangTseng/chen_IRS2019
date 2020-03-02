@@ -56,7 +56,7 @@
 
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 	  $file = $_FILES['audio_file']['tmp_name'];
-	  $a1_ext = end(explode('.', $_FILES['audio_file']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_file']['name']));
 	  $audio_dest = 'upload/Q'.(string)$max_number.'.mp3';
 	   move_uploaded_file($file, $audio_dest);
 	  }

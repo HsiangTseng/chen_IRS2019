@@ -120,7 +120,7 @@
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 
 	  $file = $_FILES['audio_file']['tmp_name'];
-	  $a1_ext = end(explode('.', $_FILES['audio_file']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_file']['name']));
 	  $audio_dest = 'upload/Q'.(string)$max_number.'.mp3';
 	   # 將檔案移至指定位置
 	   move_uploaded_file($file, $audio_dest);
@@ -133,7 +133,7 @@
 
 	  $file = $_FILES['audio_A1']['tmp_name'];
 
-	  $a1_ext = end(explode('.', $_FILES['audio_A1']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_A1']['name']));
 	  $audio_A1 = 'upload/Q'.(string)$max_number.'A1.mp3';
 	   # 將檔案移至指定位置
 	   move_uploaded_file($file, $audio_A1);
@@ -146,7 +146,7 @@
 
 	  $file = $_FILES['audio_A2']['tmp_name'];
 
-	  $a1_ext = end(explode('.', $_FILES['audio_A2']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_A2']['name']));
 	  $audio_A2 = 'upload/Q'.(string)$max_number.'A2.mp3';
 	   # 將檔案移至指定位置
 	   move_uploaded_file($file, $audio_A2);
@@ -159,7 +159,7 @@
 
 	  $file = $_FILES['audio_A3']['tmp_name'];
 
-	  $a1_ext = end(explode('.', $_FILES['audio_A3']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_A3']['name']));
 	  $audio_A3 = 'upload/Q'.(string)$max_number.'A3.mp3';
 	   # 將檔案移至指定位置
 	   move_uploaded_file($file, $audio_A3);
@@ -172,7 +172,7 @@
 
 	  $file = $_FILES['audio_A4']['tmp_name'];
 
-	  $a1_ext = end(explode('.', $_FILES['audio_A4']['name']));
+	  //$a1_ext = end(explode('.', $_FILES['audio_A4']['name']));
 	  $audio_A4 = 'upload/Q'.(string)$max_number.'A4.mp3';
 	   # 將檔案移至指定位置
 	   move_uploaded_file($file, $audio_A4);

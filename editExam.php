@@ -2,27 +2,24 @@
 
 <?php
     include("connects.php");
-    
+
     $exam_number = $_POST['exam_num'];
-    $a1 = $_POST['q1'];    
-    $a2 = $_POST['q2'];
-    $a3 = $_POST['q3'];    
-    $a4 = $_POST['q4'];    
-    $a5 = $_POST['q5'];    
-    $a6 = $_POST['q6'];    
-    $a7 = $_POST['q7'];    
-    $a8 = $_POST['q8'];    
-    $a9 = $_POST['q9'];    
-    $a10 = $_POST['q10'];    
+    $question = $_POST['q1'];
+    $question_count = $_POST['exercise_number'];
+    //print_r($question);
+    //echo $question_count;
 
-    $all = array();
+    $question_list = "";
+    $question_list = $question[0];
+    for ($i = 1 ; $i < $question_count ; $i++)
+    {
+      $question_list = trim($question_list).",".trim($question[$i]);
+    }
 
-    array_push($all,$a1,$a2,$a3,$a4,$a5,$a6,$a7,$a8,$a9,$a10);
-    $all = implode (",", $all);
-    $all = preg_replace('/\s(?=)/', '', $all);
-    $sql = "UPDATE `ExamList` SET `question_list`='$all' WHERE No = '$exam_number'";
+    //echo $question_list;
+
+    $sql = "UPDATE `ExamList` SET `question_list`='$question_list' WHERE No = '$exam_number'";
     $db->query($sql);
     $db->close();
     echo "<script>alert('編輯結束'); location.href = 'ExamList.php';</script>";
 ?>
-

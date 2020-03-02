@@ -16,23 +16,16 @@ else if ($_SESSION['type']!='T')
 
 <?php
 	include("connects.php");
-	
+
 	$exam_number = $_POST['edit_number'];
 
-    $sql = "SELECT * FROM `ExamList` WHERE `No`='$exam_number'";
-    $result = mysqli_fetch_object($db->query($sql));
-    $exam_title = $result->ExamTitle;
-    $exam_teacher = $result->Teacher;
-    $exam_note = $result->Note;
-    $q_list = array();
-    $temp_string = $result->question_list;
-    $q_list = mb_split(",",$temp_string);
-    //print_r($q_list);
-    if(sizeof($q_list)==1)
-    {
-        $q_list = array_fill(0, 10, '99');
-    }
-	$db->close();
+  $sql = "SELECT * FROM `ExamList` WHERE `No`='$exam_number'";
+  $result = mysqli_fetch_object($db->query($sql));
+  $exam_title = $result->ExamTitle;
+  $exam_teacher = $result->Teacher;
+  $exam_note = $result->Note;
+
+  $db->close();
 
 ?>
 
@@ -107,7 +100,7 @@ else if ($_SESSION['type']!='T')
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -158,6 +151,8 @@ else if ($_SESSION['type']!='T')
 
                         <!-- content area-->
                         <div class="x_content">
+
+
                                 <?php
                                     include("connects.php");
                                     $sql = "SELECT MAX(No) AS max FROM QuestionList";
@@ -193,7 +188,7 @@ else if ($_SESSION['type']!='T')
                                     $MPNumber = mysqli_fetch_object($db->query($sql))->MPNumber;
 
 
-                                    function ddl_content($q_list_index)
+                                    function ddl_content()
                                     {
                                         global $maxnum,$SWNumber,$MWNumber,$SVNumber,$MVNumber,$SPNumber,$MPNumber,$question_number,$q_list,$question_content;
                                         for ($i=1 ; $i<=$maxnum ; $i++)
@@ -208,13 +203,13 @@ else if ($_SESSION['type']!='T')
                                         echo " \"";
                                         echo "$question_number[$i]";
                                         echo " \"";
-                                        if (($question_number[$i] == $q_list[$q_list_index]) && sizeof($q_list)>1 )
+                                        /*if (($question_number[$i] == $q_list[$q_list_index]) && sizeof($q_list)>1 )
                                         {
                                              echo " selected ";
-                                        }
+                                        }*/
                                         echo ">";
                                         echo "$question_content[$i]";
-                                        echo "</option>";  
+                                        echo "</option>";
                                         if($i==$SWNumber){echo "</optgroup>";}
                                         if($i==$SWNumber+$MWNumber){echo "</optgroup>";}
                                         if($i==$SWNumber+$MWNumber+$SVNumber){echo "</optgroup>";}
@@ -251,145 +246,79 @@ else if ($_SESSION['type']!='T')
                                                       <input type="text" class="form-control" readonly="readonly" placeholder="<?php echo $exam_teacher;?>">
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第1題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q1" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(0);
-                                                                /*for ($i=1 ; $i<=$maxnum ; $i++)
-                                                                {
-                                                                echo "<option value=";
-                                                                echo " \"";
-                                                                echo "$question_number[$i]";
-                                                                echo " \"";
-                                                                if ($question_number[$i] == $q_list[3])
-                                                                {
-                                                                     echo " selected ";
-                                                                }
-                                                                echo ">";
-                                                                echo "$question_content[$i]";
-                                                                echo "</option>";  
-                                                                }*/
-                                                         ?>
-                                                      </select>
-                                                    </div>
+                                                  <label class="control-label col-md-3" for="first-name">增減習題數量 : </label>
+                                                  <button type="button" class="btn btn-success" onclick="addInputExe()">增加</button>
+                                                  <button type="button" class="btn btn-danger" onclick="subInputExe()">減少</button>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第2題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q2" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(1);
-                                                        ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
+                                                <div id="exercise"></div>
+                                                <input type="hidden" name="exercise_number"  id="exercise_number">
+                                                <script>
+                                                var exercise_create_input_number = 0;
+                                                function addInputExe() {
+                                                          exercise_create_input_number++;
+                                                          var ediv_form = document.createElement("DIV");
+                                                          ediv_form.setAttribute("class","form-group");
+                                                          name = 'div_epic'+exercise_create_input_number;
+                                                          ediv_form.setAttribute("id",name);
 
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第3題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q3" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(2);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第4題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q4" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(3);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第5題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q5" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(4);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第6題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q6" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(5);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第7題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q7" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(6);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第8題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q8" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(7);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第9題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q9" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(8);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">第10題</label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <select class="select2_single form-control" name="q10" tabindex="-1" required>
-                                                        <option></option>
-                                                        <?php
-                                                                ddl_content(9);
-                                                         ?>
-                                                      </select>
-                                                    </div>
-                                                </div>
+                                                          var elb =
+                                                                  '<div class="form-group">'+
+                                                                  '<label class="control-label col-md-3 col-sm-3 col-xs-12">第'+exercise_create_input_number+'題</label>'+
+                                                                    '<div class="col-md-9 col-sm-9 col-xs-12">'+
+                                                                      '<select class="select2_single form-control" id="q'+exercise_create_input_number+'_id" name="q1[]" tabindex="-1" required>'+
+                                                                        '<?php ddl_content(0);?>'+
+                                                                      '</select>'+
+                                                                    '</div>'+
+                                                                  '</div>';
 
 
+                                                          ediv_form.innerHTML = elb;
+                                                          document.getElementById("exercise").appendChild(ediv_form);
+                                                          document.getElementById("exercise_number").value=exercise_create_input_number;
+                                                          }
+                                                function subInputExe() {
+                                                            if(exercise_create_input_number>1)
+                                                              {
+                                                                _ename = 'div_epic'+exercise_create_input_number;
+                                                              document.getElementById(_ename).remove();
+                                                              exercise_create_input_number--;
+                                                              document.getElementById("exercise_number").value=exercise_create_input_number;
+                                                              }
+                                                          }
 
 
+                                                function settingSelected(list_index,selected_index)//this function for edit to select the default ddl index
+                                                {
+                                                  list_index++;
+                                                  var name = "q"+list_index+"_id";
+                                                  document.getElementById(name).selectedIndex = selected_index;
+                                                }
+                                                </script>
 
+                                                <?php
+                                                //----------EDIT BLOCK----------
+                                                $sql = "SELECT * FROM `ExamList` WHERE `No`='$exam_number'";
+                                                $result = mysqli_fetch_object($db->query($sql));
+                                                $q_list = array();
+                                                $temp_string = $result->question_list;
+                                                $q_list = mb_split(",",$temp_string);
+
+                                                foreach ($q_list as $key => $value) {
+                                                  echo '<script>addInputExe('.$q_list[$key].')</script>';
+
+                                                  for($i = 1 ; $i < $index ; $i++)
+                                                  {
+                                                    if($question_number[$i]==trim($q_list[$key]))
+                                                    {
+                                                      $temp_index = $i-1;
+                                                      echo '<script>settingSelected('.$key.','.$temp_index.')</script>';
+                                                    }
+                                                  }
+                                                }
+                                                //----------EDIT BLOCK----------
+                                                ?>
 
                                                   <div class="ln_solid"></div>
                                                   <div class="form-group">
