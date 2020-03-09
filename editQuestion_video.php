@@ -174,11 +174,16 @@
                                 <div class="col-md-5">
                                   <input type="text"  name="Q1" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
                                 </div>
+				
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="last-name">上傳影片 <span class="required"></span></label>
                                 <div class="col-md-5">
                                     <input type="file" name="video_file" required="required" />
+                                </div>
+				 <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                                <div class="col-md-3">
+                                    <input type="file" name="audio_file"/>
                                 </div>
                             </div>
 

@@ -165,8 +165,8 @@ else if ($_SESSION['type']!='T')
                                     <input type="radio" id="single_word_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
                                     <input type="radio" id="multi_word_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
                                 </div>
-                                <button class="btn btn-success" onclick="single_word()">單選</button>
-                                <button class="btn btn-success" onclick="multi_word()">多選</button>
+                                <button class="btn btn-success" onclick="single_word(); return false;">單選</button>
+                                <button class="btn btn-success" onclick="multi_word(); return false;">多選</button>
                             </div>
 
                             <script type="text/javascript">
@@ -367,8 +367,8 @@ else if ($_SESSION['type']!='T')
                                     <input type="radio" id="single_pic_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
                                     <input type="radio" id="multi_pic_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
                                 </div>
-                                <button class="btn btn-success" onclick="single_pic()">單選</button>
-                                <button class="btn btn-success" onclick="multi_pic()">多選</button>
+                                <button class="btn btn-success" onclick="single_pic(); return false;">單選</button>
+                                <button class="btn btn-success" onclick="multi_pic(); return false;">多選</button>
                             </div>
 
                             <script type="text/javascript">
@@ -552,8 +552,8 @@ else if ($_SESSION['type']!='T')
                                     <input type="radio" id="single_video_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
                                     <input type="radio" id="multi_video_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
                                 </div>
-                                <button class="btn btn-success" onclick="single_video()">單選</button>
-                                <button class="btn btn-success" onclick="multi_video()">多選</button>
+                                <button class="btn btn-success" onclick="single_video(); return false;">單選</button>
+                                <button class="btn btn-success" onclick="multi_video(); return false;">多選</button>
                             </div>
 
                             <script type="text/javascript">
@@ -620,6 +620,11 @@ else if ($_SESSION['type']!='T')
                                 <label class="control-label col-md-3" for="last-name">上傳影片 <span class="required"></span></label>
                                 <div class="col-md-5">
                                     <input type="file" name="video_file" required="required" />
+                                </div>
+
+				<label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                                <div class="col-md-3">
+                                    <input type="file" name="audio_file"/>
                                 </div>
                             </div>
                             <HR>

@@ -15,14 +15,6 @@
     $multi_or_single = $_GET['ms'];
 
 
-	include("connects.php");
-    $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-    $result = mysqli_fetch_object($db->query($sql));
-    $CA = $result->CA;
-    $CA_list = mb_split(",",$CA);
-    //echo $CA;
-    //print_r($CA_list);
-
 
 ?>
 
@@ -95,7 +87,7 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -127,7 +119,7 @@
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
@@ -137,159 +129,382 @@
                 </div>
                 <!-- title bar-->
 
-                		<form class="form-horizontal form-label-left" method="post" action="updateQuestion_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                    	echo $question_number;
-                                    ?>
-                                </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
-                                <?php
-                                	if($multi_or_single == 'SINGLE')
-                                	{
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>';
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label>';
-                                	}
-                                	else if ($multi_or_single == 'MULTI')
-                                	{
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" disabled="disabled"><label>單選</label>';
-                                		echo '<input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" checked="checked"><label>多選</label>';
-                                	}
-                                ?>
-                                <!--input type="radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" checked="checked"><label>單選</label>
-                                <input type="radio" class="radio-inline flat" name="single_or_multi" value="MULTI" disabled="disabled"><label>多選</label-->
-                            </div>
-							
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_file"/>
-                                </div>
-                            </div>
-
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A1'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A1"/>
-                                </div>
-                            </div>
-
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A2'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A2" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A2"/>
-                                </div>
-                            </div>
+                <form name="myForm" class="form-horizontal form-label-left" method="post" action="updateEdit_word.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
+                    <label class="control-label">
+                        <?php
+                            echo $question_number;
+                        ?>
+                    </label>
+                </div>
 
 
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A3'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A3" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A3"/>
-                                </div>
-                            </div>
+                <div  class="form-group">
+                    <label class="control-label col-md-3" for="first-name">答題型別 :<span class="required"></span></label>
+                    <div style="display: none;">
+                        <input type="radio" id="single_word_radio" class="radio-inline flat" name="single_or_multi" value="SINGLE" required>
+                        <input type="radio" id="multi_word_radio" class="radio-inline flat" name="single_or_multi" value="MULTI">
+                    </div>
+                    <button class="btn btn-success" onclick="single_word(); return false;">單選</button>
+                    <button class="btn btn-success" onclick="multi_word(); return false;">多選</button>
+                </div>
 
-							<?php
-								$sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A4'";
-							    $result = mysqli_fetch_object($db->query($sql));
-							    $Content = $result->Content;
-						    ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="A4" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                                <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
-                                <div class="col-md-3">
-                                    <input type="file" name="audio_A4"/>
-                                </div>
-                            </div>
+                <script type="text/javascript">
+                    function single_word()
+                    {
+                        document.getElementById("single_word_radio").checked=true;
+                        document.getElementById("multi_word_radio").checked=false;
 
-							<!-- EDIT BLOCK-->
-                            <input type="hidden" name="edit_tag" value="edit"/>
-                            <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
+                        var div_form = document.createElement("DIV");
+                        div_form.setAttribute("class","form-group");
+                        var word = '<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
+                        var A = '<input type="radio" class="radio-inline flat" id="radio_1" name="answer[]" value="A1" required><label>A選項</label>';
+                        var B = '<input type="radio" class="radio-inline flat" id="radio_2" name="answer[]" value="A2"><label>B選項</label>';
+                        var C = '<input type="radio" class="radio-inline flat" id="radio_3" name="answer[]" value="A3"><label>C選項</label>';
+                        var D = '<input type="radio" class="radio-inline flat" id="radio_4" name="answer[]" value="A4"><label>D選項</label>';
+                        div_form.innerHTML = word+A+B+C+D;
+
+                        var list = document.getElementById("word_ca");
+                        while(list.hasChildNodes()){
+                            list.removeChild(list.firstChild);
+                        }
+                        document.getElementById("word_ca").appendChild(div_form);
+
+                        document.getElementById("single_word_submit").disabled = false;
+
+                    }
+
+                    function multi_word()
+                    {
+                        document.getElementById("single_word_radio").checked=false;
+                        document.getElementById("multi_word_radio").checked=true;
+
+                        var div_form = document.createElement("DIV");
+                        div_form.setAttribute("class","form-group");
+                        var word = '<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
+                        var A = '<input type="checkbox" class="radio-inline flat" id="check_1" name="answer[]" value="A1"><label>A選項</label>';
+                        var B = '<input type="checkbox" class="radio-inline flat" id="check_2" name="answer[]" value="A2"><label>B選項</label>';
+                        var C = '<input type="checkbox" class="radio-inline flat" id="check_3" name="answer[]" value="A3"><label>C選項</label>';
+                        var D = '<input type="checkbox" class="radio-inline flat" id="check_4" name="answer[]" value="A4"><label>D選項</label>';
+                        div_form.innerHTML = word+A+B+C+D;
+
+                         var list = document.getElementById("word_ca");
+                        while(list.hasChildNodes()){
+                            list.removeChild(list.firstChild);
+                        }
+                        document.getElementById("word_ca").appendChild(div_form);
+                        document.getElementById("single_word_submit").disabled = false;
+
+                    }
+                </script>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                    <input type="radio" class="radio-inline flat" id="class_1" name="classification[]" value="1" required><label>詞彙理解</label>
+                    <input type="radio" class="radio-inline flat" id="class_2" name="classification[]" value="2" required><label>詞彙表達</label>
+                    <input type="radio" class="radio-inline flat" id="class_3" name="classification[]" value="3" required><label>語法表現</label>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text" id="Q1"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+
+                    <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                    <div class="col-md-3">
+                        <input type="file" name="audio_file"/>
+                    </div>
+                </div>
+                <div class="form-group  sameline">
+                    <label class="control-label col-md-3" for="last-name">題目附圖 : <span></span></label>
+                    <input type="file" name="Q1_file" id="Q1_file"/>
+                    <label for="last-name">alt :</label>
+                    <input type="text" name="Q1_alt" id="Q1_alt">
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img0" src="" alt="">
+                </div>
+                <hr style="border-top: 2px dashed #2D99C8;" />
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text"  name="A1" id="A1" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                    <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                    <div class="col-md-3">
+                        <input type="file" name="audio_A1"/>
+                    </div>
+                </div>
+                <div class="form-group sameline">
+                    <label class="control-label col-md-3" for="last-name">選項(A)附圖 : <span></span></label>
+                    <input type="file" name="A1_file" id="A1_file"/>
+                    <label for="last-name">alt :</label>
+                    <input type="text" name="A1_alt" id="A1_alt">
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img1" src="" alt="">
+                </div>
+                <hr style="border-top: 2px dashed #2D99C8;" />
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text"  name="A2" id="A2" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                    <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                    <div class="col-md-3">
+                        <input type="file" name="audio_A2"/>
+                    </div>
+                </div>
+                <div class="form-group sameline">
+                    <label class="control-label col-md-3" for="last-name">選項(B)附圖 : <span></span></label>
+                    <input type="file" name="A2_file" id="A2_file"/>
+                    <label for="last-name">alt :</label>
+                    <input type="text" name="A2_alt" id="A2_alt">
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img2" src="" alt="">
+                </div>
+                <hr style="border-top: 2px dashed #2D99C8;" />
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text"  name="A3" id="A3" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                    <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                    <div class="col-md-3">
+                        <input type="file" name="audio_A3"/>
+                    </div>
+                </div>
+                <div class="form-group sameline">
+                    <label class="control-label col-md-3" for="last-name">選項(C)附圖 : <span></span></label>
+                    <input type="file" name="A3_file" id="A3_file"/>
+                    <label for="last-name">alt :</label>
+                    <input type="text" name="A3_alt" id="A3_alt">
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img3" src="" alt="">
+                </div>
+                <hr style="border-top: 2px dashed #2D99C8;" />
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text"  name="A4" id="A4" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                    <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+                    <div class="col-md-3">
+                        <input type="file" name="audio_A4"/>
+                    </div>
+                </div>
+                <div class="form-group sameline">
+                    <label class="control-label col-md-3" for="last-name">選項(D)附圖 : <span></span></label>
+                    <input type="file" name="A4_file" id="A4_file"/>
+                    <label for="last-name">alt :</label>
+                    <input type="text" name="A4_alt" id="A4_alt">
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img4" src="" alt="">
+                </div>
+                <hr style="border-top: 2px dashed #2D99C8;" />
+
+
+                <div id="word_ca"></div>
+
+                <script
+                  src="https://code.jquery.com/jquery-1.9.0.js"
+                  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+                  crossorigin="anonymous">
+                </script>
+                <script>
+
+
+                window.onload = function() {
+                      document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                      document.getElementById("img1").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                      document.getElementById("img2").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                      document.getElementById("img3").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                      document.getElementById("img4").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                    };
+
+                $("#Q1_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img0").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img0');
+                    document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
+                $("#A1_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img1").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img1');
+                    document.getElementById("img1").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
+                $("#A2_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img2").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img2');
+                    document.getElementById("img2").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
+                $("#A3_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img3").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img3');
+                    document.getElementById("img3").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
+                $("#A4_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img4").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img4');
+                    document.getElementById("img4").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
+
+
+                function getObjectURL(file) {
+                    var url = null ;
+                    if (window.createObjectURL!=undefined) { // basic
+                        url = window.createObjectURL(file) ;
+                    } else if (window.URL!=undefined) { // mozilla(firefox)
+                        url = window.URL.createObjectURL(file) ;
+                    } else if (window.webkitURL!=undefined) { // webkit or chrome
+                        url = window.webkitURL.createObjectURL(file) ;
+                    }
+                    return url ;
+                    console.log( url )
+                }
+                </script>
 
 
 
 
+                <!-- EDIT BLOCK-->
+                <input type="hidden" name="edit_tag" value="edit"/>
+                <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
 
-							<?php
-								if($multi_or_single == 'SINGLE')
-								{
-									echo'<div class="form-group">';
-			                        	echo'<label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A1" required '; if (strpos($CA, 'A1') !== false) {echo 'checked="true" ';} echo'><label>A選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A2" '; if (strpos($CA, 'A2') !== false) {echo 'checked="true" ';} echo'><label>B選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A3" '; if (strpos($CA, 'A3') !== false) {echo 'checked="true" ';} echo'><label>C選項</label>';
-			                            echo'<input type="radio" class="radio-inline flat" name="answer[]" value="A4" '; if (strpos($CA, 'A4') !== false) {echo 'checked="true" ';} echo'><label>D選項</label>';
-			                        echo'</div>';
-								}
-
-								else if ($multi_or_single == 'MULTI')
-								{
-									echo'<div class="form-group required">
-			                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1" '; if (strpos($CA, 'A1') !== false) {echo 'checked="true" ';} echo'><label>A選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2" '; if (strpos($CA, 'A2') !== false) {echo 'checked="true" ';} echo'><label>B選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3" '; if (strpos($CA, 'A3') !== false) {echo 'checked="true" ';} echo'><label>C選項</label>
-			                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4" '; if (strpos($CA, 'A4') !== false) {echo 'checked="true" ';} echo'><label>D選項</label>
-			                            </div>';
-								}
-							?>
-                            
-
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
-
+                <clearfix>
+                  <div class="form-group">
+                      <label class="control-label col-md-6"><font color="red">註1：若"送出"按鈕無法點選，代表尚未選擇答題類型(單選/多選)</font></label>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label col-md-5" for="first-name"><font color="red">註2：若選擇"多選"，請務必確認有勾選正解</font></label>
+                  </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button class="btn btn-primary" type="reset">重填</button>
+                    <button type="submit" id="single_word_submit" class="btn btn-success" disabled >送出</button>
+                </div>
+            </form>
             </div>
             <!-- Question -->
 
 
 
+            <?php
+            // PHP BLOCK, SETTING ALL DEFAULT VALUE HERE!
+            include("connects.php");
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $type = $result->type;
+            $content = $result->Content;
+            $single_or_multi = $result->single_or_multi;
+            $CA = $result->CA;
+            $classification = $result->classification;
+
+            //echo $type.$content.$single_or_multi.$CA.$classification;
+
+            //SINGLE OR MULTI AND DEFAULT CA
+            if($single_or_multi=="SINGLE")
+            {
+              echo '<script>single_word();</script>';
+              if($CA=="A1")echo '<script>document.getElementById("radio_1").checked = true;</script>';
+              else if($CA=="A2")echo '<script>document.getElementById("radio_2").checked = true;</script>';
+              else if($CA=="A3")echo '<script>document.getElementById("radio_3").checked = true;</script>';
+              else if($CA=="A4")echo '<script>document.getElementById("radio_4").checked = true;</script>';
+            }
+            else
+            {
+              echo '<script>multi_word();</script>';
+              // IF CA CONTAINS 'A1', DO ...
+              if(strpos($CA, 'A1')!==false)echo '<script>document.getElementById("check_1").checked = true;</script>';
+              if(strpos($CA, 'A2')!==false)echo '<script>document.getElementById("check_2").checked = true;</script>';
+              if(strpos($CA, 'A3')!==false)echo '<script>document.getElementById("check_3").checked = true;</script>';
+              if(strpos($CA, 'A4')!==false)echo '<script>document.getElementById("check_4").checked = true;</script>';
+            }
+
+            //CLASSIFIACATION
+            if($classification=="1") echo '<script>document.getElementById("class_1").checked = true;</script>';
+            else if($classification=="2") echo '<script>document.getElementById("class_2").checked = true;</script>';
+            else if($classification=="3") echo '<script>document.getElementById("class_3").checked = true;</script>';
+
+            //Question
+            echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
+            $q1_pic_ext = $result->picture_ext;
+            $q1_pic_alt = $result->picture_alt;
+            if(strlen($q1_pic_ext)>0) echo '<script>document.getElementById("img0").src = "upload/Q'.$question_number.'Q1.'.$q1_pic_ext.'"</script>';
+            if(strlen($q1_pic_alt)>0) echo '<script>document.getElementById("Q1_alt").value = "'.$q1_pic_alt.'"</script>';
+
+            //A1
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A1'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $content = $result->Content;
+            echo '<script>document.getElementById("A1").value="'.$content.'";</script>';
+            $a1_pic_ext = $result->picture_ext;
+            $a1_pic_alt = $result->picture_alt;
+            if(strlen($a1_pic_ext)>0) echo '<script>document.getElementById("img1").src = "upload/Q'.$question_number.'A1.'.$a1_pic_ext.'"</script>';
+            if(strlen($a1_pic_alt)>0) echo '<script>document.getElementById("A1_alt").value = "'.$a1_pic_alt.'"</script>';
+
+            //A2
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A2'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $content = $result->Content;
+            echo '<script>document.getElementById("A2").value="'.$content.'";</script>';
+            $a2_pic_ext = $result->picture_ext;
+            $a2_pic_alt = $result->picture_alt;
+            if(strlen($a2_pic_ext)>0) echo '<script>document.getElementById("img2").src = "upload/Q'.$question_number.'A2.'.$a2_pic_ext.'"</script>';
+            if(strlen($a2_pic_alt)>0) echo '<script>document.getElementById("A2_alt").value = "'.$a2_pic_alt.'"</script>';
+
+            //A1
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A3'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $content = $result->Content;
+            echo '<script>document.getElementById("A3").value="'.$content.'";</script>';
+            $a3_pic_ext = $result->picture_ext;
+            $a3_pic_alt = $result->picture_alt;
+            if(strlen($a3_pic_ext)>0) echo '<script>document.getElementById("img3").src = "upload/Q'.$question_number.'A3.'.$a3_pic_ext.'"</script>';
+            if(strlen($a3_pic_alt)>0) echo '<script>document.getElementById("A3_alt").value = "'.$a3_pic_alt.'"</script>';
+
+            //A1
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'A4'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $content = $result->Content;
+            echo '<script>document.getElementById("A4").value="'.$content.'";</script>';
+            $a4_pic_ext = $result->picture_ext;
+            $a4_pic_alt = $result->picture_alt;
+            if(strlen($a4_pic_ext)>0) echo '<script>document.getElementById("img4").src = "upload/Q'.$question_number.'A4.'.$a4_pic_ext.'"</script>';
+            if(strlen($a4_pic_alt)>0) echo '<script>document.getElementById("A4_alt").value = "'.$a4_pic_alt.'"</script>';
+
+
+            ?>
 
 
 

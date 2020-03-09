@@ -210,7 +210,7 @@ if($_SESSION['username'] == null)
                                             echo '</div>';
 
                                           }
-                                          elseif (!empty($result->audio))
+                                          if (!empty($result->audio))
                                           {
                                             echo '<audio controls>';
                                             echo '<source src="upload/Q'.$q_list[$exam_index].'.mp3" type="audio/mpeg">';
