@@ -128,6 +128,7 @@ else if ($_SESSION['type']!='T')
                 <table id="e_list" class="table table-striped table-bordered">
                   <thead>
                     <tr>
+		      <th>編號</th>
                       <th>姓名</th>
                       <th>性別</th>
                       <th>學校</th>
@@ -135,6 +136,7 @@ else if ($_SESSION['type']!='T')
                       <th>施測時間</th>
                       <th>施測人員</th>
                       <th>障礙類別</th>
+		      <th>編輯</th>
                     </tr>
                   </thead>
 
@@ -144,6 +146,7 @@ else if ($_SESSION['type']!='T')
                     $sql = "SELECT COUNT(Name) AS max FROM UserList WHERE type = 'S'";
                     $result = mysqli_fetch_object($db->query($sql));
                     $max_number = $result->max;
+		    $studentnumber = array();
                     $name = array();
                     $school = array();
                     $gender = array();
@@ -155,6 +158,7 @@ else if ($_SESSION['type']!='T')
                     {
                       $sql2 = "SELECT * FROM `UserList` WHERE `type` ='S' AND `StudentNumber` = $a";
                       $result2 = mysqli_fetch_object($db->query($sql2));
+		      $studentnumber[$a] = $result2->StudentNumber;
                       $name[$a] = $result2->Name;
                       $school[$a] = $result2->School;
                       $gender[$a] = $result2->Gender;
@@ -179,6 +183,7 @@ else if ($_SESSION['type']!='T')
                       if($category[$a]=='11'){$category[$a]='自閉症';}
                       if($category[$a]=='12'){$category[$a]='發展遲緩';}
 
+		      $studentnumber_to_json = json_encode((array)$studentnumber);
                       $name_to_json=json_encode((array)$name);
                       $school_to_json=json_encode((array)$school);
                       $gender_to_json=json_encode((array)$gender);
@@ -192,6 +197,7 @@ else if ($_SESSION['type']!='T')
                   <tbody>
                     <tr>
                       <?php
+		      echo '<td>'.$studentnumber[1].'</td>';
                       echo '<td>'.$name[1].'</td>';
                       echo '<td>'.$gender[1].'</td>';
                       echo '<td>'.$school[1].'</td>';
@@ -199,6 +205,7 @@ else if ($_SESSION['type']!='T')
                       echo '<td>'.$test_time[1].'</td>';
                       echo '<td>'.$teacher[1].'</td>';
                       echo '<td>'.$category[1].'</td>';
+		      echo '<td><button type="submit" class="btn btn-info" onclick="btnclk(1)">編輯</button></td>';
                       ?>
                     </tr>
 
@@ -284,20 +291,28 @@ else if ($_SESSION['type']!='T')
             <script type="text/javascript" class="init">
                 $('#e_list').dataTable( {
                   "columns": [
-                    { "width": "20%" },
+		    { "width": "10%" },
+                    { "width": "10%" },
                     { "width": "5%" },
                     { "width": "15%" },
                     { "width": "5%" },
                     { "width": "20%" },
-                    { "width": "20%" },
+                    { "width": "10%" },
                     { "width": "15%" },
+          	    { "width": "10%" },
                   ]
                 } );
+		
+		function btnclk(q_index){
+			var index = q_index;
+			window.location.href = 'StudentStatusView.php?index='+index;
+		}
 
                 $(document).ready
                 (
                     function() 
                         {
+			  var studentnumberfromPHP =<? echo $studentnumber_to_json ?>;
                           var namefromPHP=<? echo $name_to_json ?>;
                           var schoolfromPHP=<? echo $school_to_json ?>;
                           var genderfromPHP=<? echo $gender_to_json ?>;
@@ -310,6 +325,7 @@ else if ($_SESSION['type']!='T')
                           {
                             t.row.add(
                             [
+			    studentnumberfromPHP[i],
                             namefromPHP[i],
                             genderfromPHP[i],
                             schoolfromPHP[i],
@@ -317,6 +333,8 @@ else if ($_SESSION['type']!='T')
                             test_timefromPHP[i],
                             teacherfromPHP[i],
                             categoryfromPHP[i],
+         		    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+studentnumberfromPHP[i]+")\">編輯</button>",
+
                             ]).draw(false);
                           } 
                         }

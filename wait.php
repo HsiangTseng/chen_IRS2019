@@ -97,30 +97,45 @@
                   </div>
                   <div class="x_content">
                       <h1>等待進入考試中,請稍後</h1>
-			            <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
-	                        <div class="well profile_view">
-	                          <div class="col-sm-12">
-	                            <h4 class="brief">個人資料</h4>
-	                            <div class="left col-xs-7">
-	                              <h1><strong>王小明</strong></h1>
-	                              	<p><strong>學校: </strong> 嘉大附小</p>
-	                                <p><i class="fa fa-building"></i><strong>學號： </strong>1012345</p>
-	                                <p><i class="fa fa-building"></i><strong>班級： </strong>二年甲班</p>
-	                            </div>
-	                            <div class="right col-xs-5 text-center">
-	                              <img src="images/user.png" alt="" class="img-circle img-responsive">
-	                            </div>
-	                          </div>
-	                          <div class="col-xs-12 bottom text-center">
-	                            <div class="col-xs-12 col-sm-6 emphasis">
-	                              <p class="ratings">
-	                                <a></a>
-	                              </p>
-	                            </div>
-	                            
-	                          </div>
-	                        </div>
-	                     </div>
+			<?php	
+	include("connects.php");
+
+	$sql = "select * from UserList where id ='".$_SESSION['username']."'";
+	
+	if($stmt = $db->query($sql)){
+		while($result = mysqli_fetch_object($stmt)){
+			$id = $result-> id;
+			$Name = $result->Name;
+			$School = $result->School;
+			$Grade = $result->Grade;
+			$Class = $result->Class;
+		}
+	}
+
+	echo "<div class='col-md-12 col-sm-12 col-xs-12 profile_details'>";
+		echo "<div class='well profile_view'>";
+			echo "<div class='col-sm-12'>";
+				echo "<h4 class='brief'>個人資料</h4>";
+					echo "<div class='left col-xs-7'>";
+						echo "<h1><strong>".$Name."</strong></h1>";
+							echo "<p><strong>學校: </strong> ".$School."</p>";
+							echo "<p><i class='fa fa-building'></i><strong>學號： </strong>".$id."</p>";
+							echo "<p><i class='fa fa-building'></i><strong>班級： </strong>".$Grade."年".$Class."</p>";
+					echo "</div>";
+					echo "<div class='right col-xs-5 text-center'>";
+						echo "<img src='images/user.png' alt='' class='img-circle img-responsive'>";
+					echo "</div>";
+			echo "</div>";
+				echo "<div class='col-xs-12 bottom text-center'>";
+					echo "<div class='col-xs-12 col-sm-6 emphasis'>";
+						echo "<p class='ratings'>";
+							echo "<a></a>";
+						echo "</p>";
+					echo "</div>";
+				echo "</div>";
+		echo "</div>";
+	echo "</div>";
+?>		
                   </div>
                 </div>
               </div>
