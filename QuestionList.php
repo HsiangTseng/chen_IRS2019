@@ -116,6 +116,36 @@ if($_SESSION['username'] == null)
                   <h1><b>題庫</b></h1>
                   <div class="clearfix"></div>
                 </div>
+        				<form class="form-horizontal form-label-left input_mask" method="post" action="QuestionList.php">
+        					<div>
+        						<label class="control-label col-md-2 col-sm-2 col-xs-12">題目型別 :</label>
+        						<div class="col-md-2 col-sm-2">
+        						  <select id="search_type" name="search_type" class="form-control">
+        							<option value="0">請選擇題目型別</option>
+        							<option value="LWORD">文字順序</option>
+        							<option value="WORD">文字選擇</option>
+        							<option value="LPICTURE">圖片順序</option>
+        							<option value="PICTURE">圖片選擇</option>
+        							<option value="VIDEO">影片選擇</option>
+        							<option value="KEYBOARD">KEYBOARD</option>
+        						  </select>
+        						</div>
+
+        						<label class="control-label col-md-2 col-sm-2 col-xs-12">測驗型別 :</label>
+        						<div class="col-md-2 col-sm-2">
+        						  <select id="search_classification" name="search_classification" class="form-control">
+        							<option value="0">請選擇測驗型別</option>
+        							<option value="1">詞彙理解</option>
+        							<option value="2">詞彙表達</option>
+        							<option value="3">詞彙語法</option>
+        						  </select>
+        						</div>
+
+        						<button type="submit" id="btn_submit" class="btn btn-success">搜尋</button>
+        					</div>
+                </form>
+
+
                 <!-- title bar-->
 
                 <!-- Question List Table -->
@@ -127,6 +157,7 @@ if($_SESSION['username'] == null)
                       <th>測驗型別</th>
                       <th>題目</th>
                       <th>編輯</th>
+                      <th>刪除</th>
                     </tr>
                   </thead>
                   <?php
@@ -137,42 +168,78 @@ if($_SESSION['username'] == null)
                     $content = array();
                     $type = array();
                     $classification = array();
-                    for ( $a = 1 ; $a<=$max_number ; $a++)
+					          $No = array();
+			              $max_count = 0;
+
+            				if(isset($_POST['search_type'])){
+            					 if(strpos($_POST['search_type'],'0') === false){
+            						$search_type = $_POST['search_type'];
+            					}
+            				}
+            				if(isset($_POST['search_classification'])){
+            					if($_POST['search_classification'] != "0"){
+            						$search_classification = $_POST['search_classification'];
+            					}
+            				}
+
+
+                    for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
                     {
-                      $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
-                      $result2 = mysqli_fetch_object($db->query($sql2));
-                      if(!empty($result2->Content))
-                      {
-                        if(!is_null($result2->Content))
-                        {
-                          $content[$a] = $result2->Content;
-                          $type[$a] = $result2->type;
-                          $classification[$a] = $result2->classification;
-                          $content_to_json=json_encode((array)$content);
-                          $type_to_json=json_encode((array)$type);
-                          $class_to_json=json_encode((array)$classification);
-                        }
-                      }
+            						$sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND status='1'";
+
+            						if(isset($_POST['search_type'])){
+            							if(strpos($_POST['search_type'],'0') === false){
+            								$sql2 = $sql2." AND `type` = '$search_type'";
+            							}
+            						}
+            						if(isset($_POST['search_classification'])){
+            							if($_POST['search_classification'] != 0){
+            								$sql2 = $sql2." AND `classification` = $search_classification";
+            							}
+            						}
+
+            						$result2 = mysqli_fetch_object($db->query($sql2));
+            						if(!empty($result2->Content))
+            						{
+            							if(!is_null($result2->Content))
+            							{
+            								$No[$count_index] = $result2->No;
+            								$content[$count_index] = $result2->Content;
+            								$type[$count_index] = $result2->type;
+            								$classification[$count_index] = $result2->classification;
+
+            								$No_to_json = json_encode((array)$No);
+            								$content_to_json=json_encode((array)$content);
+            								$type_to_json=json_encode((array)$type);
+            								$class_to_json=json_encode((array)$classification);
+
+            								$count_index++;
+            								$max_count = $count_index;
+            							}
+            						}
 
                     }
                   ?>
                   <tbody>
                     <tr>
                       <?php
-                      echo '<td>1</td>';
-                      if($type[1]=='WORD')echo '<td>文字選擇</td>';
-                      else if($type[1]=='PICTURE')echo '<td>圖片選擇</td>';
-                      else if($type[1]=='LWORD')echo '<td>文字順序</td>';
-                      else if($type[1]=='LPICTURE')echo '<td>圖片順序</td>';
-                      else if($type[1]=='VIDEO')echo '<td>影片</td>';
-                      else if($type[1]=='KEYBOARD')echo '<td>KEYBOARD</td>';
+		                  if($max_count > 0){
+                        echo '<td>'.$No[1].'</td>';
+                        if($type[1]=='WORD')echo '<td>文字選擇</td>';
+                        else if($type[1]=='PICTURE')echo '<td>圖片選擇</td>';
+                        else if($type[1]=='LWORD')echo '<td>文字順序</td>';
+                        else if($type[1]=='LPICTURE')echo '<td>圖片順序</td>';
+                        else if($type[1]=='VIDEO')echo '<td>影片</td>';
+                        else if($type[1]=='KEYBOARD')echo '<td>KEYBOARD</td>';
 
-                      if($classification[1]=='0') echo '<td>未選擇</td>';
-                      else if($classification[1]=='1') echo '<td>詞彙理解</td>';
-                      else if($classification[1]=='2') echo '<td>詞彙表達</td>';
-                      else if($classification[1]=='3') echo '<td>語法表現</td>';
-                      echo '<td>'.$content[1].'</td>';
-                      echo '<td><button type="submit" class="btn btn-info" onclick="btnclk(1)">編輯</button></td>';
+                        if($classification[1]=='0') echo '<td>未選擇</td>';
+                        else if($classification[1]=='1') echo '<td>詞彙理解</td>';
+                        else if($classification[1]=='2') echo '<td>詞彙表達</td>';
+                        else if($classification[1]=='3') echo '<td>語法表現</td>';
+                        echo '<td>'.$content[1].'</td>';
+                        echo '<td><button type="submit" class="btn btn-info" onclick="btnclk('.$No[1].')">編輯</button></td>';
+                        echo '<td><button type="submit" class="btn btn-danger" onclick="btndelete('.$No[1].')">刪除</button></td>';
+			                }
                       ?>
                       <!--td></td>
                       <td></td>
@@ -253,25 +320,68 @@ if($_SESSION['username'] == null)
             <script src="../build/js/custom.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
 
-            <?php
+			      <?php
               include("connects.php");
-              $sql = "SELECT MAX(No) AS max FROM QuestionList";
+              $sql = "SELECT COUNT(No) AS max FROM QuestionList WHERE QA='A' AND status='1'";
               $result = mysqli_fetch_object($db->query($sql));
               $max_number = $result->max;
               $content = array();
               $type = array();
-              for ( $a = 1 ; $a<=$max_number ; $a++)
+              $classification = array();
+    					$No = array();
+    			    $maxcount = 0;
+
+    					if(isset($_POST['search_type'])){
+    						 if(strpos($_POST['search_type'],'0') === false){
+    							$search_type = $_POST['search_type'];
+    						}
+    					}
+
+    					if(isset($_POST['search_classification'])){
+    						if($_POST['search_classification'] != "0"){
+    							$search_classification = $_POST['search_classification'];
+    						}
+    					}
+
+
+              for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
               {
-                $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
-                $result2 = mysqli_fetch_object($db->query($sql2));
-                $content[$a] = $result2->Content;
-                $type[$a] = $result2->type;
-                $content_to_json=json_encode((array)$content);
-                $type_to_json=json_encode((array)$type);
+						    $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
+
+    						if(isset($_POST['search_type'])){
+    							 if(strpos($_POST['search_type'],'0') === false){
+    								$sql2 = $sql2." AND `type` = '$search_type'";
+    							}
+    						}
+    						if(isset($_POST['search_classification'])){
+    							if($_POST['search_classification'] != 0){
+    								$sql2 = $sql2." AND `classification` = $search_classification";
+    							}
+    						}
+
+    						$result2 = mysqli_fetch_object($db->query($sql2));
+    						if(!empty($result2->Content))
+    						{
+    							if(!is_null($result2->Content))
+    							{
+    								$No[$count_index] = $result2->No;
+    								$content[$count_index] = $result2->Content;
+    								$type[$count_index] = $result2->type;
+    								$classification[$count_index] = $result2->classification;
+
+    								$No_to_json = json_encode((array)$No);
+    								$content_to_json=json_encode((array)$content);
+    								$type_to_json=json_encode((array)$type);
+    								$class_to_json=json_encode((array)$classification);
+
+    								$count_index++;
+    								$max_count = $count_index;
+    							}
+    						}
 
               }
-
             ?>
+
 
             <script type="text/javascript" class="init">
                 $('#q_list').dataTable( {
@@ -279,8 +389,9 @@ if($_SESSION['username'] == null)
                     { "width": "10%" },
                     { "width": "10%" },
                     { "width": "10%" },
-                    { "width": "65%" },
-                    { "width": "15%" },
+                    { "width": "60%" },
+                    { "width": "5%" },
+                    { "width": "5%" },
                   ]
                 } );
 
@@ -290,17 +401,24 @@ if($_SESSION['username'] == null)
                   window.location.href = 'editQuestion_main.php?number='+index;
                 }
 
+                function btndelete(q_index)
+                {
+                  var index = q_index;
+                  window.location.href = 'DeleteQuestion.php?number='+index;
+                }
+
 
                 $(document).ready
                 (
-                    function()
-                        {
+                function(){
+							  var No_fromPHP = <? echo $No_to_json ?>;
                               var content_fromPHP=<? echo $content_to_json ?>;
                               var type_fromPHP=<? echo $type_to_json ?>;
                               var class_fromPHP=<? echo $class_to_json ?>;
                               var bt = "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk()\">編輯</button>";
+                              var bt2 = "<button type=\"submit\" class=\"btn btn-danger\" onclick=\"btndelete()\">刪除</button>";
                               var t = $('#q_list').DataTable();
-                              for (var i=2 ; i<= <?php echo "$max_number";?> ; i++)
+                              for (var i=2 ; i< <?php echo "$max_count";?> ; i++)
                               {
                                 if(type_fromPHP[i]=="WORD"){type_fromPHP[i]="文字選擇";}
                                 else if(type_fromPHP[i]=="PICTURE"){type_fromPHP[i]="圖片選擇";}
@@ -316,52 +434,14 @@ if($_SESSION['username'] == null)
 
                                 t.row.add(
                                     [
-                                    i,
+                                    No_fromPHP[i],
                                     type_fromPHP[i],
                                     class_fromPHP[i],
                                     content_fromPHP[i],
-                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
+                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+No_fromPHP[i]+")\">編輯</button>",
+                                    "<button type=\"submit\" class=\"btn btn-danger\" onclick=\"btndelete("+No_fromPHP[i]+")\">刪除</button>",
                                     ]).draw(false);
 
-                                /*
-                                if(type_fromPHP[i]=="WORD")
-                                  {
-                                    type_fromPHP[i]="文字";
-                                    t.row.add(
-                                    [
-                                    i,
-                                    type_fromPHP[i],
-                                    content_fromPHP[i],
-                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
-                                    ]).draw(false);
-                                  }
-
-                                else if(type_fromPHP[i]=="PICTURE")
-                                  {
-                                    type_fromPHP[i]="圖片";
-                                    t.row.add(
-                                    [
-                                    i,
-                                    type_fromPHP[i],
-                                    content_fromPHP[i],
-                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
-                                    ]).draw(false);
-                                  }
-                                  else if(type_fromPHP[i]=="VIDEO")
-                                  {
-                                    type_fromPHP[i]="影片";
-                                    t.row.add(
-                                    [
-                                    i,
-                                    type_fromPHP[i],
-                                    content_fromPHP[i],
-                                    "<button type=\"submit\" class=\"btn btn-info\" onclick=\"btnclk("+i+")\">編輯</button>",
-                                    ]).draw(false);
-                                  }
-                                else
-                                {
-
-                                }*/
                               }
                         }
 

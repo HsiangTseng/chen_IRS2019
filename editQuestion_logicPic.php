@@ -14,19 +14,6 @@
     $question_number = $_GET['number'];
     $multi_or_single = $_GET['ms'];
 
-
-	include("connects.php");
-    $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-    $result = mysqli_fetch_object($db->query($sql));
-    $CA = $result->CA;
-    $CA_list = mb_split(",",$CA);
-    //echo $CA;
-    //print_r($CA_list);
-
-    $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-    $result = mysqli_fetch_object($db->query($sql));
-    $KeyboardNumber = $result->KeyboardNo;
-
 ?>
 
 
@@ -98,7 +85,7 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -130,137 +117,210 @@
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>圖片選擇題編輯</b></h1>
+                  <h1><b>圖片順序題編輯</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
 
-                            <div class="form-horizontal form-label-left">
-                              <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">增減選項 : </label>
-                                <button class="btn btn-success" onclick="addInputPic()">+</button>
-                                <button class="btn btn-danger" onclick="subInputPic()">-</button>
-                              </div>
-                            </div>
+                <div class="form-horizontal form-label-left">
+                  <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">增減選項 : </label>
+                    <button class="btn btn-success" onclick="combine_add()">+</button>
+                    <button class="btn btn-danger" onclick="subInputPic()">-</button>
+                  </div>
+                </div>
 
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_logicPic.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
-                                <label class="control-label">
-                                    <?php
-                                        echo $question_number;
-                                    ?>
-                                </label>
-                            </div>
-                                                  
-
-                          <div id="messagePic"></div>
+                <form class="form-horizontal form-label-left" method="post" action="updateEdit_logicPic.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">題目流水號 : </label>
+                    <label class="control-label">
+                        <?php
+                          echo $question_number;
+                        ?>
+                    </label>
+                </div>
 
 
+                <div id="messagePic"></div>
 
 
-                            <HR>
-                            <HR>
+                <HR>
+                <HR>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                    <input type="radio" class="radio-inline flat" id="class_1" name="classification[]" value="1" required><label>詞彙理解</label>
+                    <input type="radio" class="radio-inline flat" id="class_2" name="classification[]" value="2" required><label>詞彙表達</label>
+                    <input type="radio" class="radio-inline flat" id="class_3" name="classification[]" value="3" required><label>語法表現</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text" id="Q1"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
 
-                            <?php
-                                $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-                                $result = mysqli_fetch_object($db->query($sql));
-                                $Content = $result->Content;
-                            ?>
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
+                    <div class="col-md-5">
+                        <input type="text" id="CA"  name="CA" placeholder="正解順序 例如: A1-A3-A2-A4" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
-                                <div class="col-md-5">
-                                    <input type="text"  name="CA" placeholder="正解順序 例如: A1-A3-A2-A4" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$CA.'"';?> >
-                                </div>
-                            </div>
-
-                            <input type="hidden" name="picture_number"  id="picture_number">
-
-                            <!-- EDIT BLOCK-->
-                            <input type="hidden" name="edit_tag" value="edit"/>
-                            <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" />';?>
-                            <input type="hidden" name="KeyboardNo" <?php echo 'value="'.$KeyboardNumber.'" >';?>
-
-                            <script type="text/javascript"></script>
-                            <clearfix>
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
+                <input type="hidden" name="picture_number"  id="picture_number">
+                <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
+                <clearfix>
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button class="btn btn-primary" type="reset">重填</button>
+                    <button type="submit" class="btn btn-success">送出</button>
+                </div>
+                </form>
+                </div>
 
 
-                            <script type="text/javascript">
-                                      var pic_create_input_number = 0;
+                <script
+                      src="https://code.jquery.com/jquery-1.9.0.js"
+                      integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+                      crossorigin="anonymous">
+                      </script>
+                <script>
+                function getObjectURL(file) {
+                    var url = null ;
+                    if (window.createObjectURL!=undefined) { // basic
+                        url = window.createObjectURL(file) ;
+                    } else if (window.URL!=undefined) { // mozilla(firefox)
+                        url = window.URL.createObjectURL(file) ;
+                    } else if (window.webkitURL!=undefined) { // webkit or chrome
+                        url = window.webkitURL.createObjectURL(file) ;
+                    }
+                    return url ;
+                    console.log( url )
+                }
+                </script>
+                <script type="text/javascript">
+                var pic_create_input_number = 0;
 
-                                      function addInputPic() {
-                                                pic_create_input_number++;
-                                                var div_form = document.createElement("DIV");
-                                                div_form.setAttribute("class","form-group");
-                                                name = 'div_qpic'+pic_create_input_number;
-                                                div_form.setAttribute("id",name);
-                                                
 
-                                                var lb = '<label class="control-label col-md-3" for="first-name">圖片' + pic_create_input_number +' :<span class="required"></span></label>';
-                                                var md5 = '<div class="col-md-3">';
-                                                var input_q =  '<input type="file" name="A'+pic_create_input_number+'_file" required />';
-                                                div_form.innerHTML = lb+md5+input_q;
-                                                document.getElementById("messagePic").appendChild(div_form);
-                                                document.getElementById("picture_number").value=pic_create_input_number;
-                                                }
 
-                                      function subInputPic() {
-                                                  if(pic_create_input_number>1)
-                                                    {
-                                                      _name = 'div_qpic'+pic_create_input_number;
-                                                    document.getElementById(_name).remove();
-                                                    pic_create_input_number--;
-                                                    document.getElementById("picture_number").value=pic_create_input_number;
-                                                    
-                                                    }
-                                                }
-                                      
-                                      //addInputPic();
-                                  
-                                </script>
+                function addInputPic() {
+                        pic_create_input_number++;
+                        var div_form = document.createElement("DIV");
+                        div_form.setAttribute("class","form-group");
+                        name = 'div_qpic'+pic_create_input_number;
+                        div_form.setAttribute("id",name);
 
-                            <?php //EDIT SETTING BLOCK.
-                                $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-                                $result = mysqli_fetch_object($db->query($sql));
-                                $KeyboardNumber = $result->KeyboardNo;
 
-                                $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNumber'";
-                                $result = mysqli_fetch_object($db->query($sql));
-                                $extString = $result->ext;
+                        var lb = '<label class="control-label col-md-3" for="first-name">圖片' + pic_create_input_number +' :<span class="required"></span></label>';
+                        var md5 = '<div class="col-md-3">';
+                        var input_q =  '<input type="file" name="A'+pic_create_input_number+'_file" id="A'+pic_create_input_number+'_file"/>';
+                        var view = '<div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">'+
+                                          '<img id="img'+pic_create_input_number+'" src="" alt="">'+
+                                    '</div>';
+                        div_form.innerHTML = lb+md5+input_q+view;
+                        document.getElementById("messagePic").appendChild(div_form);
+                        document.getElementById("picture_number").value=pic_create_input_number;
+                        }
 
-                                //GET Number of Answer Options.
-                                $pictureNumber = substr_count($extString,"-")+1;
+                function subInputPic() {
+                          if(pic_create_input_number>1)
+                            {
+                              _name = 'div_qpic'+pic_create_input_number;
+                            document.getElementById(_name).remove();
+                            pic_create_input_number--;
+                            document.getElementById("picture_number").value=pic_create_input_number;
+                            }
+                        }
 
-                                // optionArray have each option in the array.
-                                // optionArray[0]=> I , optionArray[1]=>have,...
-                                $extArray = explode("-",$extString);
+                //addInputPic();
 
-                                //Create options and setting each option's default text.
-                                for ($i=0; $i<$pictureNumber ; $i++)
-                                {
-                                    echo    '<script type="text/javascript">',
-                                            'addInputPic();',
-                                            '</script>'
-                                            ;
-                                }
-                            ?>
+                </script>
+
+
+
+                <?php
+                // PHP BLOCK, SETTING ALL DEFAULT VALUE HERE!
+                include("connects.php");
+                $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
+                $result = mysqli_fetch_object($db->query($sql));
+                $content = $result->Content;
+                $CA = $result->CA;
+                $classification = $result->classification;
+                $KeyboardNo = $result->KeyboardNo;
+
+                //Question
+                echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
+                echo '<script>document.getElementById("CA").value="'.$CA.'";</script>';
+
+                //CLASSIFIACATION
+                if($classification=="1") echo '<script>document.getElementById("class_1").checked = true;</script>';
+                else if($classification=="2") echo '<script>document.getElementById("class_2").checked = true;</script>';
+                else if($classification=="3") echo '<script>document.getElementById("class_3").checked = true;</script>';
+
+                //Default Answer
+                $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNo'";
+                $result = mysqli_fetch_object($db->query($sql));
+                $ext = $result->ext;
+                $ext = explode("-", $ext);
+                $old_count = count($ext);
+
+
+
+                for($i = 1 ; $i <= $old_count ; $i++)
+                {
+                  echo'<script>addInputPic();</script>';
+                  echo '
+                  <script>
+                  $("#A'.$i.'_file").change(function(){
+                      var objUrl = getObjectURL(this.files[0]) ;
+                      console.log("objUrl = "+objUrl) ;
+                      if (objUrl) {
+                          $("#img'.$i.'").attr("src", objUrl) ;
+                      }
+                      var Img = document.getElementById("img'.$i.'");
+                      document.getElementById("img'.$i.'").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                  }) ;
+                  </script>
+                  ';
+                }
+                ?>
+
+
+
+                <script>
+                function combine_add(){
+                  //THE NEW ADDINPUTPIC MUST COMBINE THE PREVIEW FUNCTION
+                  addInputPic();
+                  <?php
+                  echo '
+                  $("#A'.$i.'_file").change(function(){
+                      var objUrl = getObjectURL(this.files[0]) ;
+                      console.log("objUrl = "+objUrl) ;
+                      if (objUrl) {
+                          $("#img'.$i.'").attr("src", objUrl) ;
+                      }
+                      var Img = document.getElementById("img'.$i.'");
+                      document.getElementById("img'.$i.'").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                  }) ;';
+
+                  ?>
+                }
+                </script>
+
+
+                <?php
+
+                //SETTING THE DEFAULT IMG
+                for($j = 1; $j <= $old_count ; $j++)
+                {
+                  $array_index = $j-1;
+                  echo '<script>document.getElementById("img'.$j.'").src="upload/K'.$KeyboardNo.'A'.$j.'.'.$ext[$array_index].'";</script>';
+                }
+                ?>
+
 
             </div>
 

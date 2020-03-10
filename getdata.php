@@ -173,25 +173,29 @@
 			//拿ext字串
 			$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 			$result = mysqli_fetch_object($db->query($sql_catch_exam));
-			
-			$keyboard = $result->ext;
-			$Arr = explode("-",$keyboard);
+
+			if(!empty($result->ext)||!is_null($result->ext)){
+				$keyboard = $result->ext;
+				$Arr = explode("-",$keyboard);
+			}
 			
 			//wordQuestion字串
-			$keyboard = $result->wordQuestion;
-			$Arr_text = explode("^&",$keyboard);
-			
+			if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+				$keyboard = $result->wordQuestion;
+				$Arr_text = explode("^&",$keyboard);
+			}
 			//單選題
 			if($exam_type == 'SINGLE'){						
-				for( $i = 0 ; $i < count($Arr) ; $i++){
+				if(!empty($result->ext)||!is_null($result->ext)){
+					for( $i = 0 ; $i < count($Arr) ; $i++){
 					$answer_index = $i;
 					$answer_index+=1;
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 						echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 							//有圖片
-							if(!empty($Arr[$i])&&!is_null($Arr[$i])){	
+							 if(!empty($result->ext)||!is_null($result->ext)){	
 								//有文字
-								if(!empty($Arr_text[$i])&&!is_null($Arr_text[$i])){		
+								 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){		
 									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 										echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -208,8 +212,8 @@
 							else{
 								echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
 							}
-					echo "</div>";
-					
+					echo "</div>";					
+					}
 				}
 			}	
 			//多選題
@@ -220,9 +224,9 @@
 					echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 						echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 							//有圖片
-							if(!empty($Arr[$i])&&!is_null($Arr[$i])){
+							if(!empty($result->ext)||!is_null($result->ext)){
 								//有文字
-								if(!empty($Arr_text[$i])&&!is_null($Arr_text[$i])){		
+								if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
 									echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 										echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 										echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";

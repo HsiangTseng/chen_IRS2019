@@ -155,14 +155,14 @@ else if ($_SESSION['type']!='T')
 
                                 <?php
                                     include("connects.php");
-                                    $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                                    $sql = "SELECT COUNT(No) AS max FROM QuestionList WHERE QA='Q' AND status='1'";
                                     $result = mysqli_fetch_object($db->query($sql));
                                     $maxnum = $result->max;
 
                                     $question_number = array();
                                     $question_content = array();
                                     $index = 1;
-                                    $sql = "SELECT * FROM QuestionList WHERE QA = 'Q' ORDER BY type DESC ,single_or_multi DESC";
+                                    $sql = "SELECT * FROM QuestionList WHERE QA = 'Q' AND status='1' ORDER BY type DESC ,single_or_multi DESC";
                                     if($stmt = $db->query($sql))
                                     {
                                         while($result = mysqli_fetch_object($stmt))
@@ -174,17 +174,17 @@ else if ($_SESSION['type']!='T')
                                     }
                                     //GET THE QUESTIONG CONTNET IN THE ARRAY question_content and QUESTION NUMBER IN ARRAY question_number
 
-                                    $sql = "SELECT count(No) AS SWNumber FROM `QuestionList` WHERE QA='Q' AND type='WORD' AND single_or_multi='single'";
+                                    $sql = "SELECT count(No) AS SWNumber FROM `QuestionList` WHERE QA='Q' AND type='WORD' AND single_or_multi='single' AND status='1'";
                                     $SWNumber = mysqli_fetch_object($db->query($sql))->SWNumber;
-                                    $sql = "SELECT count(No) AS MWNumber FROM `QuestionList` WHERE QA='Q' AND type='WORD' AND single_or_multi='multi'";
+                                    $sql = "SELECT count(No) AS MWNumber FROM `QuestionList` WHERE QA='Q' AND type='WORD' AND single_or_multi='multi' AND status='1'";
                                     $MWNumber = mysqli_fetch_object($db->query($sql))->MWNumber;
-                                    $sql = "SELECT count(No) AS SVNumber FROM `QuestionList` WHERE QA='Q' AND type='VIDEO' AND single_or_multi='single'";
+                                    $sql = "SELECT count(No) AS SVNumber FROM `QuestionList` WHERE QA='Q' AND type='VIDEO' AND single_or_multi='single' AND status='1'";
                                     $SVNumber = mysqli_fetch_object($db->query($sql))->SVNumber;
-                                    $sql = "SELECT count(No) AS MVNumber FROM `QuestionList` WHERE QA='Q' AND type='VIDEO' AND single_or_multi='multi'";
+                                    $sql = "SELECT count(No) AS MVNumber FROM `QuestionList` WHERE QA='Q' AND type='VIDEO' AND single_or_multi='multi' AND status='1'";
                                     $MVNumber = mysqli_fetch_object($db->query($sql))->MVNumber;
-                                    $sql = "SELECT count(No) AS SPNumber FROM `QuestionList` WHERE QA='Q' AND type='PICTURE' AND single_or_multi='single'";
+                                    $sql = "SELECT count(No) AS SPNumber FROM `QuestionList` WHERE QA='Q' AND type='PICTURE' AND single_or_multi='single' AND status='1'";
                                     $SPNumber = mysqli_fetch_object($db->query($sql))->SPNumber;
-                                    $sql = "SELECT count(No) AS MPNumber FROM `QuestionList` WHERE QA='Q' AND type='PICTURE' AND single_or_multi='multi'";
+                                    $sql = "SELECT count(No) AS MPNumber FROM `QuestionList` WHERE QA='Q' AND type='PICTURE' AND single_or_multi='multi' AND status='1'";
                                     $MPNumber = mysqli_fetch_object($db->query($sql))->MPNumber;
 
 
