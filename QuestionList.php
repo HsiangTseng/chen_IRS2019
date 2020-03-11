@@ -137,7 +137,7 @@ if($_SESSION['username'] == null)
         							<option value="0">請選擇測驗型別</option>
         							<option value="1">詞彙理解</option>
         							<option value="2">詞彙表達</option>
-        							<option value="3">詞彙語法</option>
+        							<option value="3">語法表現</option>
         						  </select>
         						</div>
 
@@ -162,7 +162,7 @@ if($_SESSION['username'] == null)
                   </thead>
                   <?php
                     include("connects.php");
-                    $sql = "SELECT MAX(No) AS max FROM QuestionList";
+                    $sql = "SELECT MAX(No) AS max FROM QuestionList WHERE `QA` = 'Q'";
                     $result = mysqli_fetch_object($db->query($sql));
                     $max_number = $result->max;
                     $content = array();
@@ -185,7 +185,7 @@ if($_SESSION['username'] == null)
 
                     for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
                     {
-            						$sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND status='1'";
+            						$sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`='1'";
 
             						if(isset($_POST['search_type'])){
             							if(strpos($_POST['search_type'],'0') === false){
@@ -322,7 +322,7 @@ if($_SESSION['username'] == null)
 
 			      <?php
               include("connects.php");
-              $sql = "SELECT COUNT(No) AS max FROM QuestionList WHERE QA='A' AND status='1'";
+              $sql = "SELECT Max(No) AS max FROM QuestionList WHERE `QA`='Q' ";
               $result = mysqli_fetch_object($db->query($sql));
               $max_number = $result->max;
               $content = array();
@@ -346,7 +346,7 @@ if($_SESSION['username'] == null)
 
               for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
               {
-						    $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q'";
+						    $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`='1'";
 
     						if(isset($_POST['search_type'])){
     							 if(strpos($_POST['search_type'],'0') === false){

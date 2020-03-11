@@ -23,32 +23,32 @@
 
     if($type=='WORD')
     {
-        header("Location: editQuestion_word.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_word.php?ms=$single_or_multi&number=$question_number");
     }
 
     else if ($type=='PICTURE')
     {
-        header("Location: editQuestion_picture.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_picture.php?ms=$single_or_multi&number=$question_number");
     }
 
     else if ($type=='LWORD')
     {
-        header("Location: editQuestion_logicWord.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_logicWord.php?ms=$single_or_multi&number=$question_number");
     }
 
     else if ($type=='LPICTURE')
     {
-        header("Location: editQuestion_logicPic.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_logicPic.php?ms=$single_or_multi&number=$question_number");
     }
 
     else if ($type=='VIDEO')
     {
-        header("Location: editQuestion_video.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_video.php?ms=$single_or_multi&number=$question_number");
     }
 
     else if ($type=='KEYBOARD')
     {
-        header("Location: editQuestion_keyboard.php?ms=$single_or_multi&number=$question_number"); 
+        header("Location: editQuestion_keyboard.php?ms=$single_or_multi&number=$question_number");
     }
 
 
