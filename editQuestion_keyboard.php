@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 
 <?php
+include("connects.php");
+session_start();
 
-    session_start();
-
-    if($_SESSION['username'] == null)
-    {
-            header ('location: IRS_Login.php');
-            exit;
-    }
-
-
-    $question_number = $_GET['number'];
-    $multi_or_single = $_GET['ms'];
-
-
-	include("connects.php");
-    $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-    $result = mysqli_fetch_object($db->query($sql));
-    $CA = $result->CA;
-    $CA_list = mb_split(",",$CA);
-    //echo $CA;
-    //print_r($CA_list);
-
-
+if($_SESSION['username'] == null)
+{
+        header ('location: IRS_Login.php');
+        exit;
+}
+else if ($_SESSION['type']!='T')
+{
+    header ('location: IRS_Login.php');
+    exit;
+}
 ?>
 
+<?php
+//GET THE KeyboardNo From GET[]
+if(isset($_GET['KeyboardNo']))
+{
+  $GetKeyboardNo = $_GET['KeyboardNo'];
+  if($GetKeyboardNo>0)
+  {
+    $sql = "SELECT * FROM `Keyboard` WHERE KeyboardNo='$GetKeyboardNo'";
+    $result = mysqli_fetch_object($db->query($sql));
+    $GetKeyboardExt = $result->ext;
+  }
+
+}
+else {
+  $GetKeyboardNo = 0;
+}
+$question_number = $_GET['number'];
+//$multi_or_single = $_GET['ms'];
+?>
 
 <html lang="en">
           <head>
@@ -95,7 +104,7 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -127,108 +136,175 @@
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-            
+
             <!-- Question -->
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>文字選擇題編輯</b></h1>
+                  <h1><b>鍵盤題編輯</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
 
-                            <form class="form-horizontal form-label-left" method="post" action="updateQuestion_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}"> 
+                <form class="form-horizontal form-label-left" method="post" action="updateEdit_keyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
 
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">請先選擇Keyboard : </label>
-                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                  <select class="select2_single form-control" name="KeyboardNo" tabindex="-1" required>
-                                        <?php  
-
-                                            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            $Content = $result->Content;
-                                            $oldKeyboard = $result->KeyboardNo;
-
-                                            $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
-                                            $result = mysqli_fetch_object($db->query($sql));
-                                            $KeyboardNum = $result->KeyboardNumber;
-                                            
-                                            //echo $KeyboardNum;
-                                            $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
-                                            $_KeyboardNo = array();
-                                            $_KeyboardName = array();
-                                            $index = 0;
-
-                                            if($stmt = $db->query($sql2))
-                                            {
-                                                while ($result = mysqli_fetch_object($stmt))
-                                                {
-                                                    $_KeyboardNo[$index] = $result->KeyboardNo;
-                                                    $_KeyboardName[$index] = $result->KeyboardName;
-                                                    $index++;
-                                                }
-                                            }
-
-                                            for($i=0 ; $i<$KeyboardNum ; $i++)
-                                            {
-                                                echo "<option value=";
-                                                echo "\"";
-                                                echo $_KeyboardNo[$i];
-                                                echo "\"";
-                                                if ($_KeyboardNo[$i]==$oldKeyboard) echo " selected";
-                                                echo ">";
-                                                echo $_KeyboardName[$i];
-                                                echo "</option>";
-                                            }
-                                        ?>                                  
-                                </select>
-
-                                </div>
-                            </div>
-
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">請先選擇Keyboard : </label>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                      <select class="select2_single form-control" name="KeyboardNo" id="KeyboardNo" onchange="KeyboardOnchange()" tabindex="-1" required>
                             <?php
-                                
+                                $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
+                                $result = mysqli_fetch_object($db->query($sql));
+                                $KeyboardNum = $result->KeyboardNumber;
 
+                                //echo $KeyboardNum;
+                                $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
+                                $_KeyboardNo = array();
+                                $_KeyboardName = array();
+                                $index = 0;
+
+                                if($stmt = $db->query($sql2))
+                                {
+                                    while ($result = mysqli_fetch_object($stmt))
+                                    {
+                                        $_KeyboardNo[$index] = $result->KeyboardNo;
+                                        $_KeyboardName[$index] = $result->KeyboardName;
+                                        $index++;
+                                    }
+                                }
+                                echo '<option value="-10">請先選擇Keyboard</option>';
+                                for($i=0 ; $i<$KeyboardNum ; $i++)
+                                {
+                                    echo "<option value=";
+                                    echo "\"";
+                                    echo $_KeyboardNo[$i];
+                                    echo "\"";
+                                    if($_KeyboardNo[$i]==$GetKeyboardNo) echo " selected ";
+                                    echo ">";
+                                    echo $_KeyboardName[$i];
+                                    echo "</option>";
+                                }
+                                $db->close();
                             ?>
+                    </select>
+
+                    </div>
+                </div>
+                  <script>
+                    function KeyboardOnchange()
+                    {
+                      var kbnumber = document.getElementById("KeyboardNo").value;
+                      location.href = 'editQuestion_keyboard.php'+'?number=<?php echo $question_number;?>&KeyboardNo='+kbnumber;
+                    }
+                  </script>
 
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
-                                <div class="col-md-3">
-                                    <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12"  <?php echo'value="'.$Content.'"';?> >
-                                </div>
-                            </div>
-
-                                
-
-                            <?
-                            echo'<div class="form-group required">
-                                            <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1" '; if (strpos($CA, 'A1') !== false) {echo 'checked="true" ';} echo'><label>A選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2" '; if (strpos($CA, 'A2') !== false) {echo 'checked="true" ';} echo'><label>B選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3" '; if (strpos($CA, 'A3') !== false) {echo 'checked="true" ';} echo'><label>C選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4" '; if (strpos($CA, 'A4') !== false) {echo 'checked="true" ';} echo'><label>D選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A5" '; if (strpos($CA, 'A5') !== false) {echo 'checked="true" ';} echo'><label>E選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A6" '; if (strpos($CA, 'A6') !== false) {echo 'checked="true" ';} echo'><label>F選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A7" '; if (strpos($CA, 'A7') !== false) {echo 'checked="true" ';} echo'><label>G選項</label>
-                                            <input type="checkbox" class="radio-inline flat" name="answer[]" value="A8" '; if (strpos($CA, 'A8') !== false) {echo 'checked="true" ';} echo'><label>H選項</label>
-                                        </div>';
-                            ?>
-                            <!-- EDIT BLOCK-->
-                            <input type="hidden" name="edit_tag" value="edit"/>
-                            <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
 
 
-                            <clearfix>
-                            
-                            <div class="col-md-3 col-sm-3 col-xs-6 ">
-                                <button type="submit" class="btn btn-success">送出</button>
-                            </div>
-                        </form>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">題目 :<span class="required"></span></label>
+                    <div class="col-md-3">
+                        <input type="text"  id="Q1" name="Q1" required="required" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group required">
+                    <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
+                    <input type="checkbox" class="radio-inline flat" id="check_1" name="answer[]" value="A1"><label>A選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_2" name="answer[]" value="A2"><label>B選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_3" name="answer[]" value="A3"><label>C選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_4" name="answer[]" value="A4"><label>D選項</label>
+                    <br />
+                    <input type="checkbox" class="radio-inline flat" id="check_5" name="answer[]" value="A5"><label>E選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_6" name="answer[]" value="A6"><label>F選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_7" name="answer[]" value="A7"><label>G選項</label>
+                    <input type="checkbox" class="radio-inline flat" id="check_8" name="answer[]" value="A8"><label>H選項</label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
+                    <input type="radio" class="radio-inline flat" id="class_1" name="classification[]" value="1" required><label>詞彙理解</label>
+                    <input type="radio" class="radio-inline flat" id="class_2" name="classification[]" value="2" required><label>詞彙表達</label>
+                    <input type="radio" class="radio-inline flat" id="class_3" name="classification[]" value="3" required><label>語法表現</label>
+                </div>
+                <clearfix>
+                <style>
+                .responsive {
+                  width: 150px;
+                  height: 150px;
+                  border:5px;
+                  border-color:#A0A0A0;
+                  border-style: double;
+                }
+                </style>
+                <?php
+                if(isset($_GET['KeyboardNo']))
+                {
+                  if($GetKeyboardNo>0)
+                  {
+                    $ext_array = array();
+                    $ext_array = explode("-",$GetKeyboardExt);
+
+                    echo '<div class="row">';
+                    echo '<BR />';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A1.'.$ext_array[0].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A2.'.$ext_array[1].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A3.'.$ext_array[2].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A4.'.$ext_array[3].'">';
+                    echo '</div>';
+                    echo '<div class="row">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A5.'.$ext_array[4].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A6.'.$ext_array[5].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A7.'.$ext_array[6].'">';
+                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A8.'.$ext_array[7].'">';
+                    echo '</div>';
+                  }
+
+                }
+                ?>
+                <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
+                <div class="col-md-3 col-sm-3 col-xs-6 ">
+                    <button type="submit" class="btn btn-success">送出</button>
+                </div>
+            </form>
             </div>
             <!-- Question -->
+
+
+            <?php
+            // PHP BLOCK, SETTING ALL DEFAULT VALUE HERE!
+            include("connects.php");
+            $sql = "SELECT * FROM QuestionList WHERE No = '$question_number' AND QA = 'Q'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $content = $result->Content;
+            $CA = $result->CA;
+            $classification = $result->classification;
+
+            //echo $content.$classification.$CA;
+
+            //CLASSIFIACATION
+            if($classification=="1") echo '<script>document.getElementById("class_1").checked = true;</script>';
+            else if($classification=="2") echo '<script>document.getElementById("class_2").checked = true;</script>';
+            else if($classification=="3") echo '<script>document.getElementById("class_3").checked = true;</script>';
+
+            //Question
+            echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
+
+            //CORRECT answer
+            if(strpos($CA, 'A1')!==false)echo '<script>document.getElementById("check_1").checked = true;</script>';
+            if(strpos($CA, 'A2')!==false)echo '<script>document.getElementById("check_2").checked = true;</script>';
+            if(strpos($CA, 'A3')!==false)echo '<script>document.getElementById("check_3").checked = true;</script>';
+            if(strpos($CA, 'A4')!==false)echo '<script>document.getElementById("check_4").checked = true;</script>';
+            if(strpos($CA, 'A5')!==false)echo '<script>document.getElementById("check_5").checked = true;</script>';
+            if(strpos($CA, 'A6')!==false)echo '<script>document.getElementById("check_6").checked = true;</script>';
+            if(strpos($CA, 'A7')!==false)echo '<script>document.getElementById("check_7").checked = true;</script>';
+            if(strpos($CA, 'A8')!==false)echo '<script>document.getElementById("check_8").checked = true;</script>';
+            //echo $CA;
+            ?>
 
 
 

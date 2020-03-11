@@ -48,7 +48,8 @@
 
     else if ($type=='KEYBOARD')
     {
-        header("Location: editQuestion_keyboard.php?ms=$single_or_multi&number=$question_number");
+        $KeyboardNo = $result->KeyboardNo;
+        header("Location: editQuestion_keyboard.php?ms=$single_or_multi&number=$question_number&KeyboardNo=$KeyboardNo");
     }
 
 
