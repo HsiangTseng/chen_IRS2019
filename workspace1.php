@@ -2,6 +2,7 @@
 
 <?php
 	include("connects.php");
+	include("convert_wmf.php");
 
 	$keyboardName = $_POST['KeyboardName'];
   $picture_number = $_POST['picture_number'];
@@ -25,7 +26,18 @@
 	  $ext = end(explode('.', $_FILES['file0']['name']));
 	  $dest = 'upload/K'.(string)$max_number.'A1.'.$ext;
 	  move_uploaded_file($file, $dest);
-    $ext_list = $ext;
+
+
+		//WMF
+		if($ext=="wmf")
+		{
+			$name = 'K'.(string)$max_number.'A1';
+			convert_wmf($name);
+			$ext="jpg";
+			$wmf_name = 'upload/K'.(string)$max_number.'A1.wmf';
+			unlink($wmf_name);
+		}
+		$ext_list = $ext;
 	  }
 	else {
 	}
@@ -40,6 +52,18 @@
       $A_index = $i+1;
   	  $dest = 'upload/K'.(string)$max_number.'A'.$A_index.'.'.$ext;
   	  move_uploaded_file($file, $dest);
+
+			//WMF
+			if($ext=="wmf")
+			{
+				$name = 'K'.(string)$max_number.'A'.$A_index;
+				convert_wmf($name);
+				$ext="jpg";
+				$wmf_name = 'upload/K'.(string)$max_number.'A'.$A_index.'.wmf';
+				unlink($wmf_name);
+			}
+
+
       $ext_list = $ext_list.'-'.$ext;
   	  }
   	else {

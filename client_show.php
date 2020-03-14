@@ -101,7 +101,10 @@
                        font-size: 120px;
                }
         }
-	  
+	.div20{
+                height:20%;
+        }
+  
 	  .div25{
 		height:25%;
 	}
@@ -185,6 +188,10 @@
         left: 50%;
         transform: translate(-50%,-50%);
       }
+
+	.show_100{
+		height:100%;
+	}
      </style>
 		<div class="container body"  style="height:100%">
 			<div class="main_container"  style="height:100%">

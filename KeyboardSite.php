@@ -226,26 +226,80 @@ else {
                                 </div>
                             </div>
 
+                            <?php
+                            //BEFORE CREATE HTML, MUST GET THE KEYBOARD DATA.
+                            include("connects.php");
+                            if(isset($_GET['KeyboardNo']))
+                            {
+                              if($GetKeyboardNo>0)
+                              {
+                                $sql = "SELECT * FROM `Keyboard` WHERE type='Keyboard' AND KeyboardNo='$GetKeyboardNo'";
+                                $result = mysqli_fetch_object($db->query($sql));
+                                $KeyboardNo = $result->KeyboardNo;
+                                $KeyboardStyle = $result->Style;
+                              }
+
+                            }
+
+                            ?>
 
 
-
-                            <div class="form-group required">
-                                <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A1"><label>A選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A2"><label>B選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A3"><label>C選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A4"><label>D選項</label>
-                                <br />
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A5"><label>E選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A6"><label>F選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A7"><label>G選項</label>
-                                <input type="checkbox" class="radio-inline flat" name="answer[]" value="A8"><label>H選項</label>
-                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="3" required><label>語法表現</label>
+                            </div>
+                            <div class="form-group required">
+                                <label class="control-label col-md-3">正解 :<span class="required"></span></label>
+                                <br />
+                                <br />
+                                <div style="text-align:center;">
+                                  <?php
+                                  if(isset($_GET['KeyboardNo']))
+                                  {
+                                    if($GetKeyboardNo>0)
+                                    {
+                                        if($KeyboardStyle=="A")//4*2
+                                        {
+                                          for($i = 1 ; $i <= 8 ; $i++)
+                                          {
+                                            echo '<input type="checkbox" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp;</label>';
+                                            if($i%4==0){  echo '<br />';}
+                                          }
+                                        }
+
+                                        else if($KeyboardStyle=="B")//8*5
+                                        {
+                                          for($i = 1 ; $i <= 40 ; $i++)
+                                          {
+                                            echo '<input type="checkbox" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                            if($i%8==0){  echo '<br />';}
+                                          }
+                                        }
+
+                                        else if($KeyboardStyle=="C")//4*4
+                                        {
+                                          for($i = 1 ; $i <= 16 ; $i++)
+                                          {
+                                            echo '<input type="checkbox" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                            if($i%4==0){  echo '<br />';}
+                                          }
+                                        }
+
+                                        else if($KeyboardStyle=="D")//6*4
+                                        {
+                                          for($i = 1 ; $i <= 24 ; $i++)
+                                          {
+                                            echo '<input type="checkbox" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                            if($i%6==0){  echo '<br />';}
+                                          }
+                                        }
+                                    }
+                                  }
+
+                                  ?>
+                                </div>
                             </div>
                             <clearfix>
                             <style>
@@ -265,18 +319,44 @@ else {
                                 $ext_array = array();
                                 $ext_array = explode("-",$GetKeyboardExt);
 
-                                echo '<div class="row">';
-                                echo '<BR />';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A1.'.$ext_array[0].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A2.'.$ext_array[1].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A3.'.$ext_array[2].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A4.'.$ext_array[3].'">';
-                                echo '</div>';
-                                echo '<div class="row">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A5.'.$ext_array[4].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A6.'.$ext_array[5].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A7.'.$ext_array[6].'">';
-                                echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A8.'.$ext_array[7].'">';
+                                echo '<div class="row" style="text-align:center; ">';
+                                if($KeyboardStyle=="A")//4*2
+                                {
+                                  for($i = 1 ; $i <= 8 ; $i++)
+                                  {
+                                    $ext_index = $i-1;
+                                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A'.$i.'.'.$ext_array[$ext_index].'">';
+                                    if($i%4==0)echo'<br />';
+                                  }
+                                }
+
+                                if($KeyboardStyle=="B")//8*5
+                                {
+                                  for($i = 1 ; $i <= 40 ; $i++)
+                                  {
+                                    $ext_index = $i-1;
+                                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A'.$i.'.'.$ext_array[$ext_index].'">';
+                                    if($i%8==0)echo'<br />';
+                                  }
+                                }
+                                if($KeyboardStyle=="C")//4*4
+                                {
+                                  for($i = 1 ; $i <= 16 ; $i++)
+                                  {
+                                    $ext_index = $i-1;
+                                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A'.$i.'.'.$ext_array[$ext_index].'">';
+                                    if($i%4==0)echo'<br />';
+                                  }
+                                }
+                                if($KeyboardStyle=="D")//6*4
+                                {
+                                  for($i = 1 ; $i <= 24 ; $i++)
+                                  {
+                                    $ext_index = $i-1;
+                                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A'.$i.'.'.$ext_array[$ext_index].'">';
+                                    if($i%6==0)echo'<br />';
+                                  }
+                                }
                                 echo '</div>';
                               }
 
@@ -294,145 +374,126 @@ else {
                     <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="setKeyboard">
                             <form class="form-horizontal form-label-left" method="post" action="updateKeyboard.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
 
-
-
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <input type="file" name="file0" id="file0"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img0" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file1" id="file1"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img1" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file2" id="file2"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img2" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file3" id="file3"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img3" src="" alt="">
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3" for="first-name"> 鍵盤型態 :<span class="required"></span></label>
+                                <button class="btn btn-success" onclick="setKeyboardType('A');return false;">4*2</button>
+                                <button class="btn btn-success" onclick="setKeyboardType('B');return false;">8*5</button>
+                                <button class="btn btn-success" onclick="setKeyboardType('C');return false;">4*4</button>
+                                <button class="btn btn-success" onclick="setKeyboardType('D');return false;">6*4</button></button>
                             </div>
-
-                            <HR>
-                            <HR>
-
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <input type="file" name="file4" id="file4"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img4" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file5" id="file5"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img5" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file6" id="file6"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img6" src="" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="file" name="file7" id="file7"/>
-                                    <div class="thumbnail" style="border-style: outset;">
-                                      <img id="img7" src="" alt="">
-                                    </div>
-                                </div>
-                            </div>
-
 
                             <script
                               src="https://code.jquery.com/jquery-1.9.0.js"
                               integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
                               crossorigin="anonymous">
                             </script>
-                            <script>
 
-                            $("#file0").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img0").attr("src", objUrl) ;
+                            <script>
+                            function setKeyboardType(type)
+                            {
+                              <?php
+                              //CLEAR EVERYTHING
+                              for($index=0;$index<40;$index++)
+                              {
+                                echo 'document.getElementById("div_'.$index.'").style.display="none";';
+                                echo 'document.getElementById("file'.$index.'").value= "";';
+                                echo 'document.getElementById("file'.$index.'").required= false;';
+                                echo 'document.getElementById("img'.$index.'").src= "";';
+                                echo 'document.getElementById("div_'.$index.'").className= "";';
+                              }
+                              for($index=1;$index<=10;$index++)
+                              {
+                                echo 'document.getElementById("half_id_'.$index.'").className= "";';
+                              }
+                              ?>
+                              if(type=="A")
+                              {
+                                //4*2
+                                <?php
+                                for($index=0;$index<8;$index++)
+                                {
+                                  //DISPLAY THE BLOCK
+                                  echo 'document.getElementById("div_'.$index.'").style.display="block";';
+                                  //SETTING THE RWD
+                                  echo 'document.getElementById("div_'.$index.'").className="col-md-3";';
+                                  //SETTING THE FILE required
+                                  echo 'document.getElementById("file'.$index.'").required= true;';
                                 }
-                                var Img = document.getElementById('img0');
-                                document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file1").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img1").attr("src", objUrl) ;
+                                //SETTING PICTURE_NUMBER AND KEYBOARD STYLE
+                                echo 'document.getElementById("picture_number").value="8";';
+                                echo 'document.getElementById("Keyboard_Style").value="A";';
+                                ?>
+                              }
+                              else if (type=="B")
+                              {
+                                //8*5
+                                <?php
+                                for($index=0;$index<40;$index++)
+                                {
+                                  //DISPLAY THE BLOCK
+                                  echo 'document.getElementById("div_'.$index.'").style.display="block";';
+
+                                  //SETTING THE RWD
+                                  echo 'document.getElementById("div_'.$index.'").className="col-md-3";';
+
+                                  //SETTING THE FILE required
+                                  echo 'document.getElementById("file'.$index.'").required= true;';
                                 }
-                                var Img = document.getElementById('img1');
-                                document.getElementById("img1").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file2").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img2").attr("src", objUrl) ;
+                                for($index=1;$index<=10;$index++)
+                                {
+                                  //THE HALF BLOCK (12->6+6)
+                                  echo 'document.getElementById("half_id_'.$index.'").className= "col-md-6";';
                                 }
-                                var Img = document.getElementById('img2');
-                                document.getElementById("img2").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file3").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img3").attr("src", objUrl) ;
+                                //SETTING PICTURE_NUMBER AND KEYBOARD STYLE
+                                echo 'document.getElementById("picture_number").value="40";';
+                                echo 'document.getElementById("Keyboard_Style").value="B";';
+                                ?>
+                              }
+
+                              else if (type=="C")
+                              {
+                                //4*4
+                                <?php
+                                for($index=0;$index<16;$index++)
+                                {
+                                  //DISPLAY THE BLOCK
+                                  echo 'document.getElementById("div_'.$index.'").style.display="block";';
+
+                                  //SETTING THE RWD
+                                  echo 'document.getElementById("div_'.$index.'").className="col-md-3";';
+
+                                  //SETTING THE FILE required
+                                  echo 'document.getElementById("file'.$index.'").required= true;';
                                 }
-                                var Img = document.getElementById('img3');
-                                document.getElementById("img3").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file4").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img4").attr("src", objUrl) ;
+
+                                //SETTING PICTURE_NUMBER AND KEYBOARD STYLE
+                                echo 'document.getElementById("picture_number").value="16";';
+                                echo 'document.getElementById("Keyboard_Style").value="C";';
+                                ?>
+                              }
+
+                              else if (type=="D")
+                              {
+                                //6*4
+                                <?php
+                                for($index=0;$index<24;$index++)
+                                {
+                                  //DISPLAY THE BLOCK
+                                  echo 'document.getElementById("div_'.$index.'").style.display="block";';
+
+                                  //SETTING THE RWD
+                                  echo 'document.getElementById("div_'.$index.'").className="col-md-2";';
+
+                                  //SETTING THE FILE required
+                                  echo 'document.getElementById("file'.$index.'").required= true;';
                                 }
-                                var Img = document.getElementById('img4');
-                                document.getElementById("img4").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file5").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img5").attr("src", objUrl) ;
-                                }
-                                var Img = document.getElementById('img5');
-                                document.getElementById("img5").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file6").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img6").attr("src", objUrl) ;
-                                }
-                                var Img = document.getElementById('img6');
-                                document.getElementById("img6").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
-                            $("#file7").change(function(){
-                                var objUrl = getObjectURL(this.files[0]) ;
-                                console.log("objUrl = "+objUrl) ;
-                                if (objUrl) {
-                                    $("#img7").attr("src", objUrl) ;
-                                }
-                                var Img = document.getElementById('img7');
-                                document.getElementById("img7").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                            }) ;
+
+                                //SETTING PICTURE_NUMBER AND KEYBOARD STYLE
+                                echo 'document.getElementById("picture_number").value="24";';
+                                echo 'document.getElementById("Keyboard_Style").value="D";';
+                                ?>
+                              }
+                            }
 
 
                             function getObjectURL(file) {
@@ -449,6 +510,44 @@ else {
                             }
                             </script>
 
+                            <?php
+                            $half_index = 1;
+                            for($i = 0 ; $i < 40 ; $i++)
+                            {
+                              if($i%4==0)
+                              {
+                                echo '<div id="half_id_'.$half_index.'" class="col-md-6">';
+                                $half_index++;
+                              }
+                              echo '<div class="col-md-3" id ="div_'.$i.'" style="display:none;">';
+                                echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                echo '<div class="thumbnail" style="border-style: outset;">';
+                                  echo '<img id="img'.$i.'" src="" alt="">';
+                                echo '</div>';
+                              echo '</div>';
+                              if($i%4==3)echo '</div>';
+                            }
+
+                            for($k = 0 ; $k < 40 ;$k++)
+                            {
+                              echo '
+                              <script>
+                              $("#file'.$k.'").change(function(){
+                                  var objUrl = getObjectURL(this.files[0]) ;
+                                  console.log("objUrl = "+objUrl) ;
+                                  if (objUrl) {
+                                      $("#img'.$k.'").attr("src", objUrl) ;
+                                  }
+                                  var Img = document.getElementById("img'.$k.'");
+                                  document.getElementById("img'.$k.'").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                              }) ;
+                              </script>
+                              ';
+                            }
+
+                            ?>
+                            <input type="hidden" name="Keyboard_Style"  id="Keyboard_Style">
+                            <input type="hidden" name="picture_number"  id="picture_number">
                             <clearfix>
 
                             <label class="control-label col-md-3" for="first-name">Keyboard名稱 :<span class="required"></span></label>
