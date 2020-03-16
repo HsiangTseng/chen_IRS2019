@@ -6,6 +6,12 @@
     $exam_number = $_POST['exam_num'];
     $question = $_POST['q1'];
     $question_count = $_POST['exercise_number'];
+
+    $exam_title = $_POST['ExamTitle'];
+    $note = $_POST['Note'];
+    $teacher = $_POST['Teacher'];
+
+    //echo $exam_title.$note.$teacher;
     //print_r($question);
     //echo $question_count;
 
@@ -18,7 +24,7 @@
 
     //echo $question_list;
 
-    $sql = "UPDATE `ExamList` SET `question_list`='$question_list' WHERE No = '$exam_number'";
+    $sql = "UPDATE `ExamList` SET question_list='$question_list', ExamTitle='$exam_title', Note='$note', Teacher='$teacher' WHERE No = '$exam_number'";
     $db->query($sql);
     $db->close();
     echo "<script>alert('編輯結束'); location.href = 'ExamList.php';</script>";

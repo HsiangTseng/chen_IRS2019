@@ -622,7 +622,7 @@ else if ($_SESSION['type']!='T')
                                     <input type="file" name="video_file" required="required" />
                                 </div>
 
-				<label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
+				                        <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
                                 <div class="col-md-3">
                                     <input type="file" name="audio_file"/>
                                 </div>
@@ -783,6 +783,17 @@ else if ($_SESSION['type']!='T')
                                 <div class="col-md-5">
                                     <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加音檔 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="audio_file"/>
+                              </div>
+                            </div>
+                            <div class="form-group  sameline">
+                                <label class="control-label col-md-3" for="last-name">題目附圖 : <span></span></label>
+                                <input type="file" name="Q1_file"/>
                             </div>
 
                             <div class="form-group">

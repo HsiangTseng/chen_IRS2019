@@ -231,19 +231,19 @@ else if ($_SESSION['type']!='T')
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗卷名稱</label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <input type="text" class="form-control" readonly="readonly" placeholder="<?php echo $exam_title;?>">
+                                                      <input type="text" class="form-control" required="required" name="ExamTitle" value="<?php echo $exam_title;?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗說明</label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <input type="text" class="form-control" readonly="readonly" placeholder="<?php echo $exam_note;?>">
+                                                      <input type="text" class="form-control" name="Note" value="<?php echo $exam_note;?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">出題老師</label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                      <input type="text" class="form-control" readonly="readonly" placeholder="<?php echo $exam_teacher;?>">
+                                                      <input type="text" class="form-control" required="required" name="Teacher" value="<?php echo $exam_teacher;?>">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

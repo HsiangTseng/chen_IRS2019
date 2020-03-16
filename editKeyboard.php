@@ -213,62 +213,87 @@ else {
                                   </div>
                               </div>
 
-                              <div class="row">
-                                  <div class="col-md-3">
-                                      <input type="file" name="file0" id="file0"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img0" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file1" id="file1"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img1" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file2" id="file2"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img2" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file3" id="file3"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img3" src="" alt="">
-                                      </div>
-                                  </div>
+                              <div class="form-group">
+                                  <label class="control-label col-md-6" for="first-name" style="color:red;">註:若編輯完Keyboard後回到此頁面仍為舊圖片，請嘗試按下Shift+F5</label>
                               </div>
 
-                              <HR>
-                              <HR>
+                              <?php
+                              //BEFORE CREATE HTML, MUST GET THE KEYBOARD DATA.
+                              include("connects.php");
+                              if(isset($_GET['KeyboardNo']))
+                              {
+                                if($GetKeyboardNo>0)
+                                {
+                                  $sql = "SELECT * FROM `Keyboard` WHERE type='Keyboard' AND KeyboardNo='$GetKeyboardNo'";
+                                  $result = mysqli_fetch_object($db->query($sql));
+                                  $KeyboardNo = $result->KeyboardNo;
+                                  $KeyboardStyle = $result->Style;
+                                  //echo $KeyboardNo.$KeyboardStyle;
 
-                              <div class="row">
-                                  <div class="col-md-3">
-                                      <input type="file" name="file4" id="file4"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img4" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file5" id="file5"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img5" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file6" id="file6"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img6" src="" alt="">
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <input type="file" name="file7" id="file7"/>
-                                      <div class="thumbnail" style="border-style: outset;">
-                                        <img id="img7" src="" alt="">
-                                      </div>
-                                  </div>
-                              </div>
+                                  if($KeyboardStyle=="A")//4*2
+                                  {
+                                    for($i = 0 ; $i < 8 ; $i++)
+                                    {
+                                      echo '<div class="col-md-3" id ="div_'.$i.'">';
+                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                        echo '<div class="thumbnail" style="border-style: outset;">';
+                                          echo '<img id="img'.$i.'" src="" alt="">';
+                                        echo '</div>';
+                                      echo '</div>';
+                                    }
+                                  }
+
+                                  else if($KeyboardStyle=="B")//8*5
+                                  {
+                                    $half_index = 1;
+                                    for($i = 0 ; $i < 40 ; $i++)
+                                    {
+                                      if($i%4==0)
+                                      {
+                                        echo '<div id="half_id_'.$half_index.'" class="col-md-6">';
+                                        $half_index++;
+                                      }
+                                      echo '<div class="col-md-3" id ="div_'.$i.'">';
+                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                        echo '<div class="thumbnail" style="border-style: outset;">';
+                                          echo '<img id="img'.$i.'" src="" alt="">';
+                                        echo '</div>';
+                                      echo '</div>';
+                                      if($i%4==3)echo '</div>';
+                                    }
+                                  }
+
+                                  else if($KeyboardStyle=="C")//4*4
+                                  {
+                                    for($i = 0 ; $i < 16 ; $i++)
+                                    {
+                                      echo '<div class="col-md-3" id ="div_'.$i.'">';
+                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                        echo '<div class="thumbnail" style="border-style: outset;">';
+                                          echo '<img id="img'.$i.'" src="" alt="">';
+                                        echo '</div>';
+                                      echo '</div>';
+                                    }
+                                  }
+
+                                  else if($KeyboardStyle=="D")//6*4
+                                  {
+                                    for($i = 0 ; $i < 24 ; $i++)
+                                    {
+                                      echo '<div class="col-md-2" id ="div_'.$i.'">';
+                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                        echo '<div class="thumbnail" style="border-style: outset;">';
+                                          echo '<img id="img'.$i.'" src="" alt="">';
+                                        echo '</div>';
+                                      echo '</div>';
+                                    }
+                                  }
+
+                                }
+
+                              }
+
+                              ?>
 
 
                               <script
@@ -278,78 +303,6 @@ else {
                               </script>
                               <script>
 
-                              $("#file0").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img0").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img0');
-                                  document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file1").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img1").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img1');
-                                  document.getElementById("img1").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file2").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img2").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img2');
-                                  document.getElementById("img2").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file3").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img3").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img3');
-                                  document.getElementById("img3").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file4").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img4").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img4');
-                                  document.getElementById("img4").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file5").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img5").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img5');
-                                  document.getElementById("img5").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file6").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img6").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img6');
-                                  document.getElementById("img6").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
-                              $("#file7").change(function(){
-                                  var objUrl = getObjectURL(this.files[0]) ;
-                                  console.log("objUrl = "+objUrl) ;
-                                  if (objUrl) {
-                                      $("#img7").attr("src", objUrl) ;
-                                  }
-                                  var Img = document.getElementById('img7');
-                                  document.getElementById("img7").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
-                              }) ;
 
 
                               function getObjectURL(file) {
@@ -365,6 +318,36 @@ else {
                                   console.log( url )
                               }
                               </script>
+                              <?PHP
+                              if(isset($_GET['KeyboardNo']))
+                              {
+                                if($GetKeyboardNo>0)
+                                {
+                                  $img_number = 0;
+                                  if($KeyboardStyle=="A")$img_number=8;
+                                  else if($KeyboardStyle=="B")$img_number=40;
+                                  else if($KeyboardStyle=="C")$img_number=16;
+                                  else if($KeyboardStyle=="D")$img_number=24;
+
+                                  for($k = 0 ; $k < $img_number ;$k++)
+                                  {
+                                    echo '
+                                    <script>
+                                    $("#file'.$k.'").change(function(){
+                                        var objUrl = getObjectURL(this.files[0]) ;
+                                        console.log("objUrl = "+objUrl) ;
+                                        if (objUrl) {
+                                            $("#img'.$k.'").attr("src", objUrl) ;
+                                        }
+                                        var Img = document.getElementById("img'.$k.'");
+                                        document.getElementById("img'.$k.'").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                                    }) ;
+                                    </script>
+                                    ';
+                                  }
+                                }
+                              }
+                              ?>
 
                             <input type="hidden" name="KeyboardNo" <?php echo 'value="'.$GetKeyboardNo.'" >';?>
                             <div class="col-md-3 col-sm-3 col-xs-6 ">
