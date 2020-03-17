@@ -20,16 +20,16 @@
 		if($This_answer_get != ''){
 			$sql = "select * from ClassList where Teacher_ID = '".$Teacher_ID."'";			
 			$stmt = $db->query($sql);
-			if($result = mysqli_fetch_object($stmt))
+			$result = mysqli_fetch_object($stmt);
+			if(!empty($result->Teacher_ID) && !is_null($result->Teacher_ID))
 			{
 				$upd_sql = "update ClassList SET StudentNumberList = '".$This_answer_get."' where Teacher_ID = '".$Teacher_ID."'";
                                 $db->query($upd_sql);
 			}
 			else
 			{
-			echo $This_answer_get;
+				echo $This_answer_get;
 				$insert_sql = "INSERT INTO ClassList (StudentNumberList,Teacher_ID) VALUES ('".$This_answer_get."','".$Teacher_ID."')";
-				$insert_sql = "insert into ClassList ('StudentNumberList','Teacher_ID') VALUES ('".$This_answer_get."','".$Teacher_ID."')";
 	                        $db->query($insert_sql);
 			}			
 		}

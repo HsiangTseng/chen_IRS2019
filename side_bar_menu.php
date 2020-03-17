@@ -10,6 +10,7 @@ function side_bar()
           <li><a href="ExamHistory.php"><i class="fas fa-list-ol fa-2x" aria-hidden="true"></i> 考試紀錄 </a></li>
           <li><a href="SignUpStudent.php"><i class="fas fa-user-plus fa-2x" aria-hidden="true"></i> 新學生註冊 </a></li>
           <li><a href="StudentList.php"><i class="fas fa-school fa-2x" aria-hidden="true"></i> 學生清單 </a></li>
+					<li><a href="editstudentlist.php"><i class="fas fa-school fa-2x" aria-hidden="true"></i> 班級名單 </a></li>
           <li><a href="logout.php"><i class="fas fa-arrow-alt-circle-left fa-2x" aria-hidden="true"></i> 登出 </a></li>';
 	return $bar;
 }

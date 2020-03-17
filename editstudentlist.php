@@ -103,14 +103,26 @@ if($_SESSION['username'] == null)
 					<div class="x_panel">
 						<!-- title bar-->
 						<div class="x_title">
-							<h1><b>學生名單編輯</b></h1>
+							<h1><b>班級名單編輯</b></h1>
 							<div class="clearfix"></div>
 						</div>
 						<form class="form-horizontal form-label-left input_mask" method="post" action="updatestudentlist.php">
-							<?php
-								include("Choosestudent.php");
-							?>
-							<input type="submit" value="確定" name="submit" style="width:25%;">
+							<table id="q_list">
+								<thead>
+									<tr>
+									  <th>學生編號</th>
+									  <th>學校</th>
+									  <th>班級</th>
+									  <th>學生姓名</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									include("Choosestudent.php");
+								?>
+								</tbody>
+							</table>
+							<input type="submit" name="submit" value="編輯" >
 						</form>
 					</div>
 				</div>
@@ -160,6 +172,17 @@ if($_SESSION['username'] == null)
 		<!-- Custom Theme Scripts -->
 		<script src="../build/js/custom.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
+
+		 <script type="text/javascript" class="init">
+	         	$('#q_list').dataTable( {
+ 	                 "columns": [
+        	            { "width": "10%" },
+                	    { "width": "20%" },
+                            { "width": "30%" },
+	                    { "width": "40%" },
+	                  ]
+         	       } );
+		</script>
+
 	</body>
 </html>
-

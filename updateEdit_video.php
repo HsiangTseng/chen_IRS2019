@@ -202,9 +202,9 @@
    if ($_FILES['video_file']['error'] === UPLOAD_ERR_OK){
 
      //CHECK IF HAVE OLD AUDIO
-     $sql = "SELECT picture_ext FROM QuestionList WHERE No = '$question_number' AND QA='Q'";
+     $sql = "SELECT video FROM QuestionList WHERE No = '$question_number' AND QA='Q'";
      $result = mysqli_fetch_object($db->query($sql));
-     $q1_old_video = $result->picture_ext;
+     $q1_old_video = $result->video;
 
      if(strlen($q1_old_video)>0)
      {
@@ -217,7 +217,7 @@
      $video_dest = 'upload/Q'.(string)$question_number.'.'.$video_ext;
 
      move_uploaded_file($file, $video_dest);
-     $sql = "UPDATE QuestionList SET picture_ext='$video_dest' WHERE No='$question_number' AND QA='Q' ";
+     $sql = "UPDATE QuestionList SET video='$video_dest' WHERE No='$question_number' AND QA='Q' ";
      $db->query($sql);
      }
 

@@ -161,7 +161,6 @@ else if ($_SESSION['type']!='T')
 
                                     $question_number = array();
                                     $question_content = array();
-                                    $classification_array = array();
                                     $index = 1;
                                     $sql = "SELECT * FROM QuestionList WHERE QA = 'Q' AND status='1' ORDER BY type DESC ,single_or_multi DESC";
                                     if($stmt = $db->query($sql))
@@ -170,7 +169,6 @@ else if ($_SESSION['type']!='T')
                                         {
                                             $question_content[$index] = $result->Content;
                                             $question_number[$index] = $result->No;
-                                            $classification_array[$index] = $result->classification;
                                             $index++;
                                         }
                                     }
@@ -192,7 +190,7 @@ else if ($_SESSION['type']!='T')
 
                                     function ddl_content()
                                     {
-                                        global $maxnum,$SWNumber,$MWNumber,$SVNumber,$MVNumber,$SPNumber,$MPNumber,$question_number,$q_list,$question_content,$classification_array;
+                                        global $maxnum,$SWNumber,$MWNumber,$SVNumber,$MVNumber,$SPNumber,$MPNumber,$question_number,$q_list,$question_content;
                                         for ($i=1 ; $i<=$maxnum ; $i++)
                                         {
                                         if($i==1){echo "<optgroup label=\"單選文字\">";}
@@ -210,22 +208,7 @@ else if ($_SESSION['type']!='T')
                                              echo " selected ";
                                         }*/
                                         echo ">";
-                                        if($classification_array[$i]=="1")
-                                        {
-                                          echo '[理解] '.$question_content[$i];
-                                        }
-                                        else if ($classification_array[$i]=="2")
-                                        {
-                                          echo '[表達] '.$question_content[$i];
-                                        }
-                                        else if ($classification_array[$i]=="3")
-                                        {
-                                          echo '[表現] '.$question_content[$i];
-                                        }
-                                        else if ($classification_array[$i]=="0")
-                                        {
-                                          echo '[未設定] '.$question_content[$i];
-                                        }
+                                        echo "$question_content[$i]";
                                         echo "</option>";
                                         if($i==$SWNumber){echo "</optgroup>";}
                                         if($i==$SWNumber+$MWNumber){echo "</optgroup>";}
@@ -238,113 +221,113 @@ else if ($_SESSION['type']!='T')
                                 ?>
 
 
-                            <form class="form-horizontal form-label-left" method="post" action="editExam.php" onKeyDown="if (event.keyCode == 13) {return false;}">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗卷編號</label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                      <input type="text" class="form-control" readonly="readonly" name="exam_num" placeholder="<?php echo $exam_number;?>" value="<?php echo $exam_number;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗卷名稱</label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                      <input type="text" class="form-control" required="required" name="ExamTitle" value="<?php echo $exam_title;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗說明</label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                      <input type="text" class="form-control" name="Note" value="<?php echo $exam_note;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">出題老師</label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                      <input type="text" class="form-control" required="required" name="Teacher" value="<?php echo $exam_teacher;?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="control-label col-md-3" for="first-name">增減習題數量 : </label>
-                                  <button type="button" class="btn btn-success" onclick="addInputExe()">增加</button>
-                                  <button type="button" class="btn btn-danger" onclick="subInputExe()">減少</button>
-                                </div>
+                                            <form class="form-horizontal form-label-left" method="post" action="editExam.php" onKeyDown="if (event.keyCode == 13) {return false;}">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗卷編號</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                      <input type="text" class="form-control" readonly="readonly" name="exam_num" placeholder="<?php echo $exam_number;?>" value="<?php echo $exam_number;?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗卷名稱</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                      <input type="text" class="form-control" required="required" name="ExamTitle" value="<?php echo $exam_title;?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">測驗說明</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                      <input type="text" class="form-control" name="Note" value="<?php echo $exam_note;?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">出題老師</label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                      <input type="text" class="form-control" required="required" name="Teacher" value="<?php echo $exam_teacher;?>">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label class="control-label col-md-3" for="first-name">增減習題數量 : </label>
+                                                  <button type="button" class="btn btn-success" onclick="addInputExe()">增加</button>
+                                                  <button type="button" class="btn btn-danger" onclick="subInputExe()">減少</button>
+                                                </div>
 
-                                <div id="exercise"></div>
-                                <input type="hidden" name="exercise_number"  id="exercise_number">
-                                <script>
-                                var exercise_create_input_number = 0;
-                                function addInputExe() {
-                                          exercise_create_input_number++;
-                                          var ediv_form = document.createElement("DIV");
-                                          ediv_form.setAttribute("class","form-group");
-                                          name = 'div_epic'+exercise_create_input_number;
-                                          ediv_form.setAttribute("id",name);
+                                                <div id="exercise"></div>
+                                                <input type="hidden" name="exercise_number"  id="exercise_number">
+                                                <script>
+                                                var exercise_create_input_number = 0;
+                                                function addInputExe() {
+                                                          exercise_create_input_number++;
+                                                          var ediv_form = document.createElement("DIV");
+                                                          ediv_form.setAttribute("class","form-group");
+                                                          name = 'div_epic'+exercise_create_input_number;
+                                                          ediv_form.setAttribute("id",name);
 
-                                          var elb =
-                                                  '<div class="form-group">'+
-                                                  '<label class="control-label col-md-3 col-sm-3 col-xs-12">第'+exercise_create_input_number+'題</label>'+
-                                                    '<div class="col-md-9 col-sm-9 col-xs-12">'+
-                                                      '<select class="select2_single form-control" id="q'+exercise_create_input_number+'_id" name="q1[]" tabindex="-1" required>'+
-                                                        '<?php ddl_content(0);?>'+
-                                                      '</select>'+
-                                                    '</div>'+
-                                                  '</div>';
-
-
-                                          ediv_form.innerHTML = elb;
-                                          document.getElementById("exercise").appendChild(ediv_form);
-                                          document.getElementById("exercise_number").value=exercise_create_input_number;
-                                          }
-                                function subInputExe() {
-                                            if(exercise_create_input_number>1)
-                                              {
-                                                _ename = 'div_epic'+exercise_create_input_number;
-                                              document.getElementById(_ename).remove();
-                                              exercise_create_input_number--;
-                                              document.getElementById("exercise_number").value=exercise_create_input_number;
-                                              }
-                                          }
+                                                          var elb =
+                                                                  '<div class="form-group">'+
+                                                                  '<label class="control-label col-md-3 col-sm-3 col-xs-12">第'+exercise_create_input_number+'題</label>'+
+                                                                    '<div class="col-md-9 col-sm-9 col-xs-12">'+
+                                                                      '<select class="select2_single form-control" id="q'+exercise_create_input_number+'_id" name="q1[]" tabindex="-1" required>'+
+                                                                        '<?php ddl_content(0);?>'+
+                                                                      '</select>'+
+                                                                    '</div>'+
+                                                                  '</div>';
 
 
-                                function settingSelected(list_index,selected_index)//this function for edit to select the default ddl index
-                                {
-                                  list_index++;
-                                  var name = "q"+list_index+"_id";
-                                  document.getElementById(name).selectedIndex = selected_index;
-                                }
-                                </script>
+                                                          ediv_form.innerHTML = elb;
+                                                          document.getElementById("exercise").appendChild(ediv_form);
+                                                          document.getElementById("exercise_number").value=exercise_create_input_number;
+                                                          }
+                                                function subInputExe() {
+                                                            if(exercise_create_input_number>1)
+                                                              {
+                                                                _ename = 'div_epic'+exercise_create_input_number;
+                                                              document.getElementById(_ename).remove();
+                                                              exercise_create_input_number--;
+                                                              document.getElementById("exercise_number").value=exercise_create_input_number;
+                                                              }
+                                                          }
 
-                                <?php
-                                //----------EDIT BLOCK----------
-                                $sql = "SELECT * FROM `ExamList` WHERE `No`='$exam_number'";
-                                $result = mysqli_fetch_object($db->query($sql));
-                                $q_list = array();
-                                $temp_string = $result->question_list;
-                                $q_list = mb_split(",",$temp_string);
 
-                                foreach ($q_list as $key => $value) {
-                                  echo '<script>addInputExe('.$q_list[$key].')</script>';
+                                                function settingSelected(list_index,selected_index)//this function for edit to select the default ddl index
+                                                {
+                                                  list_index++;
+                                                  var name = "q"+list_index+"_id";
+                                                  document.getElementById(name).selectedIndex = selected_index;
+                                                }
+                                                </script>
 
-                                  for($i = 1 ; $i < $index ; $i++)
-                                  {
-                                    if($question_number[$i]==trim($q_list[$key]))
-                                    {
-                                      $temp_index = $i-1;
-                                      echo '<script>settingSelected('.$key.','.$temp_index.')</script>';
-                                    }
-                                  }
-                                }
-                                //----------EDIT BLOCK----------
-                                ?>
+                                                <?php
+                                                //----------EDIT BLOCK----------
+                                                $sql = "SELECT * FROM `ExamList` WHERE `No`='$exam_number'";
+                                                $result = mysqli_fetch_object($db->query($sql));
+                                                $q_list = array();
+                                                $temp_string = $result->question_list;
+                                                $q_list = mb_split(",",$temp_string);
 
-                                  <div class="ln_solid"></div>
-                                  <div class="form-group">
-                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                      <button type="submit" name class="btn btn-success">編輯</button>
-                                    </div>
-                                  </div>
+                                                foreach ($q_list as $key => $value) {
+                                                  echo '<script>addInputExe('.$q_list[$key].')</script>';
 
-                            </form>
+                                                  for($i = 1 ; $i < $index ; $i++)
+                                                  {
+                                                    if($question_number[$i]==trim($q_list[$key]))
+                                                    {
+                                                      $temp_index = $i-1;
+                                                      echo '<script>settingSelected('.$key.','.$temp_index.')</script>';
+                                                    }
+                                                  }
+                                                }
+                                                //----------EDIT BLOCK----------
+                                                ?>
+
+                                                  <div class="ln_solid"></div>
+                                                  <div class="form-group">
+                                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                                      <button type="submit" name class="btn btn-success">編輯</button>
+                                                    </div>
+                                                  </div>
+
+                                            </form>
                         </div>
                         <!-- content area-->
     	            </div>

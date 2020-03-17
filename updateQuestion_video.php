@@ -38,7 +38,7 @@
     	// if edit , must DELETE OLD FILE first!!!
     	unlink($ext);
     }
-	
+
 	if ($_FILES['audio_file']['error'] === UPLOAD_ERR_OK){
 		$file = $_FILES['audio_file']['tmp_name'];
 		//$a1_ext = end(explode('.', $_FILES['audio_file']['name']));
@@ -160,7 +160,7 @@
 
 	else //insert
 	{
-		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, picture_ext, classification, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$video_dest', '$classification[0]', '$audio_dest')";
+		$sql2 = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, video, classification, audio) VALUES ('$max_number', 'Q', '$CA', '$q1', 'VIDEO', '$single_or_multi', '$video_dest', '$classification[0]', '$audio_dest')";
 		$db->query($sql2);
 
 		$sql2 = "INSERT INTO QuestionList (No, QA, type, Content, picture_alt, picture_ext, classification) VALUES ('$max_number', 'A1', 'VIDEO', '$a1', '$a1_alt', '$a1_ext', '0')";

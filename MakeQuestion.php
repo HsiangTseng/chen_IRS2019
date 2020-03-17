@@ -791,9 +791,17 @@ else if ($_SESSION['type']!='T')
                                   <input type="file" name="audio_file"/>
                               </div>
                             </div>
-                            <div class="form-group  sameline">
-                                <label class="control-label col-md-3" for="last-name">題目附圖 : <span></span></label>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加影片 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="video_file" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">題目附圖 : </label>
+                              <div class="col-md-3">
                                 <input type="file" name="Q1_file"/>
+                              </div>
                             </div>
 
                             <div class="form-group">
@@ -858,6 +866,24 @@ else if ($_SESSION['type']!='T')
                                     <input type="text"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加音檔 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="audio_file"/>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加影片 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="video_file" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">題目附圖 : </label>
+                              <div class="col-md-3">
+                                <input type="file" name="Q1_file"/>
+                              </div>
+                            </div>
 
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
@@ -897,14 +923,14 @@ else if ($_SESSION['type']!='T')
                                     }
 
                           function subInputPic() {
-                                      if(pic_create_input_number>1)
-                                        {
-                                          _name = 'div_qpic'+pic_create_input_number;
-                                        document.getElementById(_name).remove();
-                                        pic_create_input_number--;
-                                        document.getElementById("picture_number").value=pic_create_input_number;
-                                        }
-                                    }
+                                    if(pic_create_input_number>1)
+                                      {
+                                        _name = 'div_qpic'+pic_create_input_number;
+                                      document.getElementById(_name).remove();
+                                      pic_create_input_number--;
+                                      document.getElementById("picture_number").value=pic_create_input_number;
+                                      }
+                                  }
 
                           addInputPic();
 

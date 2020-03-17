@@ -2,31 +2,35 @@
 <?php 
 	session_start(); 
 	$WhosAnswer = $_SESSION['username'];
-	if($_SESSION['username'] == null){
-		echo '12345';
-	}
-	else{
-		//echo $_SESSION['username'];
-	}
 ?>
 <?php
 	include("connects.php");
-	$sql = "SELECT * FROM Now_state";
-	$temp = "SELECT * FROM temp_for_state";
-	$now = 0;
-	$last = 0;
-	if($stmt = $db->query($sql)){
-		while($result = mysqli_fetch_object($stmt)){
-			$now = $result->No;
-			$UUID_now = $result->UUID;
-			$stmt = $db->query($temp);
-			$result = mysqli_fetch_object($stmt);
-			$last = $result->No_temp;
-			$UUID_last = $result->UUID;
+	$sql_user = "select * from UserList where id='".$WhosAnswer."'";
+	$stmt2 = $db->query($sql_user);
+	$result2 = mysqli_fetch_object($stmt2);
+	$userStudentNumber = $result2->StudentNumber;
 
-		}
-	}	
-
+	$sql_catch_teacher = "select * from ClassList where StudentNumberList like %".$userStudentNumber."% ";
+	$stmt3 = $db->query($sql_catch_teacher);
+        if($result3 = mysqli_fetch_object($stmt3)){
+		$Teacher_ID = $result3->Teacher_ID;
+		$_SESSION['Teacher_ID'] =  $Teacher_ID;
+		$sql = "SELECT * FROM Now_state where Teacher_ID='".$Teacher_ID."'";
+		$temp = "SELECT * FROM temp_for_state where Teacher_ID='".$Teacher_ID."'";
+		$now = 0;
+		$last = 0;
+		if($stmt = $db->query($sql)){
+			while($result = mysqli_fetch_object($stmt)){
+				$now = $result->No;
+				$UUID_now = $result->UUID;
+				$stmt = $db->query($temp);
+				$result = mysqli_fetch_object($stmt);
+				$last = $result->No_temp;
+				$UUID_last = $result->UUID;
+	
+			}
+		}	
+	}
 
 ?>
 <html lang="en" style="height:100%">
@@ -98,44 +102,42 @@
                   <div class="x_content">
                       <h1>等待進入考試中,請稍後</h1>
 			<?php	
-	include("connects.php");
+				include("connects.php");	
+				$sql = "select * from UserList where id ='".$_SESSION['username']."'";	
+				if($stmt = $db->query($sql)){
+					while($result = mysqli_fetch_object($stmt)){
+						$id = $result-> id;
+						$Name = $result->Name;
+						$School = $result->School;
+						$Grade = $result->Grade;
+						$Class = $result->Class;
+					}
+				}
 
-	$sql = "select * from UserList where id ='".$_SESSION['username']."'";
-	
-	if($stmt = $db->query($sql)){
-		while($result = mysqli_fetch_object($stmt)){
-			$id = $result-> id;
-			$Name = $result->Name;
-			$School = $result->School;
-			$Grade = $result->Grade;
-			$Class = $result->Class;
-		}
-	}
-
-	echo "<div class='col-md-12 col-sm-12 col-xs-12 profile_details'>";
-		echo "<div class='well profile_view'>";
-			echo "<div class='col-sm-12'>";
-				echo "<h4 class='brief'>個人資料</h4>";
-					echo "<div class='left col-xs-7'>";
-						echo "<h1><strong>".$Name."</strong></h1>";
-							echo "<p><strong>學校: </strong> ".$School."</p>";
-							echo "<p><i class='fa fa-building'></i><strong>學號： </strong>".$id."</p>";
-							echo "<p><i class='fa fa-building'></i><strong>班級： </strong>".$Grade."年".$Class."</p>";
-					echo "</div>";
-					echo "<div class='right col-xs-5 text-center'>";
-						echo "<img src='images/user.png' alt='' class='img-circle img-responsive'>";
-					echo "</div>";
-			echo "</div>";
-				echo "<div class='col-xs-12 bottom text-center'>";
-					echo "<div class='col-xs-12 col-sm-6 emphasis'>";
-						echo "<p class='ratings'>";
-							echo "<a></a>";
-						echo "</p>";
+				echo "<div class='col-md-12 col-sm-12 col-xs-12 profile_details'>";
+					echo "<div class='well profile_view'>";
+						echo "<div class='col-sm-12'>";
+							echo "<h4 class='brief'>個人資料</h4>";
+							echo "<div class='left col-xs-7'>";
+								echo "<h1><strong>".$Name."</strong></h1>";
+								echo "<p><strong>學校: </strong> ".$School."</p>";
+								echo "<p><i class='fa fa-building'></i><strong>學號： </strong>".$id."</p>";
+								echo "<p><i class='fa fa-building'></i><strong>班級： </strong>".$Grade."年".$Class."</p>";
+							echo "</div>";
+							echo "<div class='right col-xs-5 text-center'>";
+								echo "<img src='images/user.png' alt='' class='img-circle img-responsive'>";
+							echo "</div>";
+						echo "</div>";
+						echo "<div class='col-xs-12 bottom text-center'>";
+							echo "<div class='col-xs-12 col-sm-6 emphasis'>";
+								echo "<p class='ratings'>";
+									echo "<a></a>";
+								echo "</p>";
+							echo "</div>";
+						echo "</div>";
 					echo "</div>";
 				echo "</div>";
-		echo "</div>";
-	echo "</div>";
-?>		
+			?>		
                   </div>
                 </div>
               </div>
@@ -168,8 +170,7 @@
     <script src="../build/js/custom.min.js"></script>
   </body>
 
-		<?
-			
+		<?			
 			include("connects.php");
 			
 			$date=date('Y-m-d H:i:s');
@@ -237,6 +238,7 @@
 			var get_now =  <?php echo "$now";?>;
 			var get_last_UUID = '<?php echo $UUID_last;?>';
 			var get_now_UUID = '<?php echo $UUID_now;?>';
+			
 			
 
 			function set_status(){

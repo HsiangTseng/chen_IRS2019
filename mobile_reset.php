@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("connects.php");
 
 	 $temp = "SELECT * FROM temp_for_state";

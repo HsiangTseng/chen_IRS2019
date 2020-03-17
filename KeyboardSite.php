@@ -226,6 +226,25 @@ else {
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加音檔 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="audio_file"/>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">附加影片 : </label>
+                              <div class="col-md-3">
+                                  <input type="file" name="video_file" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="last-name">題目附圖 : </label>
+                              <div class="col-md-3">
+                                <input type="file" name="Q1_file"/>
+                              </div>
+                            </div>
+
                             <?php
                             //BEFORE CREATE HTML, MUST GET THE KEYBOARD DATA.
                             include("connects.php");
