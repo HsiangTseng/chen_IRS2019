@@ -4,7 +4,8 @@
 	$Answer_get='';
 	//get answer data from database
 	$date=date('Y-m-d H:i:s');
-	$sql_get_UUID_NoExam = "select * from Now_state";	
+	$Teacher_ID = $_SESSION['Teacher_ID'];
+	$sql_get_UUID_NoExam = "select * from Now_state where Teacher_ID = '".$Teacher_ID."'";
 	
 	if($stmt = $db->query($sql_get_UUID_NoExam)){
 		while($result = mysqli_fetch_object($stmt)){			

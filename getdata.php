@@ -1,7 +1,8 @@
 <?
 	include("connects.php");
-	
-	$sql_nowstate = "select * from Now_state";
+
+	$Teacher_ID = $_SESSION['Teacher_ID'];
+	$sql_nowstate = "select * from Now_state where Teacher_ID='".$Teacher_ID."'";
 	
 	//取得現在題號、現在的試卷號碼
 	if($stmt = $db->query($sql_nowstate))

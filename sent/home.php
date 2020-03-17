@@ -21,9 +21,7 @@ if($_SESSION['username'] == null)
       $q_list = mb_split(",",$temp_string);
       //print_r($q_list);
 
-      $username=$_SESSION['username'];
-
-      $sql = "SELECT * FROM Now_state WHERE Teacher_ID='$username'";
+      $sql = "SELECT * FROM Now_state";
       $result = mysqli_fetch_object($db->query($sql));
       $exam_index = $result->No;
       $question_number = $result->No;
@@ -38,7 +36,7 @@ if($_SESSION['username'] == null)
 
       if($exam_index ==0)
       {
-        $sql = "UPDATE Now_state SET No =1 WHERE Teacher_ID='$username'";
+        $sql = "UPDATE Now_state SET No =1";
         $db->query($sql);
         $exam_index = 1;
       }
@@ -243,13 +241,12 @@ if($_SESSION['username'] == null)
 
             function runnext()
             {
-              var Teacher_ID = "<?php echo $username;?>";
               $.ajax
                        (
                           {
                           type: "POST",
                           url: "changeNext.php",
-                          data: { name: "Next",Teacher_ID:Teacher_ID}
+                          data: { name: "Next" }
                           }
                        ).done(function( msg ) {});
                        //location.reload();
@@ -328,13 +325,12 @@ if($_SESSION['username'] == null)
                       }
                       else
                       {
-                         var Teacher_ID = "<?php echo $username;?>";
                          $.ajax
                          (
                             {
                             type: "POST",
                             url: "changeNext.php",
-                            data: { name: "Next" ,Teacher_ID:Teacher_ID }
+                            data: { name: "Next" }
                             }
                          ).done(function( msg ) {});
                          //location.reload();
@@ -344,13 +340,12 @@ if($_SESSION['username'] == null)
 
                  $('#lastquiz').click(function()
                     {
-                      var Teacher_ID = "<?php echo $username;?>";
                        $.ajax
                        (
                           {
                           type: "POST",
                           url: "changeLast.php",
-                          data: { name: "Last" ,Teacher_ID:Teacher_ID }
+                          data: { name: "Last" }
                           }
                        ).done(function( msg ) {});
                        //location.reload();

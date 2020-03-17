@@ -163,6 +163,27 @@
                         <input type="text" id="Q1"  name="Q1" required="required" class="form-control col-md-7 col-xs-12">
                     </div>
                 </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">附加音檔 : </label>
+                  <div class="col-md-3">
+                      <input type="file" name="audio_file"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">附加影片 : </label>
+                  <div class="col-md-3">
+                      <input type="file" name="video_file" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">題目附圖 : </label>
+                  <div class="col-md-3">
+                    <input type="file" id="Q1_file" name="Q1_file"/>
+                  </div>
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img0" src="" alt="">
+                </div>
 
                 <div class="form-group">
                     <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
@@ -188,6 +209,19 @@
                       crossorigin="anonymous">
                       </script>
                 <script>
+                window.onload = function() {
+                      document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                    };
+
+                $("#Q1_file").change(function(){
+                    var objUrl = getObjectURL(this.files[0]) ;
+                    console.log("objUrl = "+objUrl) ;
+                    if (objUrl) {
+                        $("#img0").attr("src", objUrl) ;
+                    }
+                    var Img = document.getElementById('img0');
+                    document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                }) ;
                 function getObjectURL(file) {
                     var url = null ;
                     if (window.createObjectURL!=undefined) { // basic
@@ -254,6 +288,8 @@
                 //Question
                 echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
                 echo '<script>document.getElementById("CA").value="'.$CA.'";</script>';
+                $Q1_ext = $result->picture_ext;
+                echo '<script>document.getElementById("img0").src ="upload/Q'.$question_number.'Q1.'.$Q1_ext.'";</script>';
 
                 //CLASSIFIACATION
                 if($classification=="1") echo '<script>document.getElementById("class_1").checked = true;</script>';

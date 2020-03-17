@@ -7,8 +7,9 @@
 
 <?php
 	include("connects.php");
-	$sql = "SELECT * FROM `Now_state`";
-	$temp = "SELECT * FROM `temp_for_state`";
+	$Teacher_ID = $_SESSION['Teacher_ID'];
+	$sql = "SELECT * FROM `Now_state` where Teacher_ID = '".$Teacher_ID."'";
+	$temp = "SELECT * FROM `temp_for_state` where Teacher_ID = '".$Teacher_ID."'";
 	$now = 0;
 	$last = 0;
 	if($stmt = $db->query($sql)){

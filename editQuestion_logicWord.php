@@ -195,6 +195,28 @@
                 </div>
 
                 <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">附加音檔 : </label>
+                  <div class="col-md-3">
+                      <input type="file" name="audio_file"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">附加影片 : </label>
+                  <div class="col-md-3">
+                      <input type="file" name="video_file" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3" for="last-name">題目附圖 : </label>
+                  <div class="col-md-3">
+                    <input type="file" id="Q1_file" name="Q1_file"/>
+                  </div>
+                </div>
+                <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
+                      <img id="img0" src="" alt="">
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
                     <div class="col-md-5">
                         <input type="text" id="CA"  name="CA" placeholder="EX : 正確語序若為選項1-3-2-4，請填 A1,A3,A2,A4" required="required" class="form-control col-md-7 col-xs-12">
@@ -211,6 +233,41 @@
             </div>
             <!-- Question -->
 
+            <script
+              src="https://code.jquery.com/jquery-1.9.0.js"
+              integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+              crossorigin="anonymous">
+            </script>
+            <script>
+
+
+            window.onload = function() {
+                  document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                };
+
+            $("#Q1_file").change(function(){
+                var objUrl = getObjectURL(this.files[0]) ;
+                console.log("objUrl = "+objUrl) ;
+                if (objUrl) {
+                    $("#img0").attr("src", objUrl) ;
+                }
+                var Img = document.getElementById('img0');
+                document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+            }) ;
+            function getObjectURL(file) {
+                var url = null ;
+                if (window.createObjectURL!=undefined) { // basic
+                    url = window.createObjectURL(file) ;
+                } else if (window.URL!=undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file) ;
+                } else if (window.webkitURL!=undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file) ;
+                }
+                return url ;
+                console.log( url )
+            }
+            </script>
+
             <?php
             // PHP BLOCK, SETTING ALL DEFAULT VALUE HERE!
             include("connects.php");
@@ -224,6 +281,9 @@
             //Question
             echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
             echo '<script>document.getElementById("CA").value="'.$CA.'";</script>';
+
+            $Q1_ext = $result->picture_ext;
+            echo '<script>document.getElementById("img0").src ="upload/Q'.$question_number.'Q1.'.$Q1_ext.'";</script>';
 
             //CLASSIFIACATION
             if($classification=="1") echo '<script>document.getElementById("class_1").checked = true;</script>';
@@ -247,6 +307,8 @@
               $index = $i+1;
               echo '<script>document.getElementById("input_'.$index.'").value="'.$wordQuestion[$i].'"</script>';
             }
+
+
 
             ?>
 

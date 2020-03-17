@@ -79,7 +79,7 @@ if($_SESSION['username'] == null)
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <?php 
+                  <?php
                   include("side_bar_menu.php");
                   echo side_bar();
                   ?>
@@ -109,44 +109,73 @@ if($_SESSION['username'] == null)
         <!-- page content################################# -->
         <div class="right_col" role="main">
 
-        	<?php
-
-                function generateRandomString($length = 5) 
-                {
-                    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    $charactersLength = strlen($characters);
-                    $randomString = '';
-                    for ($i = 0; $i < $length; $i++) {
-                        $randomString .= $characters[rand(0, $charactersLength - 1)];
-                    }
-                    return $randomString;
+      	  <?php
+            function generateRandomString($length = 5)
+            {
+                $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $charactersLength = strlen($characters);
+                $randomString = '';
+                for ($i = 0; $i < $length; $i++) {
+                    $randomString .= $characters[rand(0, $charactersLength - 1)];
                 }
+                return $randomString;
+            }
+    				include("connects.php");
+            $uid = '';
+            $uid =  generateRandomString();
+            date_default_timezone_set("Asia/Taipei");
+            $timestamp = date('Y-m-d H:i:s');
 
-				include("connects.php");
-                $uid = '';
-                $uid =  generateRandomString();
-                date_default_timezone_set("Asia/Taipei");
-                $timestamp = date('Y-m-d H:i:s');
-				$sql = "UPDATE Now_state SET No = 0,UUID = '$uid',ExamNumber = '$exam_number', ExamTime = '$timestamp'";
-				$db->query($sql);
-				
+            $username = $_SESSION['username'];
+            //echo 'USER->>'.$username.'<br />';
 
-                $sql_temp_state="UPDATE temp_for_state SET No_temp=0";
-                $db->query($sql_temp_state);
-                $db->close();
-			?>
+            $sql = "SELECT COUNT(No) AS max FROM Now_state WHERE Teacher_ID = '$username'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $count = $result->max;
+            if($count>0)//NOW STATE EXIST
+            {
+              $sql = "UPDATE Now_state SET No = 0,UUID = '$uid',ExamNumber = '$exam_number', ExamTime = '$timestamp' WHERE Teacher_ID='$username'";
+      				$db->query($sql);
+            }
+            else
+            {
+              $sql = "INSERT INTO Now_state (No, ExamNumber, UUID, ExamTime, Teacher_ID) VALUES('0','$exam_number', '$uid', '$timestamp', '$username')";
+              $db->query($sql);
+            }
+
+            $sql = "SELECT COUNT(No_temp) AS max FROM temp_for_state WHERE Teacher_ID = '$username'";
+            $result = mysqli_fetch_object($db->query($sql));
+            $count = $result->max;
+            if($count>0)//NOW STATE EXIST
+            {
+              $sql = "UPDATE temp_for_state SET No_temp = 0,UUID = '$uid' WHERE Teacher_ID='$username'";
+              $db->query($sql);
+            }
+            else
+            {
+              $sql = "INSERT INTO temp_for_state (No_temp, UUID, Teacher_ID) VALUES('0', '$uid', '$username')";
+              $db->query($sql);
+            }
 
 
-			    <form class="form-horizontal form-label-left" method="post" action="home.php" onKeyDown="if (event.keyCode == 13) {return false;}">
+
+
+
+
+            $sql_temp_state="UPDATE temp_for_state SET No_temp=0";
+            $db->query($sql_temp_state);
+            $db->close();
+          ?>
+
+
+			   <form class="form-horizontal form-label-left" method="post" action="home.php" onKeyDown="if (event.keyCode == 13) {return false;}">
 			        <div class="form-group">
                         <div class="col-md-5">
                           <input type="hidden"  name="exam_number" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $exam_number;?>">
                         </div>
                     </div>
-
                     <button type="submit" class="btn btn-success">開始考試</button>
-
-				</form>
+				 </form>
 
 		</div>
 

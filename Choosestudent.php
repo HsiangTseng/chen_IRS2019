@@ -10,10 +10,11 @@
 
 	$sql_teacherclass = "select * from ClassList where Teacher_ID = '".$teacher_id."'";
 	if($stmt =$db->query($sql_teacherclass)){	
-		$result = mysqli_fetch_object($stmt);
-		$classlist = $result->StudentNumberList;
-		$checkstudentnumberarray = mb_split("-",$classlist);
-		$check_count = count($checkstudentnumberarray);
+		while($result = mysqli_fetch_object($stmt)){
+			$classlist = $result->StudentNumberList;
+			$checkstudentnumberarray = mb_split("-",$classlist);
+			$check_count = count($checkstudentnumberarray);
+		}
 	}
 
 	$studentnumberarray = array();

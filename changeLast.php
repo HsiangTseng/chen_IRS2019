@@ -1,5 +1,6 @@
 <?php
 	include("connects.php");
+	$Teacher_ID = $_POST['Teacher_ID'];
 	$now = 0;
 
 	$sql = "SELECT * FROM Now_state";
@@ -13,7 +14,7 @@
 
 	if($now > 1)
 	{
-		$sql = "UPDATE Now_state SET No=$now-1";
+		$sql = "UPDATE Now_state SET No=$now-1 WHERE Teacher_ID='$Teacher_ID'";
 		$db->query($sql);
 
 		//update timestamp
@@ -24,7 +25,7 @@
 		//$sql = "UPDATE Now_state SET Temp=5";
 		//$db->query($sql);
 	}
-	
+
 	$db->close();
 	header ('location: home.php');
 
