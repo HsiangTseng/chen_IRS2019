@@ -19,6 +19,8 @@
   echo 'picture_number->>'.$picture_number.'<br />';
   echo 'STYLE->>'.$Keyboard_Style.'<br />';*/
 
+
+	//-----------------------------IMAGE BLOCK-----------------------------
   $ext_list = "";
 
   if ($_FILES['file0']['error'] === UPLOAD_ERR_OK){
@@ -71,8 +73,43 @@
   	else {
     }
   }
+	//-----------------------------IMAGE BLOCK-----------------------------
 
-  $sql2 = "INSERT INTO Keyboard (KeyboardNo, KeyboardName, type, ext, Style) VALUES ('$max_number', '$keyboardName', 'Keyboard', '$ext_list', '$Keyboard_Style')";
+
+	//-----------------------------AUDIO BLOCK-----------------------------
+	//UPLOAD EVERY AUDIO
+	$audio_ext_list = "";
+	if ($_FILES['audio0']['error'] === UPLOAD_ERR_OK){
+		$file = $_FILES['audio0']['tmp_name'];
+		$audio_ext = end(explode('.', $_FILES['audio0']['name']));
+		$audio_dest = 'upload/K'.(string)$max_number.'A1.'.$audio_ext;
+		# 將檔案移至指定位置
+		move_uploaded_file($file, $audio_dest);
+		$audio_ext_list = $audio_ext;
+		}
+	else {
+		$audio_ext_list="N";
+	}
+
+	for($i = 1; $i < $picture_number ; $i++)
+	{
+		$audio_name = 'audio'.$i;
+		$audio_index = $i+1;
+		if ($_FILES[$audio_name]['error'] === UPLOAD_ERR_OK){
+		  $file = $_FILES[$audio_name]['tmp_name'];
+		  $audio_ext = end(explode('.', $_FILES[$audio_name]['name']));
+		  $audio_dest = 'upload/K'.(string)$max_number.'A'.$audio_index.'.'.$audio_ext;
+		  # 將檔案移至指定位置
+		  move_uploaded_file($file, $audio_dest);
+			$audio_ext_list = $audio_ext_list.'-'.$audio_ext;
+		  }
+		else {
+			$audio_ext_list = $audio_ext_list."-N";
+		}
+	}
+	//-----------------------------AUDIO BLOCK-----------------------------
+
+  $sql2 = "INSERT INTO Keyboard (KeyboardNo, KeyboardName, type, ext, audio_ext, Style) VALUES ('$max_number', '$keyboardName', 'Keyboard', '$ext_list', '$audio_ext_list','$Keyboard_Style')";
 	$db->query($sql2);
 
   echo "<script>alert('建立鍵盤成功'); location.href = 'KeyboardSite.php';</script>"  ;

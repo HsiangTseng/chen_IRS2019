@@ -203,11 +203,11 @@
     $db->query($sqlQuestion);
     $db->close();
 
+
+		*/
     echo "<script>alert('出題成功'); location.href = 'MakeQuestion.php';</script>";
 
 
 
-
-*/
 
 ?>

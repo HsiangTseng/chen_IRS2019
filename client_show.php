@@ -267,7 +267,35 @@
 						var audios = document.getElementsByTagName("audio");
 						var arrshow = [];
 						var arrvalue = [];
+						var allAudios = document.querySelectorAll('audio');
+						var playaudio = new Audio();
+							
+						function pause_audio(){
+							 playaudio.pause();
+						}
+
+						function pictureorder_and_audio(value,id,placeholder){
+							var arrplaceholder = placeholder.split("-");
+							picture_order(value,id,arrplaceholder[0]);
+							play_audio(id,arrplaceholder[1]);
+						}
+						
+						function showorder_and_audio(value,id,placeholder){
+                                                        var arrplaceholder = placeholder.split("-");
+                                                        show_order(value,id,arrplaceholder[0]);
+                                                        play_audio(id,arrplaceholder[1]);
+                                                }
+						
+						function play_audio(id,placeholder){
+							pause_audio();
+							if(document.getElementById(id).checked){
+								playaudio.src = placeholder;
+								playaudio.play();
+							}
+						}
+
 						function show_order(value,id,placeholder){
+							pause_audio();
 							if (document.getElementById(id).checked){
 								arrshow.push(placeholder);
 								arrvalue.push(value);
@@ -285,6 +313,7 @@
 						}
 						
 						function picture_order(value,id,placeholder){
+							pause_audio();
 						if (document.getElementById(id).checked){
 							var div_form = document.createElement("label");
 							div_form.setAttribute("class","col-md-1 col-xs-1 col-sm-1");
@@ -316,6 +345,9 @@
 						[].forEach.call(audios, function (i) {
 						        i.addEventListener("play", pauseAll.bind(i));
 					        })
+						
+
+
 					</script>	
 					
 					

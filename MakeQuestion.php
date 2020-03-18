@@ -893,17 +893,33 @@ else if ($_SESSION['type']!='T')
                                                 echo $_KeyboardName[$i];
                                                 echo "</option>";
                                             }
-                                            $db->close();
                                         ?>
                                 </select>
 
                                 </div>
                             </div>
-
-
+                            <?php
+                            echo '<div class="col-md-6" id="KeyboardPreview" style="margin-left:25%; display:none;">';
+                              $half_index = 1;
+                              for($i = 0 ; $i < 40 ; $i++)
+                              {
+                                if($i%4==0)
+                                {
+                                  echo '<div id="half_id_'.$half_index.'" class="col-md-6">';
+                                  $half_index++;
+                                }
+                                echo '<div class="col-md-3" id ="div_'.$i.'" style="display:none; text-align:center;">';
+                                  echo '<div class="thumbnail" style="border-style: outset; height:80px;">';
+                                    echo '<img id="img'.$i.'" src="" alt="" style="height:100%">';
+                                  echo '</div>';
+                                echo '</div>';
+                                if($i%4==3)echo '</div>';
+                              }
+                            echo '</div>';
+                            ?>
                             <HR>
                             <HR>
-                            <div class="form-group">
+                            <div class="form-group col-md-12">
                                 <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="1" required><label>詞彙理解</label>
                                 <input type="radio" class="radio-inline flat" name="classification[]" value="2" required><label>詞彙表達</label>
@@ -989,6 +1005,7 @@ else if ($_SESSION['type']!='T')
                             document.getElementById("OriginImageType").style.display="block";
                             document.getElementById("OriginType").style.display="block";
                             document.getElementById("KeyboardType").style.display="none";
+                            document.getElementById("KeyboardPreview").style.display="none";
                             document.getElementById("submit_button").disabled = false;
                             document.getElementById("OriginOrKeyboard").value = "Origin";
                             if(pic_create_input_number==0)
@@ -1002,8 +1019,9 @@ else if ($_SESSION['type']!='T')
                             document.getElementById("OriginImageType").style.display="none";
                             document.getElementById("OriginType").style.display="none";
                             document.getElementById("KeyboardType").style.display="block";
+                            document.getElementById("KeyboardType").style.display="block";
                             document.getElementById("submit_button").disabled = false;
-                            document.getElementById("OriginOrKeyboard").value = "Keyboard";
+                            document.getElementById("KeyboardPreview").style.display="block";
 
                             //CLEAR ALL ORIGIN FILE AND INPUT
                             if(pic_create_input_number>0)
@@ -1035,8 +1053,101 @@ else if ($_SESSION['type']!='T')
                                       var full_string = msg.trim();
                                       var style = full_string.charAt(0);
                                       var ext = full_string.substr(1);
-                                      //alert(ext);
-                                      //document.write('<img src="upload/K5A1.jpg">');
+                                      var ext_array = new Array();
+                                      var ext_array = ext.split("-");
+
+                                      if(style=="A")//4*2
+                                      {
+                                        for (var i = 0 ; i < 40 ; i++)//initial
+                                        {
+                                          var div_name = 'div_'+i;
+                                          document.getElementById(div_name).style.display="none";
+                                        }
+                                        for(var i = 0 ; i < 8 ; i++)
+                                        {
+                                          var img_index = i+1;
+                                          var div_name = 'div_'+i;
+                                          var img_name = 'img'+i;
+                                          var src_name = 'upload/K'+keyboard_number+'A'+img_index+'.'+ext_array[i];
+                                          document.getElementById(div_name).style.display="block";
+                                          document.getElementById(img_name).src=src_name;
+                                          document.getElementById(div_name).className="col-md-3";
+                                        }
+                                        for(var j = 1 ; j <= 10 ; j++)
+                                        {
+                                          var div_name = 'half_id_'+j;
+                                          document.getElementById(div_name).className="";
+                                        }
+                                      }
+                                      else if(style=="B")//8*5
+                                      {
+                                        for (var i = 0 ; i < 40 ; i++)//initial
+                                        {
+                                          var div_name = 'div_'+i;
+                                          document.getElementById(div_name).style.display="none";
+                                        }
+                                        for(var i = 0 ; i < 40 ; i++)
+                                        {
+                                          var img_index = i+1;
+                                          var div_name = 'div_'+i;
+                                          var img_name = 'img'+i;
+                                          var src_name = 'upload/K'+keyboard_number+'A'+img_index+'.'+ext_array[i];
+                                          document.getElementById(div_name).style.display="block";
+                                          document.getElementById(img_name).src=src_name;
+                                          document.getElementById(div_name).className="col-md-3";
+                                        }
+                                        for(var j = 1 ; j <= 10 ; j++)
+                                        {
+                                          var div_name = 'half_id_'+j;
+                                          document.getElementById(div_name).className="col-md-6";
+                                        }
+                                      }
+                                      else if(style=="C")//4*4
+                                      {
+                                        for (var i = 0 ; i < 40 ; i++)//initial
+                                        {
+                                          var div_name = 'div_'+i;
+                                          document.getElementById(div_name).style.display="none";
+                                        }
+                                        for(var i = 0 ; i < 16 ; i++)
+                                        {
+                                          var img_index = i+1;
+                                          var div_name = 'div_'+i;
+                                          var img_name = 'img'+i;
+                                          var src_name = 'upload/K'+keyboard_number+'A'+img_index+'.'+ext_array[i];
+                                          document.getElementById(div_name).style.display="block";
+                                          document.getElementById(img_name).src=src_name;
+                                          document.getElementById(div_name).className="col-md-3";
+                                        }
+                                        for(var j = 1 ; j <= 10 ; j++)
+                                        {
+                                          var div_name = 'half_id_'+j;
+                                          document.getElementById(div_name).className="";
+                                        }
+                                      }
+                                      else if(style=="D")//6*4
+                                      {
+                                        for (var i = 0 ; i < 40 ; i++)//initial
+                                        {
+                                          var div_name = 'div_'+i;
+                                          document.getElementById(div_name).style.display="none";
+                                        }
+                                        for(var i = 0 ; i < 24 ; i++)
+                                        {
+                                          var img_index = i+1;
+                                          var div_name = 'div_'+i;
+                                          var img_name = 'img'+i;
+                                          var src_name = 'upload/K'+keyboard_number+'A'+img_index+'.'+ext_array[i];
+                                          document.getElementById(div_name).style.display="block";
+                                          document.getElementById(img_name).src=src_name;
+                                          document.getElementById(div_name).className="col-md-2";
+                                        }
+                                        for(var j = 1 ; j <= 10 ; j++)
+                                        {
+                                          var div_name = 'half_id_'+j;
+                                          document.getElementById(div_name).className="";
+                                        }
+                                      }
                                     }
                                   }
                                )

@@ -539,7 +539,10 @@ else {
                                 $half_index++;
                               }
                               echo '<div class="col-md-3" id ="div_'.$i.'" style="display:none;">';
+                                echo '<label style="display:inline;">圖檔↓↓↓</label>';
                                 echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                 echo '<div class="thumbnail" style="border-style: outset;">';
                                   echo '<img id="img'.$i.'" src="" alt="">';
                                 echo '</div>';
