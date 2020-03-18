@@ -18,7 +18,6 @@
 		$max_number = $max_number+1;
 		//get the new question's number
 
-
 		//---------------Question File------------------
 		if ($_FILES['Q1_file']['error'] === UPLOAD_ERR_OK){
 		$file = $_FILES['Q1_file']['tmp_name'];

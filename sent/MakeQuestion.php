@@ -1022,7 +1022,6 @@ else if ($_SESSION['type']!='T')
                             document.getElementById("KeyboardType").style.display="block";
                             document.getElementById("submit_button").disabled = false;
                             document.getElementById("KeyboardPreview").style.display="block";
-                            document.getElementById("OriginOrKeyboard").value = "Keyboard";
 
                             //CLEAR ALL ORIGIN FILE AND INPUT
                             if(pic_create_input_number>0)
