@@ -195,9 +195,8 @@
 	}
      </style>
 		<div class="container body"  style="height:100%">
-			<div class="main_container"  style="height:100%">
+			<div class="main_container test"  style="height:100%">
 			<!-- page content################################# -->
-				<div class="x_panel test" role="main"  style="height:100%">
 					<form method="post" action="submit_answer.php" style="height:100%">
 						<?php
 							echo "<input type='hidden' id='hidden_time' name='hidden_time' value='".microtime(true)."'/>";
@@ -288,7 +287,7 @@
 						function picture_order(value,id,placeholder){
 						if (document.getElementById(id).checked){
 							var div_form = document.createElement("label");
-							div_form.setAttribute("class","col-md-2 col-xs-2 col-sm-2");
+							div_form.setAttribute("class","col-md-1 col-xs-1 col-sm-1");
 							div_form.setAttribute("style","height:100%;")
 							newid = 'show' + id;
 							div_form.setAttribute("id",newid);
@@ -320,8 +319,6 @@
 					</script>	
 					
 					
-
-				</div>			
 			</div>
 		</div>			
 

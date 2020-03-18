@@ -709,9 +709,6 @@ else if ($_SESSION['type']!='T')
 
 
                     <!-- MAKE QUESTION w/ LOGIC ANSWER FORM IN WORD TAB -->
-
-
-
                     <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="logic-word-tab">
 
                             <div class="form-horizontal form-label-left">
@@ -825,7 +822,16 @@ else if ($_SESSION['type']!='T')
 
 
                     <div role="tabpanel" class="tab-pane fade" id="tab_content8" aria-labelledby="logic-picture-tab">
-                            <div class="form-horizontal form-label-left">
+                          <div class="form-horizontal form-label-left">
+                            <div class="form-group">
+                              <label class="control-label col-md-3" for="first-name">選項型態 : </label>
+                              <button class="btn btn-success" onclick="Show_Origin_Type()">自由新增</button>
+                              <button class="btn btn-success" onclick="Show_Keyboard_Type()">綁定版面</button>
+                            </div>
+                          </div>
+
+
+                            <div class="form-horizontal form-label-left" id="OriginType" style="display:none;">
                               <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">增減選項 : </label>
                                 <button class="btn btn-success" onclick="addInputPic()">+</button>
@@ -848,8 +854,51 @@ else if ($_SESSION['type']!='T')
                                 </label>
                             </div>
 
+                            <div id="OriginImageType" style="display:none;">
+                              <div id="messagePic"></div>
+                            </div>
 
-                          <div id="messagePic"></div>
+                            <div class="form-group" id="KeyboardType" style="display:none;">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-3">請先選擇Keyboard : </label>
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                  <select class="select2_single form-control" name="KeyboardNo" id="KeyboardNo" onchange="getKeyboardData()" tabindex="-1" required>
+                                        <?php
+                                            $sql = "SELECT COUNT(KeyboardNo) AS KeyboardNumber FROM `Keyboard` WHERE type='Keyboard'";
+                                            $result = mysqli_fetch_object($db->query($sql));
+                                            $KeyboardNum = $result->KeyboardNumber;
+
+                                            //echo $KeyboardNum;
+                                            $sql2 = "SELECT * FROM `Keyboard` WHERE type='Keyboard'";
+                                            $_KeyboardNo = array();
+                                            $_KeyboardName = array();
+                                            $index = 0;
+
+                                            if($stmt = $db->query($sql2))
+                                            {
+                                                while ($result = mysqli_fetch_object($stmt))
+                                                {
+                                                    $_KeyboardNo[$index] = $result->KeyboardNo;
+                                                    $_KeyboardName[$index] = $result->KeyboardName;
+                                                    $index++;
+                                                }
+                                            }
+                                            echo '<option value="-10">請先選擇Keyboard</option>';
+                                            for($i=0 ; $i<$KeyboardNum ; $i++)
+                                            {
+                                                echo "<option value=";
+                                                echo "\"";
+                                                echo $_KeyboardNo[$i];
+                                                echo "\"";
+                                                echo ">";
+                                                echo $_KeyboardName[$i];
+                                                echo "</option>";
+                                            }
+                                            $db->close();
+                                        ?>
+                                </select>
+
+                                </div>
+                            </div>
 
 
                             <HR>
@@ -893,12 +942,13 @@ else if ($_SESSION['type']!='T')
                             </div>
 
                             <input type="hidden" name="picture_number"  id="picture_number">
+                            <input type="hidden" name="OriginOrKeyboard"  id="OriginOrKeyboard">
 
                             <script type="text/javascript"></script>
                             <clearfix>
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <button class="btn btn-primary" type="reset">重填</button>
-                                <button type="submit" class="btn btn-success">送出</button>
+                                <button id="submit_button" type="submit" class="btn btn-success" disabled>送出</button>
                             </div>
                         </form>
                     </div>
@@ -932,7 +982,65 @@ else if ($_SESSION['type']!='T')
                                       }
                                   }
 
-                          addInputPic();
+                          //addInputPic();
+
+                          function Show_Origin_Type()
+                          {
+                            document.getElementById("OriginImageType").style.display="block";
+                            document.getElementById("OriginType").style.display="block";
+                            document.getElementById("KeyboardType").style.display="none";
+                            document.getElementById("submit_button").disabled = false;
+                            document.getElementById("OriginOrKeyboard").value = "Origin";
+                            if(pic_create_input_number==0)
+                            {
+                              addInputPic();
+                            }
+                          }
+
+                          function Show_Keyboard_Type()
+                          {
+                            document.getElementById("OriginImageType").style.display="none";
+                            document.getElementById("OriginType").style.display="none";
+                            document.getElementById("KeyboardType").style.display="block";
+                            document.getElementById("submit_button").disabled = false;
+                            document.getElementById("OriginOrKeyboard").value = "Keyboard";
+
+                            //CLEAR ALL ORIGIN FILE AND INPUT
+                            if(pic_create_input_number>0)
+                            {
+                              for(i=pic_create_input_number;i>0;i--)
+                              {
+                                var div_name = 'div_qpic'+i;
+                                var child_div = document.getElementById(div_name);
+                                document.getElementById("messagePic").removeChild(child_div);
+                              }
+                              pic_create_input_number=0;
+                            }
+
+                          }
+
+                          function getKeyboardData()
+                          {
+                            var keyboard_number = document.getElementById("KeyboardNo").value;
+                            //alert(keyboard_number);
+                            $.ajax
+                               (
+                                  {
+                                  type: "POST",
+                                  url: "getKeyboardData.php",
+                                  dataType:"text",
+                                  data: {KeyboardNo : keyboard_number},
+                                  success:function(msg)
+                                    {
+                                      var full_string = msg.trim();
+                                      var style = full_string.charAt(0);
+                                      var ext = full_string.substr(1);
+                                      //alert(ext);
+                                      //document.write('<img src="upload/K5A1.jpg">');
+                                    }
+                                  }
+                               )
+                          }
 
                           </script>
 
