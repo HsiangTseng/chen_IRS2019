@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("connects.php");
 	
 	if(isset($_SESSION['Teacher_ID'])){
@@ -27,7 +28,7 @@
 		$stmt = $db->query($temp);
 		$result = mysqli_fetch_object($stmt);
 		$last = $result->No_temp;
-		echo $last;
+		echo $now;
 	
 		$last = "UPDATE temp_for_state SET No_temp= $now where Teacher_ID = '".$Teacher_ID."'";
 		$db->query($last);

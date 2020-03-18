@@ -180,17 +180,14 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 		<script>
-			var get_last = <?php echo "$last";?>;
-			var get_now =  <?php echo "$now";?>;
-			var get_last_UUID = "<?php echo $UUID_last;?>";
-			var get_now_UUID = "<?php echo $UUID_now;?>";
-			var get_teacher = "<?php echo $Teacher_ID;?>";
-			
-
+			 var get_last = <?php echo "$last";?>;
+                                var get_now =  <?php echo "$now";?>;
+                                var get_last_UUID = "<?php echo $UUID_last;?>";
+                                var get_now_UUID = "<?php echo $UUID_now;?>";
+                                var get_teacher = "<?php echo $Teacher_ID;?>";
+		
 			function set_status(){
 					if(get_now_UUID.trim()!=get_last_UUID.trim()){
-				//		alert(get_last_UUID.length);
-				//		alert(get_now_UUID.length);
 						$.ajax(
 						{
 							type:"POST",
@@ -209,6 +206,14 @@
 						document.location.href="setstudentdata.php";														
 					}
 					$.ajax(
+                                        {
+                                                type:"POST",
+                                                url:"CatchTeacher.php",
+                                                success:function(data){
+                                                        get_teacher = data;
+                                                }
+                                        });
+					$.ajax(
 					{
 						type:"POST",
 						url:"client_wait_reset.php",
@@ -224,14 +229,6 @@
 							get_last = data;
 						}
 					});
-					$.ajax(
-                                        {
-                                                type:"POST",
-                                                url:"CatchTeacher.php",
-                                                success:function(data){
-                                                        get_teacher = data;
-                                                }
-                                        });
 			}
 			setInterval(set_status,1000);
 		</script>	
