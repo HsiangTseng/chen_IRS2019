@@ -235,7 +235,10 @@ else {
                                     for($i = 0 ; $i < 8 ; $i++)
                                     {
                                       echo '<div class="col-md-3" id ="div_'.$i.'">';
-                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">圖檔↓↓↓</label>';
+                                      echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                      echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                         echo '<div class="thumbnail" style="border-style: outset;">';
                                           echo '<img id="img'.$i.'" src="" alt="">';
                                         echo '</div>';
@@ -254,7 +257,10 @@ else {
                                         $half_index++;
                                       }
                                       echo '<div class="col-md-3" id ="div_'.$i.'">';
-                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">圖檔↓↓↓</label>';
+                                      echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                      echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                         echo '<div class="thumbnail" style="border-style: outset;">';
                                           echo '<img id="img'.$i.'" src="" alt="">';
                                         echo '</div>';
@@ -268,7 +274,10 @@ else {
                                     for($i = 0 ; $i < 16 ; $i++)
                                     {
                                       echo '<div class="col-md-3" id ="div_'.$i.'">';
-                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">圖檔↓↓↓</label>';
+                                      echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                      echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                         echo '<div class="thumbnail" style="border-style: outset;">';
                                           echo '<img id="img'.$i.'" src="" alt="">';
                                         echo '</div>';
@@ -281,7 +290,10 @@ else {
                                     for($i = 0 ; $i < 24 ; $i++)
                                     {
                                       echo '<div class="col-md-2" id ="div_'.$i.'">';
-                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">圖檔↓↓↓</label>';
+                                      echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                      echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                         echo '<div class="thumbnail" style="border-style: outset;">';
                                           echo '<img id="img'.$i.'" src="" alt="">';
                                         echo '</div>';
@@ -294,7 +306,10 @@ else {
                                     for($i = 0 ; $i < 12 ; $i++)
                                     {
                                       echo '<div class="col-md-3" id ="div_'.$i.'">';
-                                        echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">圖檔↓↓↓</label>';
+                                      echo '<input type="file" name="file'.$i.'" id="file'.$i.'"/>';
+                                      echo '<label style="display:inline;">音檔↓↓↓</label>';
+                                      echo '<input type="file" name="audio'.$i.'" id="audio'.$i.'"/>';
                                         echo '<div class="thumbnail" style="border-style: outset;">';
                                           echo '<img id="img'.$i.'" src="" alt="">';
                                         echo '</div>';

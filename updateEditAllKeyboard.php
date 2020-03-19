@@ -14,10 +14,11 @@
   $sql = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNo' ";
   $result = mysqli_fetch_object($db->query($sql));
   $old_ext = $result->ext;
+	$old_audio_ext = $result->audio_ext;
 	$KeyboardStyle = $result->Style;
 
   $ext_array = explode("-",$old_ext);
-
+	$audio_ext_array = explode("-",$old_audio_ext);
 	$img_number = 0;
 	if($KeyboardStyle=="A")$img_number=8;
 	else if($KeyboardStyle=="B")$img_number=40;
@@ -28,13 +29,13 @@
 	/*print_r($ext_array);
 	echo '<br />'.$KeyboardStyle;
 	echo $img_number;*/
+	//echo $old_audio_ext;
 
 	for($i = 0 ; $i < $img_number ; $i++)
 	{
 		$file_name = "file".$i;
 		$A_index = $i+1;
-
-
+		//IMG
 		if ($_FILES[$file_name]['error'] === UPLOAD_ERR_OK){
 
 			// KEYBOARD MUST HAVE OLD PICTURE, SO DELETE OLD ONE
@@ -56,17 +57,45 @@
 			}
 			$ext_array[$i] = $ext;
 		}
+
+
+		//AUDIO
+		$audio_name = 'audio'.$i;
+		$audio_index = $i+1;
+		if ($_FILES[$audio_name]['error'] === UPLOAD_ERR_OK){
+
+			//IF HAVE OLD AUDIO, DELETE IT
+			if($audio_ext_array[$i]!="N")
+			{
+				$delete_name = 'upload/K'.(string)$KeyboardNo.'A'.$audio_index.'.'.$audio_ext_array[$i];
+				unlink($delete_name);
+			}
+
+			//UPLOAD NEW
+			$file = $_FILES[$audio_name]['tmp_name'];
+			$audio_ext = end(explode('.', $_FILES[$audio_name]['name']));
+			$audio_dest = 'upload/K'.(string)$KeyboardNo.'A'.$audio_index.'.'.$audio_ext;
+			# 將檔案移至指定位置
+			move_uploaded_file($file, $audio_dest);
+
+			//UPDATE THE NEW EXT
+			$audio_ext_array[$i] = $audio_ext;
+			}
+
+
 	}
 
   $final_ext = implode("-",$ext_array);
+	$final_audio_ext = implode("-",$audio_ext_array);
   //echo $old_ext.'<br />';
   //echo $final_ext;
+	//echo $final_audio_ext;
 
 
 
 
   //UPDATE ext
-  $sql = "UPDATE Keyboard SET ext='$final_ext' WHERE KeyboardNo = '$KeyboardNo' ";
+  $sql = "UPDATE Keyboard SET ext='$final_ext', audio_ext='$final_audio_ext' WHERE KeyboardNo = '$KeyboardNo' ";
   $db->query($sql);
 
   echo "<script>alert('編輯成功'); location.href = 'editKeyboard.php';</script>";
