@@ -54,7 +54,7 @@
 		$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 		$result = mysqli_fetch_object($db->query($sql_catch_exam));
 
-		if(empty($result->Style) || is_null($result->Style))
+		if(empty($result->Style)&&is_null($result->Style))
 		{
 			if(strpos($quiz_type,'WORD')!== false){
 				//catch_Keyboard_word
@@ -103,13 +103,13 @@
 
 		else{
 			$keyboard_type = $result->Style;
-			if(!empty($result->ext)||!is_null($result->ext)){
+			if(!empty($result->ext)&&!is_null($result->ext)){
 				$keyboard = $result->ext;
 				$Arr = explode("-",$keyboard);
 			}
 
 			//wordQuestion字串
-			if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+			if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 				$keyboard = $result->wordQuestion;
 				$Arr_text = explode("^&",$keyboard);
 			}
@@ -120,7 +120,7 @@
 
 
 			if($keyboard_type == "A"){
-				if(!empty($result->ext)||!is_null($result->ext)){
+				if(!empty($result->ext)&&!is_null($result->ext)){
 					for( $i = 0 ; $i < count($Arr) ; $i++){
 						$answer_index = $i;
 						$answer_index+=1;
@@ -132,9 +132,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -167,9 +167,9 @@
 
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -192,7 +192,7 @@
 			}
 
 			else if($keyboard_type == "B"){
-				if(!empty($result->ext)||!is_null($result->ext)){
+				if(!empty($result->ext)&&!is_null($result->ext)){
 					for( $i = 0 ; $i < count($Arr) ; $i++){
 						$answer_index = $i;
 						$answer_index+=1;
@@ -207,9 +207,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -248,9 +248,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -276,7 +276,7 @@
 			}
 
 			else if($keyboard_type == "C"){
-				if(!empty($result->ext)||!is_null($result->ext)){
+				if(!empty($result->ext)&&!is_null($result->ext)){
 					for( $i = 0 ; $i < count($Arr) ; $i++){
 						$answer_index = $i;
 						$answer_index+=1;
@@ -288,9 +288,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -322,9 +322,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -347,7 +347,7 @@
 			}
 
 			else if($keyboard_type == "D"){
-				if(!empty($result->ext)||!is_null($result->ext)){
+				if(!empty($result->ext)&&!is_null($result->ext)){
 					for( $i = 0 ; $i < count($Arr) ; $i++){
 						$answer_index = $i;
 						$answer_index+=1;
@@ -359,9 +359,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -393,9 +393,9 @@
 								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
 							}
 								//有圖片
-								if(!empty($result->ext)||!is_null($result->ext)){
+								if(!empty($result->ext)&&!is_null($result->ext)){
 									//有文字
-									if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -415,6 +415,81 @@
 						echo "</div>";
 					}
 				}
+				
+				
+			}
+		
+			else if($keyboard_type == "E"){
+				if(!empty($result->ext)&&!is_null($result->ext)){
+					for( $i = 0 ; $i < count($Arr) ; $i++){
+						$answer_index = $i;
+						$answer_index+=1;
+						echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+							if($Arr_audio[$i] != "N"){
+								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."-upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='pictureorder_and_audio(this.value,this.id,this.placeholder)'>";
+							}
+							else{
+								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
+							}
+								//有圖片
+								if(!empty($result->ext)&&!is_null($result->ext)){
+									//有文字
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+										echo "</label>";
+									}
+									//無文字
+									else{
+										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+										echo "</label>";
+									}
+								}
+								//單純文字
+								else{
+									echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+								}
+						echo "</div>";
+					}
+				}
+				else{
+					for( $i = 0 ; $i < count($Arr_text) ; $i++){
+						$answer_index = $i;
+						$answer_index+=1;
+						echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+							if($Arr_audio[$i] != "N"){
+								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."-upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='pictureorder_and_audio(this.value,this.id,this.placeholder)'>";
+							}
+							else{
+								echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."' onclick='picture_order(this.value,this.id,this.placeholder)'>";
+							}
+								//有圖片
+								if(!empty($result->ext)&&!is_null($result->ext)){
+									//有文字
+									if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+										echo "</label>";
+									}
+									//無文字
+									else{
+										echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+											echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+										echo "</label>";
+									}
+								}
+								//單純文字
+								else{
+									echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+								}
+						echo "</div>";
+					}
+				}
+				
+				
 			}
 		}
 
@@ -435,23 +510,22 @@
 					echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 					//聲音
 					if(!empty($result->audio)&&!is_null($result->audio)){
-						echo "<audio controls>";
-							echo "<source src='upload/'".$result->audio."' type='audio/mpeg'>";
-						echo "</audio>";
+						echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' placeholder='upload/'".$result->audio."' onclick='play_audio(this.id,this.placeholder)'>";						
+					}
+					else{
+						echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 					}
 					//圖片
 					if(!empty($result->picture_ext)&&!is_null($result->picture_ext)){
 						//有圖有文字
 						if(!empty($result->Content)&&!is_null($result->Content)){
-							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
-								echo "<label for='A".$i."' class='square-button rwdtxt'>";
-									echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
-									echo "<p style='word-wrap:break-word;' class='show-text rwdtxt'>".$result->Content."</p>";
-								echo "</label>";
+							echo "<label for='A".$i."' class='square-button rwdtxt'>";
+								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
+								echo "<p style='word-wrap:break-word;' class='show-text rwdtxt'>".$result->Content."</p>";
+							echo "</label>";
 						}
 						//有圖沒文字
 						else{
-							echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
 								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
 							echo "</label>";
@@ -459,7 +533,6 @@
 					}
 					//文字
 					elseif(empty($result->picture_ext)||is_null($result->picture_ext)){
-						echo "<input type='radio' id='A".$i."' name='value[]' value='A".$i."' >";
 							echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$result->Content."</label>";
 					}
 					echo "</div>";
@@ -473,23 +546,22 @@
 					echo "<div class='col-md-6 col-sm-6 col-xs-6 div50 test'>";
 					//聲音
 					if(!empty($result->audio)&&!is_null($result->audio)){
-						echo "<audio controls>";
-							echo "<source src='upload/'".$result->audio."' type='audio/mpeg'>";
-						echo "</audio>";
+						echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."' placeholder='upload/'".$result->audio."' onclick='play_audio(this.id,this.placeholder)'>";
+					}
+					else{
+						echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 					}
 					//圖片
 					if(!empty($result->picture_ext)&&!is_null($result->picture_ext)){
 						//有圖有文字
 						if(!empty($result->Content)&&!is_null($result->Content)){
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
-								echo "<label for='A".$i."' class='square-button rwdtxt'>";
-									echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
-									echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</p>";
-								echo "</label>";
+							echo "<label for='A".$i."' class='square-button rwdtxt'>";
+								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
+								echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$result->Content."</p>";
+							echo "</label>";
 						}
 						//有圖沒文字
 						else{
-							echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."'>";
 							echo "<label for='A".$i."' class='square-button rwdtxt'>";
 								echo "<img class='small-img' src='upload/Q".$q_list[$sql_number-1]."A".$i.".".$result->picture_ext."' alt='".$result->picture_alt."'>";
 							echo "</label>";
@@ -497,8 +569,7 @@
 					}
 					//沒圖片有文字
 					elseif(empty($result->picture_ext)||is_null($result->picture_ext)){
-						echo "<input type='checkbox' id='A".$i."' name='value[]' value='A".$i."' >";
-							echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$result->Content."</label>";
+						echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$result->Content."</label>";
 					}
 					echo "</div>";
 				}
@@ -513,12 +584,12 @@
 			$result = mysqli_fetch_object($db->query($sql_catch_exam));
 			$keyboard_type = $result->Style;
 
-			if(!empty($result->ext)||!is_null($result->ext)){
+			if(!empty($result->ext)&&!is_null($result->ext)){
 				$keyboard = $result->ext;
 				$Arr = explode("-",$keyboard);
 			}
 			//wordQuestion字串
-			if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+			if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 				$keyboard = $result->wordQuestion;
 				$Arr_text = explode("^&",$keyboard);
 			}
@@ -528,21 +599,21 @@
 			if($keyboard_type == "A"){
 				//單選題
 				if($exam_type == 'SINGLE'){
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -569,9 +640,9 @@
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 								echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -594,21 +665,21 @@
 				}
 				//多選題
 				else{
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -634,15 +705,15 @@
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div50 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -668,7 +739,7 @@
 			else if($keyboard_type == "B"){
 				//單選題
 				if($exam_type == 'SINGLE'){
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
@@ -677,15 +748,15 @@
 							}
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 test show_100'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -718,15 +789,15 @@
 							}
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 test show_100'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -752,7 +823,7 @@
 				}
 				//多選題
 				else{
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
@@ -761,15 +832,15 @@
 							}
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 test show_100'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -802,15 +873,15 @@
 							}
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 test show_100'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -838,21 +909,21 @@
 
 			else if($keyboard_type == "C"){
 				if($exam_type == 'SINGLE'){
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -878,15 +949,15 @@
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -909,21 +980,21 @@
 				}
 				//多選題
 				else{
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -949,15 +1020,15 @@
 							$answer_index+=1;
 							echo "<div class='col-md-3 col-sm-3 col-xs-3 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -982,21 +1053,21 @@
 
 			else if($keyboard_type == "D"){
 				if($exam_type == 'SINGLE'){
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-2 col-sm-2 col-xs-2 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -1022,15 +1093,15 @@
 							$answer_index+=1;
 							echo "<div class='col-md-2 col-sm-2 col-xs-2 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									 if(!empty($result->ext)||!is_null($result->ext)){
+									 if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										 if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -1053,21 +1124,21 @@
 				}
 				//多選題
 				else{
-					if(!empty($result->ext)||!is_null($result->ext)){
+					if(!empty($result->ext)&&!is_null($result->ext)){
 						for( $i = 0 ; $i < count($Arr) ; $i++){
 							$answer_index = $i;
 							$answer_index+=1;
 							echo "<div class='col-md-2 col-sm-2 col-xs-2 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
@@ -1093,15 +1164,160 @@
 							$answer_index+=1;
 							echo "<div class='col-md-2 col-sm-2 col-xs-2 div25 test'>";
 								if($Arr_audio[$i] != "N"){
-									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.placeholder)'>";
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
 								}
 								else{
 									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
 								}
 									//有圖片
-									if(!empty($result->ext)||!is_null($result->ext)){
+									if(!empty($result->ext)&&!is_null($result->ext)){
 										//有文字
-										if(!empty($result->wordQuestion)||!is_null($result->wordQuestion)){
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+											echo "</label>";
+										}
+										//無文字
+										else{
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "</label>";
+										}
+									}
+									//單純文字
+									else{
+										echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+									}
+							echo "</div>";
+						}
+					}
+				}
+
+			}
+			
+			else if($keyboard_type == "E"){
+				if($exam_type == 'SINGLE'){
+					if(!empty($result->ext)&&!is_null($result->ext)){
+						for( $i = 0 ; $i < count($Arr) ; $i++){
+							$answer_index = $i;
+							$answer_index+=1;
+							echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+								if($Arr_audio[$i] != "N"){
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
+								}
+								else{
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+								}
+									//有圖片
+									 if(!empty($result->ext)&&!is_null($result->ext)){
+										//有文字
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+											echo "</label>";
+										}
+										//無文字
+										else{
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "</label>";
+										}
+									}
+									//單純文字
+									else{
+										echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+									}
+							echo "</div>";
+						}
+					}
+					else{
+						for( $i = 0 ; $i < count($Arr_text) ; $i++){
+							$answer_index = $i;
+							$answer_index+=1;
+							echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+								if($Arr_audio[$i] != "N"){
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
+								}
+								else{
+									echo "<input type='radio' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+								}
+									//有圖片
+									 if(!empty($result->ext)&&!is_null($result->ext)){
+										//有文字
+										 if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+											echo "</label>";
+										}
+										//無文字
+										else{
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "</label>";
+										}
+									}
+									//單純文字
+									else{
+										echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+									}
+							echo "</div>";
+						}
+					}
+				}
+				//多選題
+				else{
+					if(!empty($result->ext)&&!is_null($result->ext)){
+						for( $i = 0 ; $i < count($Arr) ; $i++){
+							$answer_index = $i;
+							$answer_index+=1;
+							echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+								if($Arr_audio[$i] != "N"){
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
+								}
+								else{
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+								}
+									//有圖片
+									if(!empty($result->ext)&&!is_null($result->ext)){
+										//有文字
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";
+											echo "</label>";
+										}
+										//無文字
+										else{
+											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
+												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
+											echo "</label>";
+										}
+									}
+									//單純文字
+									else{
+										echo "<label  for='A".$i."' style='word-wrap:break-word;' class='square-button rwdonlytxt'>".$Arr_text[$i]."</label>";
+									}
+							echo "</div>";
+						}
+					}
+					else{
+						for( $i = 0 ; $i < count($Arr_text) ; $i++){
+							$answer_index = $i;
+							$answer_index+=1;
+							echo "<div class='col-md-3 col-sm-3 col-xs-3 div33 test'>";
+								if($Arr_audio[$i] != "N"){
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."' placeholder='upload/K".$No_keyboard."A".$answer_index.".".$Arr_audio[$i]."' onclick='play_audio(this.id,this.placeholder)'>";
+								}
+								else{
+									echo "<input type='checkbox' id='A".($answer_index)."' name='value[]' value='A".($answer_index)."'>";
+								}
+									//有圖片
+									if(!empty($result->ext)&&!is_null($result->ext)){
+										//有文字
+										if(!empty($result->wordQuestion)&&!is_null($result->wordQuestion)){
 											echo "<label for='A".($answer_index)."' class='square-button rwdtxt'>";
 												echo "<img class='small-img' src='upload/K".$No_keyboard."A".$answer_index.".".$Arr[$i]."'>";
 												echo "<p style='word-wrap:break-word;' class='square-button rwdtxt'>".$Arr_text[$i]."</p>";

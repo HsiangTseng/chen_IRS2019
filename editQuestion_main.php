@@ -38,7 +38,19 @@
 
     else if ($type=='LPICTURE')
     {
-        header("Location: editQuestion_logicPic.php?ms=$single_or_multi&number=$question_number");
+        $KeyboardNo = $result->KeyboardNo;
+        $sql_lpic = "SELECT * FROM Keyboard WHERE KeyboardNo = '$KeyboardNo'";
+        $result_lpic = mysqli_fetch_object($db->query($sql_lpic));
+        $KeyboardType = $result_lpic->type;
+        if($KeyboardType=="Logic")
+        {
+          header("Location: editQuestion_logicPic.php?ms=$single_or_multi&number=$question_number");
+        }
+        else if($KeyboardType=="Keyboard")
+        {
+          header("Location: editQuestion_logicPic_K.php?number=$question_number&KeyboardNo=$KeyboardNo");
+        }
+
     }
 
     else if ($type=='VIDEO')

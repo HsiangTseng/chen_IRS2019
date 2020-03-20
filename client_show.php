@@ -3,6 +3,18 @@
 	session_start();
 	//new
 	$start_time = microtime(true);
+	
+	if($_SESSION['username'] == null)
+	{
+	        header ('location: IRS_Login.php');
+        	exit;
+	}
+	else if ($_SESSION['type']!='S')
+	{
+	    header ('location: IRS_Login.php');
+	    exit;
+	}
+
 ?>
 
 <?php
@@ -101,6 +113,9 @@
                .rwdonlytxt {
                        font-size: 120px;
                }
+        }
+	.div33{
+                height:33%;
         }
 	.div20{
                 height:20%;

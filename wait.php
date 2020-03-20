@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <?php 
 	session_start(); 
+	if($_SESSION['username'] == null)
+        {
+                header ('location: IRS_Login.php');
+                exit;
+        }
+        if ($_SESSION['type']!='S')
+        {
+            header ('location: IRS_Login.php');
+            exit;
+        }
+	
 	$WhosAnswer = $_SESSION['username'];
 ?>
 <?php

@@ -27,10 +27,8 @@ function calScore($ExamResultNo,$ExamListNo)
 	}
 	$answer_string = substr($answer_string, 0,-1);//DELETE THE LAST '-' CHARACTER
 	$single_or_multi_string = substr($single_or_multi_string, 0, -1);//DELETE THE LAST '-' CHARACTER
-	$type_string = substr($type_string,0,-1);//DELETE THE LAST '-' CHARACTER
 	$ca_array = explode('-', $answer_string);
 	$single_or_multi_array = explode('-',$single_or_multi_string);
-	$type_array = explode('-',$type_string);
 
 
 
@@ -47,42 +45,40 @@ function calScore($ExamResultNo,$ExamListNo)
 
 		else if ($single_or_multi_array[$key]=="MULTI")//MULTI
 		{
-			if (strpos($type_array[$key],'L')!== false)
-			{
-				// ALL OPTIONS SELECTED, GET 1 POINT;
-				$ca_element_array = explode(',',$ca_array[$key]);
-				$sa_element_array = explode(',',$sa_array[$key]);
-				$min_count = min(count($ca_element_array),count($sa_element_array));
-				$check = 1;
-				
-				for( $i = 0 ; $i < count($ca_element_array) ; $i++){					
-					$error_count = 0;
-					for( $j = 0 ; $j < count($sa_element_array) ; $j++){
-						if($ca_element_array[$i] != $sa_element_array[$j]){
-							$error_count++;
-						}						
-						if($error_count == $min_count){
-							$check = 0;
-							break;
-						}
-					}
-				}
-				if($check == 1){
-					$final_score++;
-					if(strcmp($ca_array[$key],$sa_array[$key]) == 0){
-						$final_score++;
-					}
-				}				
-			}
-			else{
-				if(strcmp($ca_array[$key],$sa_array[$key]) == 0){
-                                	$final_score++;
-                                }
-			}
+			// SICK SOLUTION
+			if((strpos($ca_array[$key],'A1') !== false) && (strpos($sa_array[$key],'A1') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A2') !== false) && (strpos($sa_array[$key],'A2') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A3') !== false) && (strpos($sa_array[$key],'A3') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A4') !== false) && (strpos($sa_array[$key],'A4') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A5') !== false) && (strpos($sa_array[$key],'A5') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A6') !== false) && (strpos($sa_array[$key],'A6') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A7') !== false) && (strpos($sa_array[$key],'A7') !== false))$final_score+=1;
+			if((strpos($ca_array[$key],'A8') !== false) && (strpos($sa_array[$key],'A8') !== false))$final_score+=1;
 		}
+
+		/*else if (($single_or_multi_array[$key]=="LPICTURE") || ($single_or_multi_array[$key]=="LWORD"))
+		{
+			// ALL OPTIONS SELECTED, GET 1 POINT;
+			$ca_options_numbers = substr_count($ca_array[$key],',');
+			$sa_options_numbers = substr_count($sa_array[$key],',');
+			if($ca_options_numbers == $sa_options_numbers)
+			{
+				$final_score+=1;
+			}
+
+
+		}*/
+
 
 
 	}
+
+	//print_r($single_or_multi_array);
 	return $final_score;
+
+
 }
+
+
+//calScore('3','1');
 ?>

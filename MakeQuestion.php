@@ -1149,6 +1149,29 @@ else if ($_SESSION['type']!='T')
                                           document.getElementById(div_name).className="";
                                         }
                                       }
+                                      else if(style=="E")//4*3
+                                      {
+                                        for (var i = 0 ; i < 40 ; i++)//initial
+                                        {
+                                          var div_name = 'div_'+i;
+                                          document.getElementById(div_name).style.display="none";
+                                        }
+                                        for(var i = 0 ; i < 12 ; i++)
+                                        {
+                                          var img_index = i+1;
+                                          var div_name = 'div_'+i;
+                                          var img_name = 'img'+i;
+                                          var src_name = 'upload/K'+keyboard_number+'A'+img_index+'.'+ext_array[i];
+                                          document.getElementById(div_name).style.display="block";
+                                          document.getElementById(img_name).src=src_name;
+                                          document.getElementById(div_name).className="col-md-3";
+                                        }
+                                        for(var j = 1 ; j <= 10 ; j++)
+                                        {
+                                          var div_name = 'half_id_'+j;
+                                          document.getElementById(div_name).className="";
+                                        }
+                                      }
                                     }
                                   }
                                )

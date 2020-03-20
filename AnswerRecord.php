@@ -227,6 +227,8 @@ $WhosAnswer = $_GET['WhosAnswer'];
                       else if ($type_array[0]=="PICTURE") $type=$type."圖片";
                       else if ($type_array[0]=="VIDEO") $type=$type."影片";
                       else if ($type_array[0]=="KEYBOARD") $type=$type."鍵盤";
+                      else if ($type_array[0]=="LWORD") $type=$type."文序";
+                      else if ($type_array[0]=="LPICTURE") $type=$type."圖序";
 
                       $class="";
                       if($classification_array[0]=="0") $class=$class."未設定";
@@ -337,7 +339,7 @@ $WhosAnswer = $_GET['WhosAnswer'];
                           var SAfromPHP=<? echo $SA_TO_JSON ?>;
                           var ASTfromPHP=<? echo $ANSWERTIME_TO_JSON ?>;
                           var t = $('#e_list').DataTable();
-                          for (var i=1 ; i<= <?php echo count($ca_array)-1;?> ; i++)
+                          for (var i=1 ; i< <?php echo count($ca_array);?> ; i++)
                           {
                             var ouput_type = "";
                             if(singleormultifromPHP[i]=="SINGLE") singleormultifromPHP[i]="單選";
@@ -347,6 +349,8 @@ $WhosAnswer = $_GET['WhosAnswer'];
                             else if (TypefromPHP[i]=="PICTURE") singleormultifromPHP[i]+="圖片";
                             else if (TypefromPHP[i]=="VIDEO") singleormultifromPHP[i]+="影片";
                             else if (TypefromPHP[i]=="KEYBOARD") singleormultifromPHP[i]+="鍵盤";
+                            else if (TypefromPHP[i]=="LWORD") singleormultifromPHP[i]+="文序";
+                            else if (TypefromPHP[i]=="LPICTURE") singleormultifromPHP[i]+="圖序";
 
                             if(ClassfromPHP[i]=="0") ClassfromPHP[i]="未設定";
                             else if(ClassfromPHP[i]=="1") ClassfromPHP[i]="詞彙理解";

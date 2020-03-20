@@ -26,6 +26,8 @@ if(isset($_GET['KeyboardNo']))
     $sql = "SELECT * FROM `Keyboard` WHERE KeyboardNo='$GetKeyboardNo'";
     $result = mysqli_fetch_object($db->query($sql));
     $GetKeyboardExt = $result->ext;
+    $GetKeyboardStyle = $result->Style;
+    //echo $GetKeyboardStyle;
   }
 
 }
@@ -33,7 +35,7 @@ else {
   $GetKeyboardNo = 0;
 }
 $question_number = $_GET['number'];
-//$multi_or_single = $_GET['ms'];
+
 ?>
 
 <html lang="en">
@@ -228,22 +230,72 @@ $question_number = $_GET['number'];
                   </div>
                 </div>
                 <div class="thumbnail" style="border-style: outset; width:200px; height:200px; margin:0px auto;">
-                      <img id="img0" src="" alt="">
+                      <img id="imgQ" src="" alt="">
                 </div>
 
 
 
                 <div class="form-group required">
-                    <label class="control-label col-md-3" for="first-name">正解 :<span class="required"></span></label>
-                    <input type="checkbox" class="radio-inline flat" id="check_1" name="answer[]" value="A1"><label>A選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_2" name="answer[]" value="A2"><label>B選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_3" name="answer[]" value="A3"><label>C選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_4" name="answer[]" value="A4"><label>D選項</label>
-                    <br />
-                    <input type="checkbox" class="radio-inline flat" id="check_5" name="answer[]" value="A5"><label>E選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_6" name="answer[]" value="A6"><label>F選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_7" name="answer[]" value="A7"><label>G選項</label>
-                    <input type="checkbox" class="radio-inline flat" id="check_8" name="answer[]" value="A8"><label>H選項</label>
+                    <div class="form-group required">
+                        <label class="control-label col-md-3">正解 :<span class="required"></span></label>
+                        <br />
+                        <br />
+                        <div style="text-align:center;">
+                          <?php
+                          if(isset($_GET['KeyboardNo']))
+                          {
+                            if($GetKeyboardNo>0)
+                            {
+                                if($GetKeyboardStyle=="A")//4*2
+                                {
+                                  for($i = 1 ; $i <= 8 ; $i++)
+                                  {
+                                    echo '<input type="checkbox" id="check_'.$i.'" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp;</label>';
+                                    if($i%4==0){  echo '<br />';}
+                                  }
+                                }
+
+                                else if($GetKeyboardStyle=="B")//8*5
+                                {
+                                  for($i = 1 ; $i <= 40 ; $i++)
+                                  {
+                                    echo '<input type="checkbox" id="check_'.$i.'" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                    if($i%8==0){  echo '<br />';}
+                                  }
+                                }
+
+                                else if($GetKeyboardStyle=="C")//4*4
+                                {
+                                  for($i = 1 ; $i <= 16 ; $i++)
+                                  {
+                                    echo '<input type="checkbox" id="check_'.$i.'" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                    if($i%4==0){  echo '<br />';}
+                                  }
+                                }
+
+                                else if($GetKeyboardStyle=="D")//6*4
+                                {
+                                  for($i = 1 ; $i <= 24 ; $i++)
+                                  {
+                                    echo '<input type="checkbox" id="check_'.$i.'" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                    if($i%6==0){  echo '<br />';}
+                                  }
+                                }
+
+                                else if($GetKeyboardStyle=="E")//4*3
+                                {
+                                  for($i = 1 ; $i <= 12 ; $i++)
+                                  {
+                                    echo '<input type="checkbox" id="check_'.$i.'" class="radio-inline flat" name="answer[]" value="A'.$i.'"><label>選&nbsp項&nbsp&nbsp&nbsp</label>';
+                                    if($i%4==0){  echo '<br />';}
+                                  }
+                                }
+                            }
+                          }
+
+                          ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-3" for="first-name">測驗型別 :<span class="required"></span></label>
@@ -268,26 +320,125 @@ $question_number = $_GET['number'];
                   {
                     $ext_array = array();
                     $ext_array = explode("-",$GetKeyboardExt);
+                    echo '<div class="col-md-6" id="KeyboardPreview" style="margin-left:25%;">';
+                      $half_index = 1;
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        if($i%4==0)
+                        {
+                          echo '<div id="half_id_'.$half_index.'" class="col-md-6">';
+                          $half_index++;
+                        }
+                        echo '<div class="col-md-3" id ="div_'.$i.'" style="display:none; text-align:center;">';
+                          echo '<div class="thumbnail" style="border-style: outset; height:80px;">';
+                            echo '<img id="img'.$i.'" src="" alt="" style="height:100%">';
+                          echo '</div>';
+                        echo '</div>';
+                        if($i%4==3)echo '</div>';
+                      }
+                    echo '</div>';
 
-                    echo '<div class="row">';
-                    echo '<BR />';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A1.'.$ext_array[0].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A2.'.$ext_array[1].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A3.'.$ext_array[2].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A4.'.$ext_array[3].'">';
-                    echo '</div>';
-                    echo '<div class="row">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A5.'.$ext_array[4].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A6.'.$ext_array[5].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A7.'.$ext_array[6].'">';
-                    echo '<img id="" class="responsive" src="upload/K'.$GetKeyboardNo.'A8.'.$ext_array[7].'">';
-                    echo '</div>';
+                    if($GetKeyboardStyle=="A")//4*2
+                    {
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="none";</script>';
+                      }
+                      for($i = 0 ; $i < 8 ;$i++)
+                      {
+                        $img_index = $i+1;
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="block";</script>';
+                        echo '<script>document.getElementById("div_'.$i.'").className="col-md-3";</script>';
+                        echo '<script>document.getElementById("img'.$i.'").src="upload/K'.$GetKeyboardNo.'A'.$img_index.'.'.$ext_array[$i].'";</script>';
+                      }
+                      for($i = 1 ; $i <= 10 ; $i++)
+                      {
+                        echo '<script>document.getElementById("half_id_'.$i.'").className="";</script>';
+                      }
+                    }
+
+                    else if($GetKeyboardStyle=="B")//8*5
+                    {
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="none";</script>';
+                      }
+                      for($i = 0 ; $i < 40 ;$i++)
+                      {
+                        $img_index = $i+1;
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="block";</script>';
+                        echo '<script>document.getElementById("div_'.$i.'").className="col-md-3";</script>';
+                        echo '<script>document.getElementById("img'.$i.'").src="upload/K'.$GetKeyboardNo.'A'.$img_index.'.'.$ext_array[$i].'";</script>';
+                      }
+                      for($i = 1 ; $i <= 10 ; $i++)
+                      {
+                        echo '<script>document.getElementById("half_id_'.$i.'").className="col-md-6";</script>';
+                      }
+                    }
+
+                    else if($GetKeyboardStyle=="C")//4*4
+                    {
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="none";</script>';
+                      }
+                      for($i = 0 ; $i < 16 ;$i++)
+                      {
+                        $img_index = $i+1;
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="block";</script>';
+                        echo '<script>document.getElementById("div_'.$i.'").className="col-md-3";</script>';
+                        echo '<script>document.getElementById("img'.$i.'").src="upload/K'.$GetKeyboardNo.'A'.$img_index.'.'.$ext_array[$i].'";</script>';
+                      }
+                      for($i = 1 ; $i <= 10 ; $i++)
+                      {
+                        echo '<script>document.getElementById("half_id_'.$i.'").className="";</script>';
+                      }
+                    }
+
+                    else if($GetKeyboardStyle=="D")//6*4
+                    {
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="none";</script>';
+                      }
+                      for($i = 0 ; $i < 24 ;$i++)
+                      {
+                        $img_index = $i+1;
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="block";</script>';
+                        echo '<script>document.getElementById("div_'.$i.'").className="col-md-2";</script>';
+                        echo '<script>document.getElementById("img'.$i.'").src="upload/K'.$GetKeyboardNo.'A'.$img_index.'.'.$ext_array[$i].'";</script>';
+                      }
+                      for($i = 1 ; $i <= 10 ; $i++)
+                      {
+                        echo '<script>document.getElementById("half_id_'.$i.'").className="";</script>';
+                      }
+                    }
+
+                    else if($GetKeyboardStyle=="E")//4*3
+                    {
+                      for($i = 0 ; $i < 40 ; $i++)
+                      {
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="none";</script>';
+                      }
+                      for($i = 0 ; $i < 12 ;$i++)
+                      {
+                        $img_index = $i+1;
+                        echo '<script>document.getElementById("div_'.$i.'").style.display="block";</script>';
+                        echo '<script>document.getElementById("div_'.$i.'").className="col-md-3";</script>';
+                        echo '<script>document.getElementById("img'.$i.'").src="upload/K'.$GetKeyboardNo.'A'.$img_index.'.'.$ext_array[$i].'";</script>';
+                      }
+                      for($i = 1 ; $i <= 10 ; $i++)
+                      {
+                        echo '<script>document.getElementById("half_id_'.$i.'").className="";</script>';
+                      }
+                    }
+
                   }
 
                 }
                 ?>
                 <input type="hidden" name="question_number" <?php echo 'value="'.$question_number.'" >';?>
-                <div class="col-md-3 col-sm-3 col-xs-6 ">
+                <div class="col-md-12 col-sm-3 col-xs-12 ">
                     <button type="submit" class="btn btn-success">送出</button>
                 </div>
             </form>
@@ -300,17 +451,17 @@ $question_number = $_GET['number'];
                   </script>
             <script>
             window.onload = function() {
-                  document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                  document.getElementById("imgQ").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
                 };
 
             $("#Q1_file").change(function(){
                 var objUrl = getObjectURL(this.files[0]) ;
                 console.log("objUrl = "+objUrl) ;
                 if (objUrl) {
-                    $("#img0").attr("src", objUrl) ;
+                    $("#imgQ").attr("src", objUrl) ;
                 }
-                var Img = document.getElementById('img0');
-                document.getElementById("img0").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
+                var Img = document.getElementById('imgQ');
+                document.getElementById("imgQ").setAttribute("style", "max-height:100%;max-height:100%;border-style: outset;");
             }) ;
             function getObjectURL(file) {
                 var url = null ;
@@ -346,18 +497,19 @@ $question_number = $_GET['number'];
             //Question
             echo '<script>document.getElementById("Q1").value="'.$content.'";</script>';
             $Q1_ext = $result->picture_ext;
-            echo '<script>document.getElementById("img0").src ="upload/Q'.$question_number.'Q1.'.$Q1_ext.'";</script>';
+            echo '<script>document.getElementById("imgQ").src ="upload/Q'.$question_number.'Q1.'.$Q1_ext.'";</script>';
 
             //CORRECT answer
-            if(strpos($CA, 'A1')!==false)echo '<script>document.getElementById("check_1").checked = true;</script>';
-            if(strpos($CA, 'A2')!==false)echo '<script>document.getElementById("check_2").checked = true;</script>';
-            if(strpos($CA, 'A3')!==false)echo '<script>document.getElementById("check_3").checked = true;</script>';
-            if(strpos($CA, 'A4')!==false)echo '<script>document.getElementById("check_4").checked = true;</script>';
-            if(strpos($CA, 'A5')!==false)echo '<script>document.getElementById("check_5").checked = true;</script>';
-            if(strpos($CA, 'A6')!==false)echo '<script>document.getElementById("check_6").checked = true;</script>';
-            if(strpos($CA, 'A7')!==false)echo '<script>document.getElementById("check_7").checked = true;</script>';
-            if(strpos($CA, 'A8')!==false)echo '<script>document.getElementById("check_8").checked = true;</script>';
-            //echo $CA;
+            $CA_ARRAY = explode(",",$CA);
+            foreach ($CA_ARRAY as $key => $value) {
+              $ca_number = substr($CA_ARRAY[$key],1);
+              //echo $ca_number;
+              $check_id = 'check_'.$ca_number;
+              //echo $check_id;
+              echo '<script>document.getElementById("'.$check_id.'").checked = true;</script>';
+            }
+
+
             ?>
 
 

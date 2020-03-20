@@ -24,6 +24,15 @@
 	$max_number = $result->max;
 	$max_number = $max_number+1;
 
+	$answer_count = substr_count($Answer,"^&");
+
+	$audio_ext_list = "N";
+	if($answer_count>=1)
+	{
+		for($i=0;$i<$answer_count;$i++)
+		$audio_ext_list = $audio_ext_list.'-N';
+	}
+
 
 	//---------------Question File------------------
 	if ($_FILES['Q1_file']['error'] === UPLOAD_ERR_OK){
@@ -61,7 +70,7 @@
 	}
 	//---------------Question File------------------
 
-	$sqlKeyboard = "INSERT INTO Keyboard (KeyboardNo, type, wordQuestion) VALUES ('$KeyboardNumber', 'Logic', '$Answer')";
+	$sqlKeyboard = "INSERT INTO Keyboard (KeyboardNo, type, wordQuestion, audio_ext) VALUES ('$KeyboardNumber', 'Logic', '$Answer', '$audio_ext_list')";
 	$db->query($sqlKeyboard);
 
 	$sqlQuestion = "INSERT INTO QuestionList (No, QA, CA, Content, type, single_or_multi, KeyboardNo, classification, picture_ext, audio, video) VALUES ('$max_number', 'Q', '$CA', '$Q1', 'LWORD', 'MULTI', '$KeyboardNumber', '$classification[0]', '$q1_ext', '$audio_dest', '$video_dest')";
