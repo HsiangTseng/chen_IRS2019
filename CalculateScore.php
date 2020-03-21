@@ -74,10 +74,17 @@ function calScore($ExamResultNo,$ExamListNo)
 					}
 				}				
 			}
-			else{
-				if(strcmp($ca_array[$key],$sa_array[$key]) == 0){
-                                	$final_score++;
+			else{			
+				$ca_element_array = explode(',',$ca_array[$key]);
+                                $sa_element_array = explode(',',$sa_array[$key]);	
+				for( $i = 0 ; $i < count($ca_element_array) ; $i++){
+                                        for( $j = 0 ; $j < count($sa_element_array) ; $j++){
+                                                if($ca_element_array[$i] == $sa_element_array[$j]){
+                                                        $final_score++;
+                                                }
+                                        }
                                 }
+
 			}
 		}
 

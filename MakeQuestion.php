@@ -953,7 +953,7 @@ else if ($_SESSION['type']!='T')
                             <div class="form-group">
                                 <label class="control-label col-md-3" for="first-name">正確順序 :<span class="required"></span></label>
                                 <div class="col-md-5">
-                                    <input type="text"  name="CA" placeholder="正解順序 例如: A1-A3-A2-A4" required="required" class="form-control col-md-7 col-xs-12">
+                                    <input type="text"  name="CA" placeholder="正解順序 例如: A1,A3,A2,A4" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
 
