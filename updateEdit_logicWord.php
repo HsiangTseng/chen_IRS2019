@@ -90,6 +90,15 @@
 	}
 	//---------------Question File------------------
 
+	$audio_ext_number = substr_count($Answer,"^&");
+	$audio_ext_list = "N";
+	if($audio_ext_number>0)
+	{
+		for($i=0;$i<$audio_ext_number;$i++)
+		{
+			$audio_ext_list = $audio_ext_list."-N";
+		}
+	}
 
 
   //UPDATE QUESTIONLIST DB
@@ -97,7 +106,7 @@
   $db->query($sqlQuestion);
 
   //UPDATE KEYBOARD DB
-  $sqlKeyboard = "UPDATE Keyboard  SET wordQuestion = '$Answer' WHERE KeyboardNo='$KeyboardNo'";
+	$sqlKeyboard = "UPDATE Keyboard SET wordQuestion = '$Answer', audio_ext='$audio_ext_list' WHERE KeyboardNo='$KeyboardNo'";
   $db->query($sqlKeyboard);
 
 

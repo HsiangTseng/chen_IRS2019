@@ -171,8 +171,17 @@
   }
 
   $final_ext = implode("-",$old_ext);
+
+	$audio_ext_list = "N";
+	if($picture_number>1)
+	{
+		for($i=1;$i<$picture_number;$i++)
+		{
+			$audio_ext_list = $audio_ext_list."-N";
+		}
+	}
   //UPDATE KEYBOARD DB
-  $sqlKeyboard = "UPDATE Keyboard  SET ext = '$final_ext' WHERE KeyboardNo='$KeyboardNo'";
+  $sqlKeyboard = "UPDATE Keyboard  SET ext = '$final_ext', audio_ext='$audio_ext_list' WHERE KeyboardNo='$KeyboardNo'";
   $db->query($sqlKeyboard);
   echo "<script>alert('編輯完成'); location.href = 'QuestionList.php';</script>";
 
