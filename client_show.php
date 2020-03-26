@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<?php 
+<?php
 	session_start();
 	//new
 	$start_time = microtime(true);
-	
+
 	if($_SESSION['username'] == null)
 	{
 	        header ('location: IRS_Login.php');
@@ -29,14 +29,14 @@
 			$now = $result->No;
 			$stmt = $db->query($temp);
 			$result = mysqli_fetch_object($stmt);
-			$last = $result->No_temp;	
+			$last = $result->No_temp;
 		}
 	}
 	if($now==0)
 	{
 		header ('location: wait.php');
         exit;
-	}	
+	}
 ?>
 
 
@@ -47,7 +47,7 @@
 		<!-- Meta, title, CSS, favicons, etc. -->
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 		<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
 		<title>Chen's IRS | </title>
@@ -70,12 +70,16 @@
 		<link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 		<!-- Custom Theme Style -->
-		<link href="../build/css/custom.min.css" rel="stylesheet">						
+		<link href="../build/css/custom.min.css" rel="stylesheet">
 	</head>
 
-	<body class="nav-md"  style="height:100%">	
-		<style>		
+	<body class="nav-md"  style="height:100%">
+		<style>
       html, body {
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	user-select:none;
         height: 100%;
 	background-color:rgba(255,255,255,0.4);
       }
@@ -120,11 +124,11 @@
 	.div20{
                 height:20%;
         }
-  
+
 	  .div25{
 		height:25%;
 	}
-	  
+
 	  .div50{
 		height:50%;
 	  }
@@ -132,28 +136,28 @@
        	 border: 2px solid gray;
        	 border-radius:10px;
       }
-	
+
 	.test input[type=checkbox] + label{
         border: 2px solid gray;
         border-radius:10px;
       }
-      .test input[type=checkbox]:checked + label{									
+      .test input[type=checkbox]:checked + label{
         border: 3px solid red;
         border-radius:10px;
-      }		
+      }
       input[type=checkbox]{
         display:none
       }
-      .test input[type=radio]:checked + label{									
+      .test input[type=radio]:checked + label{
         border: 3px solid red;
         border-radius:10px;
-      }		
+      }
       input[type=radio]{
         display:none
       }
-		
+
       .logic_graph{
-	 background-color:rgba(200,200,200,0.4);	
+	 background-color:rgba(200,200,200,0.4);
       }
       audio{
 	display:block;
@@ -184,13 +188,13 @@
         left: 50%;
         transform: translate(-50%,-50%);
       }
-	
+
 	.small-img {
 	max-width:85%;
         min-height:80%;
 	max-height:85%;
         position: absolute;
-        display:block; 
+        display:block;
         margin:auto;
         top: 45%;
         left: 50%;
@@ -198,7 +202,7 @@
       }
 	.show-text{
         position: absolute;
-        display:block; 
+        display:block;
         margin:auto;
         top: 95%;
         left: 50%;
@@ -217,11 +221,11 @@
 							echo "<input type='hidden' id='hidden_time' name='hidden_time' value='".microtime(true)."'/>";
 						?>
 						<input type="hidden" id="hidden_value" name="hidden" value=""/>
-						<!-- Question -->																			
+						<!-- Question -->
 						<script>
 							var get_last = <?php echo "$last";?>;
 							var get_now =  <?php echo "$now";?>;
-							
+
 							function set_question(){
 								if(get_now == 0){
 									document.location.href="wait.php";
@@ -235,26 +239,26 @@
 										$.ajax(
 										{
 											type:"POST",
-											url:"Set_No_Answer.php"															
+											url:"Set_No_Answer.php"
 										}
 										).done(function(msg){});
-									} 
-									
+									}
+
 									//將check欄位填為0
 									$.ajax(
 									{
 										type:"POST",
-										url:"Status_Reset.php"															
+										url:"Status_Reset.php"
 									}
-									).done(function(msg){});*/											
+									).done(function(msg){});*/
 									//跳至下一題
 									$.ajax(
 									{
 										type:"POST",
-										url:"mobile_reset.php"															
+										url:"mobile_reset.php"
 									}
 									).done(function(msg){});
-									window.location.reload();															
+									window.location.reload();
 								}
 								$.ajax(
 								{
@@ -266,17 +270,17 @@
 								});
 							}
 							setInterval(set_question,300);
-						</script>		 
+						</script>
 						<?php
 							include("connects.php");
 							include("getdata.php");
 						?>
 						<div class="col-md-12 col-sm-12 col-xs-12 rwdtxt" style="height:10%; position:fixed; bottom:0; z-index:1;">
-							<input type="submit" value="確定" name="submit" style="width:25%; height:100%;">							
+							<input type="submit" value="確定" name="submit" style="width:25%; height:100%;">
 						</div>
 					</form>
 					<!-- question form-->
-					
+
 					<!-- 邏輯順序題的回答 -->
 					<script>
 						var audios = document.getElementsByTagName("audio");
@@ -284,7 +288,7 @@
 						var arrvalue = [];
 						var allAudios = document.querySelectorAll('audio');
 						var playaudio = new Audio();
-							
+
 						function pause_audio(){
 							 playaudio.pause();
 						}
@@ -294,13 +298,13 @@
 							picture_order(value,id,arrplaceholder[0]);
 							play_audio(id,arrplaceholder[1]);
 						}
-						
+
 						function showorder_and_audio(value,id,placeholder){
                                                         var arrplaceholder = placeholder.split("-");
                                                         show_order(value,id,arrplaceholder[0]);
                                                         play_audio(id,arrplaceholder[1]);
                                                 }
-						
+
 						function play_audio(id,placeholder){
 							pause_audio();
 							if(document.getElementById(id).checked){
@@ -321,12 +325,12 @@
 										arrshow.splice(i, 1);
 										arrvalue.splice(i, 1);
 									}
-								}	
+								}
 							}
 							document.getElementById("hidden_value").value=arrvalue;
-							document.getElementById("input").value=arrshow.join(" ");							
+							document.getElementById("input").value=arrshow.join(" ");
 						}
-						
+
 						function picture_order(value,id,placeholder){
 							pause_audio();
 						if (document.getElementById(id).checked){
@@ -336,9 +340,9 @@
 							newid = 'show' + id;
 							div_form.setAttribute("id",newid);
 							var lb = '<img class="show-img" src=' + placeholder + '>';
-							div_form.innerHTML = lb;	
-							document.getElementById("input").appendChild(div_form);							
-							arrvalue.push(value);							
+							div_form.innerHTML = lb;
+							document.getElementById("input").appendChild(div_form);
+							arrvalue.push(value);
 						}
 						else{
 							newid = 'show' + id;
@@ -347,7 +351,7 @@
 								if (arrvalue[i] == value) {
 									arrvalue.splice(i, 1);
 								}
-							}							
+							}
 						}
 						document.getElementById("hidden_value").value=arrvalue;
 						}
@@ -360,14 +364,34 @@
 						[].forEach.call(audios, function (i) {
 						        i.addEventListener("play", pauseAll.bind(i));
 					        })
-						
 
 
-					</script>	
-					
-					
+
+					</script>
+
+					<script>
+					//try lock safari
+					window.onload = () => {
+				  document.addEventListener('touchstart', (event) => {
+				    if (event.touches.length > 1) {
+				       event.preventDefault();
+				    }
+				  }, { passive: false });
+
+				  let lastTouchEnd = 0;
+				  document.addEventListener('touchend', (event) => {
+				    const now = (new Date()).getTime();
+				    if (now - lastTouchEnd <= 300) {
+				      event.preventDefault();
+				    }
+				    lastTouchEnd = now;
+				  }, false);
+				}
+				</script>
+
+
 			</div>
-		</div>			
+		</div>
 
 
 		<!-- jQuery -->
