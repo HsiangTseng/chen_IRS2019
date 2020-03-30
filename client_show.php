@@ -87,6 +87,26 @@
         text-align:center;
 	vertical-align:middle;
       }
+	.rwdonlyinstr {
+                font-size: 50px;
+        }
+        @media (min-width: 400px) and (max-width: 900px) {
+               .rwdonlyinstr {
+                      font-size: 70px;
+                }
+        }
+        @media (min-width: 900px) and (max-width: 1000px) {
+               .rwdonlyinstr {
+                       font-size: 90px;
+               }
+        }
+        @media (min-width: 1000px) {
+               .rwdonlyinstr {
+                       font-size: 110px;
+               }
+        }
+
+
 	.rwdtxt {
 				font-size: 10px;
 			}

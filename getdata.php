@@ -38,7 +38,19 @@
 
 	//判斷題目是否為邏輯順序題
 	//題目為邏輯順序題
-	if(strpos($quiz_type,'L')!== false){
+	if(strpos($quiz_type,'INSTR')!== false){
+		$CA = $result->CA;
+		$sql_getINSTRNo = "select * from Instruction WHERE No = '".$CA."'";		
+		$stmt2 = $db->query($sql_getINSTRNo);
+		$result2 = mysqli_fetch_object($stmt2);
+		$Instr_image = $result2->Student_image;		
+		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:70%;margin-top:10%;margin-bottom:3%;'>";
+			echo "<label style='word-wrap:break-word;' class='square-button rwdonlyinstr'>".$Instr_image."</label>";
+		echo "</div>";
+	}						
+	
+	
+	else if(strpos($quiz_type,'L')!== false){
 		if(strpos($quiz_type,'WORD')!== false){
 			echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:10%; position:fixed; top:0; z-index:1;'>";
 				echo "<input type='text' id='input' style='height:100%;width:100%;font-size:30px;'>";

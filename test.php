@@ -1,19 +1,10 @@
 <html>
-<p id="123">
-  123
-</p>
+<button onclick=aa();>GGGG</button>
 
 <script>
-  var p1 ="succ";
-</script>
-<?php
-
-  function a()
+  function aa()
   {
-    return "<script>document.writeln(p1);</script>";
+    alert("答對囉");
   }
-
-  $mm = a();
-  echo $mm;
- ?>
+</script>
 </html>

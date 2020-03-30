@@ -184,37 +184,55 @@ if($_SESSION['username'] == null)
                                         while($result = mysqli_fetch_object($stmt))
                                         {
                                           $q_type=$result->type;
-                                          $picture_ext = $result->picture_ext;
-                                          echo '<p style="font-size:60px;"><b>題號: '.$question_number.'</b></p>';
-                                          echo '<p style="font-size:60px;"><b>'.$result->Content.'</b></p>';
-                                          if(!(empty($picture_ext)||is_null($picture_ext)))//if have picture in the question
+                                          if($q_type=="INSTR")//INSTRUCTION PAGE
                                           {
-                                            if(strpos($picture_ext,'upload') === false)
-                                            {
-                                              echo '<div class="col-lg-6 col-md-6">';
-                                              echo '<p></p>';
-                                              echo '<img src="upload/Q';
-                                              echo $q_list[$exam_index];
-                                              echo 'Q1.';
-                                              echo $result->picture_ext;
-                                              echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
-                                              echo '</div>';
-                                            }
-                                          }
-                                          if (!empty($result->video))
-                                          {
-                                            echo '<div class="col-lg-6 col-md-6" style="text-align: center;">';
-                                            echo '<video width="960" class="center" controls>';
-                                            echo '<source src="'.$result->video.'" type="video/mp4" />';
-                                            echo '</video>';
-                                            echo '</div>';
+                                            $INSTR_TYPE = $result->CA;
+                                            $sql_instr = "SELECT * FROM Instruction WHERE No = '$INSTR_TYPE'";
+                                            $result_instr = mysqli_fetch_object($db->query($sql_instr));
+                                            $INSTR_CONTENT = $result_instr->Content;
+                                            echo '<p align="center" style="font-size:60px; color:black;"><b>';
+                                            if($INSTR_TYPE=="A1")echo 'A卷 第一部份：詞彙理解';
+                                            else if($INSTR_TYPE=="A2")echo 'A卷 第二部份：詞彙表達';
+                                            else if($INSTR_TYPE=="A3")echo 'A卷 第三部份：語法表現';
+                                            echo '</b></p>';
+                                            echo '<hr />';
+                                            echo '<p style="font-size:45px; color:black;"><b>'.$INSTR_CONTENT.'</b></p>';
                                           }
 
-                                          if (!empty($result->audio))
+                                          else if ($q_type!="INSTR")//NORMAL EXAM
                                           {
-                                            echo '<audio controls>';
-                                            echo '<source src="upload/Q'.$q_list[$exam_index].'.mp3" type="audio/mpeg">';
-                                            echo '</audio><p>';
+                                            $picture_ext = $result->picture_ext;
+                                            echo '<p style="font-size:60px;"><b>題號: '.$question_number.'</b></p>';
+                                            echo '<p style="font-size:60px;"><b>'.$result->Content.'</b></p>';
+                                            if(!(empty($picture_ext)||is_null($picture_ext)))//if have picture in the question
+                                            {
+                                              if(strpos($picture_ext,'upload') === false)
+                                              {
+                                                echo '<div class="col-lg-6 col-md-6">';
+                                                echo '<p></p>';
+                                                echo '<img src="upload/Q';
+                                                echo $q_list[$exam_index];
+                                                echo 'Q1.';
+                                                echo $result->picture_ext;
+                                                echo '" class="responsive" style="max-height:100%;max-width:100%;border:5px; border-color:#A0A0A0; border-style: double;">';
+                                                echo '</div>';
+                                              }
+                                            }
+                                            if (!empty($result->video))
+                                            {
+                                              echo '<div class="col-lg-6 col-md-6" style="text-align: center;">';
+                                              echo '<video width="960" class="center" controls>';
+                                              echo '<source src="'.$result->video.'" type="video/mp4" />';
+                                              echo '</video>';
+                                              echo '</div>';
+                                            }
+
+                                            if (!empty($result->audio))
+                                            {
+                                              echo '<audio controls>';
+                                              echo '<source src="upload/Q'.$q_list[$exam_index].'.mp3" type="audio/mpeg">';
+                                              echo '</audio><p>';
+                                            }
                                           }
                                         }
 

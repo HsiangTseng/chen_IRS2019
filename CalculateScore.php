@@ -37,6 +37,10 @@ function calScore($ExamResultNo,$ExamListNo)
 	// Cal the score
 	$final_score = 0;
 	foreach ($ca_array as $key => $value) {
+		if(!isset($sa_array[$key]))
+		{
+			$sa_array[$key]='ERROR';
+		}
 		if ($single_or_multi_array[$key]=="SINGLE")// SINGLE
 		{
 			if(!strcmp($ca_array[$key],$sa_array[$key]))//if answer is correct
@@ -54,37 +58,45 @@ function calScore($ExamResultNo,$ExamListNo)
 				$sa_element_array = explode(',',$sa_array[$key]);
 				$min_count = min(count($ca_element_array),count($sa_element_array));
 				$check = 1;
-				
-				for( $i = 0 ; $i < count($ca_element_array) ; $i++){					
+
+				for( $i = 0 ; $i < count($ca_element_array) ; $i++)
+				{
 					$error_count = 0;
-					for( $j = 0 ; $j < count($sa_element_array) ; $j++){
-						if($ca_element_array[$i] != $sa_element_array[$j]){
+					for( $j = 0 ; $j < count($sa_element_array) ; $j++)
+					{
+						if($ca_element_array[$i] != $sa_element_array[$j])
+						{
 							$error_count++;
-						}						
-						if($error_count == $min_count){
+						}
+						if($error_count == $min_count)
+						{
 							$check = 0;
 							break;
 						}
 					}
 				}
-				if($check == 1){
+				if($check == 1)
+				{
 					$final_score++;
-					if(strcmp($ca_array[$key],$sa_array[$key]) == 0){
+					if(strcmp($ca_array[$key],$sa_array[$key]) == 0)
+					{
 						$final_score++;
 					}
-				}				
+				}
 			}
-			else{			
+			else{
 				$ca_element_array = explode(',',$ca_array[$key]);
-                                $sa_element_array = explode(',',$sa_array[$key]);	
-				for( $i = 0 ; $i < count($ca_element_array) ; $i++){
-                                        for( $j = 0 ; $j < count($sa_element_array) ; $j++){
-                                                if($ca_element_array[$i] == $sa_element_array[$j]){
-                                                        $final_score++;
-                                                }
-                                        }
-                                }
-
+        $sa_element_array = explode(',',$sa_array[$key]);
+				for( $i = 0 ; $i < count($ca_element_array) ; $i++)
+				{
+        	for( $j = 0 ; $j < count($sa_element_array) ; $j++)
+					{
+            if($ca_element_array[$i] == $sa_element_array[$j])
+						{
+            $final_score++;
+            }
+          }
+        }
 			}
 		}
 
