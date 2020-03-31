@@ -170,8 +170,9 @@ else if ($_SESSION['type']!='T')
                     <table class="table table-striped projects">
                       <thead>
                         <tr>
-                          <th style="width: 1%">#</th>
-                          <th style="width: 20%">學生姓名</th>
+                          <th style="width: 5%">#</th>
+                          <th style="width: 10%">學生姓名</th>
+                          <th style="width: 15%">學生考試紀錄編號</th>
                           <th>試卷名稱</th>
                           <th>成績</th>
                           <th>及格狀態</th>
@@ -180,31 +181,6 @@ else if ($_SESSION['type']!='T')
                       </thead>
 
                       <tbody>
-                        <!--tr>
-                          <td>1</td>
-                          <td>
-                            <a>曾敏翔</a>
-                            <br />
-                            <small>1070332</small>
-                          </td>
-                          <td>
-                            <p>English(1)</p>
-                          </td>
-                          <td class="project_progress">
-                            <div class="progress progress_sm">
-                              <div class="progress-bar bg-red" role="progressbar" data-transitiongoal="57"></div>
-                            </div>
-                            <small>57% Complete</small>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-success btn-xs">Success</button>
-                          </td>
-                          <td>
-                            <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
-                            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                          </td>
-                        </tr-->
 
                         <?php
                         $index = 1;
@@ -222,11 +198,19 @@ else if ($_SESSION['type']!='T')
                                 $stmtu = $db->query($sql_user);
                                 $resultu = mysqli_fetch_object($stmtu);
                                 $whosname = $resultu->Name;
+
+                                $sql_examresult = "SELECT No FROM ExamResult WHERE UUID = '$UID' AND WhosAnswer = '$whosid'";
+                                $stmt_exam = $db->query($sql_examresult);
+                                $result_exam = mysqli_fetch_object($stmt_exam);
+                                $exam_result_no = $result_exam->No;
                                 echo '<tr>';
                                 echo   '<td>'.$index.'</td>';
                                 echo   '<td>';
                                 echo     '<a>'.$whosname.'</a><br />';
                                 echo     '<small>'.$result->WhosAnswer.'</small>';
+                                echo   '</td>';
+                                echo   '<td>';
+                                echo   '<p>'.$exam_result_no.'</p>';
                                 echo   '</td>';
                                 echo   '<td>';
                                 echo     '<p>'.$Title.'</p>';
@@ -248,7 +232,7 @@ else if ($_SESSION['type']!='T')
                                 echo     '<button type="button" class="btn'.$button_state;
                                 echo   '</td>';
                                 echo   '<td>';
-                                         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$result_number.'&WhosAnswer='.$whosid.'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>作答詳情</a>';
+                                         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$exam_result_no.'&WhosAnswer='.$whosid.'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>作答詳情</a>';
                                 echo    '</td>';
                                 echo '</tr>';
                                 $index ++;

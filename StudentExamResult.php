@@ -159,7 +159,7 @@ if($_SESSION['username'] == null)
                 <!-- Question List Table -->
                 <table id="q_list" class="table table-striped table-bordered">
 		<?php
-			include("connects.php");	
+			include("connects.php");
 			include("CalculateScore.php");
 			if(isset($_POST['search_student'])){
 				$sql_max = "select Max(No) as max_count from ExamResult";
@@ -168,31 +168,57 @@ if($_SESSION['username'] == null)
 				$count_max = 0;
 				$No_Array = array();
 				$ExamNo_Array = array();
+        $UUID_GROUP_Array = array();
 				$ExamTime_Array = array();
 				$ExamTitle_Array = array();
-                                $Teacher_Array = array();
+        $Teacher_Array = array();
 				$Name_Array = array();
 				$point_Array = array();
 				$state_Array = array();
 				$button_state_Array = array();
 				$ShowName_Array = array();
-				
-				if(strpos($_POST['search_student'],'0') === false){					
- 	                        	$search_student = $_POST['search_student'];
-					$sql_student = "select * from UserList where StudentNumber = '".$search_student."'"; 
+
+				if(strpos($_POST['search_student'],'0') === false){
+ 	        $search_student = $_POST['search_student'];
+
+          //UUID GROUP ARRAY
+          $UUID_GROUP = array();
+          $sql_b = "SELECT UUID FROM `ExamResult` GROUP BY UUID ORDER BY No ASC";
+          if($stmt_b = $db->query($sql_b))
+          {
+            while($result_b = mysqli_fetch_object($stmt_b))
+            {
+              array_push($UUID_GROUP,$result_b->UUID);
+            }
+          }
+
+
+					$sql_student = "SELECT * FROM UserList WHERE StudentNumber = '".$search_student."'";
 					$result_student  = mysqli_fetch_object($db->query($sql_student));
 					$AnswerStudent = $result_student->id;
+
 					for($index = 1, $count_index = 1; $index <= $max_number ; $index++){
 						$ShowName_Array[$count_index] = $result_student->Name;
-						$sql_student_exam = "select * from ExamResult WHERE WhosAnswer ='".$AnswerStudent."' AND No = '".$index."'";
+
+						$sql_student_exam = "SELECT * FROM ExamResult WHERE WhosAnswer ='".$AnswerStudent."' AND No = '".$index."'";
 						$result2 = mysqli_fetch_object($db->query($sql_student_exam));
 						if(!empty($result2->Answer)){
 							if(!is_null($result2->Answer)){
-								$No_Array[$count_index] = $result2->No;								
+								$No_Array[$count_index] = $result2->No;
 								$ExamTime_Array[$count_index] = $result2->ExamTime;
-								$ExamNo_Array[$count_index] = $result2->ExamNo;								
-								$Name_Array[$count_index] = $result2->WhosAnswer;								
+								$ExamNo_Array[$count_index] = $result2->ExamNo;
+								$Name_Array[$count_index] = $result_student->Name;
 								$point_Array[$count_index] = calScore($result2->No,$result2->ExamNo);
+
+                //FIND THE UUID INDEX
+                $uuid = $result2->UUID;
+                foreach ($UUID_GROUP as $key => $value) {
+                  if($UUID_GROUP[$key]==$uuid)
+                  {
+                    $temp = $key+1;
+                    $UUID_GROUP_Array[$count_index] = $temp;
+                  }
+                }
 
 								if($point_Array[$count_index] > 60){
 									$state_Array[$count_index] = "bg-green";
@@ -203,68 +229,71 @@ if($_SESSION['username'] == null)
 									$button_state_Array[$count_index] = " btn-danger btn-xs\">不及格</button>";
 								}
 
-								$sql_examno = "select * from ExamList where No = '".$ExamNo_Array[$count_index]."'";
+								$sql_examno = "SELECT * FROM ExamList WHERE No = '".$ExamNo_Array[$count_index]."'";
 								$result3 = mysqli_fetch_object($db->query($sql_examno));
 								$ExamTitle_Array[$count_index] = $result3->ExamTitle;
-								$Teacher_Array[$count_index] = $result3->Teacher;							
+								$Teacher_Array[$count_index] = $result3->Teacher;
 
 								$No_to_json = json_encode((array)$No_Array);
 								$ShowName_to_json = json_encode((array)$ShowName_Array);
 								$Name_to_json = json_encode((array)$Name_Array);
 								$ExamTime_to_json=json_encode((array)$ExamTime_Array);
 								$ExamNo_to_json=json_encode((array)$ExamNo_Array);
-                                                                $ExamTitle_to_json=json_encode((array)$ExamTitle_Array);
-                                                                $Teacher_to_json=json_encode((array)$Teacher_Array);
+                $ExamTitle_to_json=json_encode((array)$ExamTitle_Array);
+                $UUID_GROUP_to_json = json_encode((array)$UUID_GROUP_Array);
+                $Teacher_to_json=json_encode((array)$Teacher_Array);
 								$Point_to_json = json_encode((array)$point_Array);
 								$State_to_json = json_encode((array)$state_Array);
 								$Button_state_to_json = json_encode((array)$button_state_Array);
-								
-									
+
+
 								$count_index++;
 								$count_max = $count_index;
 							}
-						}						
+						}
 					}
-					
+
 					if($count_max > 0){
 						echo '<thead>';
-							echo '<th>No</th>';
+							echo '<th>學生紀錄編號</th>';
+							echo '<th>考試紀錄編號</th>';
 							echo '<th>學生姓名</th>';
 							echo '<th>試卷名稱</th>';
-	                        	                echo '<th>出題老師</th>';
+	            echo '<th>出題老師</th>';
 							echo '<th>測驗時間</th>';
 							echo '<th>成績</th>';
-							echo '<th>及格狀態</th>';
+//							echo '<th>及格狀態</th>';
 							echo '<th>#edit</th>';
 						echo '</thead>';
-				
+
 						echo '<tbody>';
 							echo '<tr>';
 								echo '<td>'.$No_Array[1].'</td>';
-					                        echo '<td>'.$ShowName_Array[1].'</td>';
+								echo '<td>'.$UUID_GROUP_Array[1].'</td>';
+					      echo '<td>'.$ShowName_Array[1].'</td>';
 								echo '<td>'.$ExamTitle_Array[1].'</td>';
 								echo '<td>'.$Teacher_Array[1].'</td>';
 								echo '<td>'.$ExamTime_Array[1].'</td>';
 
 								echo   '<td class="project_progress">';
-				                                echo     '<div class="progress progress_sm">';
-				                                if($point_Array[1] >= 60){$state= 'bg-green';}
-				                                else {$state = 'bg-red';}
-                                				echo       '<div class="progress-bar '.$state.'" role="progressbar" data-transitiongoal="'.$point_Array[1].'"></div>';
-				                                echo     '</div>';
-                                				echo     '<small>'.$point_Array[1].' Point.</small>';
-				                                echo   '</td>';
+                echo     '<div class="progress progress_sm">';
+                if($point_Array[1] >= 60){$state= 'bg-green';}
+                else {$state = 'bg-red';}
+        				echo       '<div class="progress-bar '.$state.'" role="progressbar" data-transitiongoal="'.$point_Array[1].'"></div>';
+                echo     '</div>';
+        				echo     '<small>'.$point_Array[1].' Point.</small>';
+                echo   '</td>';
 
-								echo   '<td>';
-				 			 	if ($point_Array[1] >=60){$button_state = ' btn-success btn-xs">及格</button>';}
-				                                else {$button_state = ' btn-danger btn-xs">不及格</button>';}
-				                                echo     '<button type="button" class="btn'.$button_state;
-                                				echo   '</td>';
-				                                echo   '<td>';
-                                				         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$No_Array[1].'&WhosAnswer='.$Name_Array[1].'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>作答詳情</a>';
-				                                echo    '</td>';
-                                				echo '</tr>';
-								
+//								echo   '<td>';
+//				 			 	if ($point_Array[1] >=60){$button_state = ' btn-success btn-xs">及格</button>';}
+//				                                else {$button_state = ' btn-danger btn-xs">不及格</button>';}
+//				                                echo     '<button type="button" class="btn'.$button_state;
+//                              				echo   '</td>';
+                echo   '<td>';
+        				         echo '<a href="'.'AnswerRecord.php?ExamResultNo='.$No_Array[1].'&WhosAnswer='.$Name_Array[1].'" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i>作答詳情</a>';
+                echo    '</td>';
+        				echo '</tr>';
+
 
 							echo '</tr>';
 						echo '</tbody>';
@@ -304,7 +333,7 @@ if($_SESSION['username'] == null)
 	                                url: "GetStudentData.php",
         	                        dataType:"json",
                 	                data: {catch_grade : catch_grade,
-					       catch_class : catch_class	
+					       catch_class : catch_class
 					},
                         	        success:function(msg)
                                 	{
@@ -315,9 +344,9 @@ if($_SESSION['username'] == null)
                                                         $('#student').append('<option value="'+msg[i]["StudentNumber"]+'">'+msg[i]["Name"]+'</option>');
                                                 }
 
-					}		
+					}
 				})
-			}				
+			}
 			else if(catch_grade!=""){
 				$.ajax(
                                 {
@@ -331,7 +360,7 @@ if($_SESSION['username'] == null)
 						$('#student').empty();
 						$('#student').append('<option value="0">請選擇學生</option>');
 						for(var i = 0 ; i <  msg_length ; i++){
-							$('#student').append('<option value="'+msg[i]["StudentNumber"]+'">'+msg[i]["Name"]+'</option>');							
+							$('#student').append('<option value="'+msg[i]["StudentNumber"]+'">'+msg[i]["Name"]+'</option>');
 						}
                                         }
                                 })
@@ -356,7 +385,7 @@ if($_SESSION['username'] == null)
                                 })
                         }
 
-		}		
+		}
 	</script>
 
 
@@ -411,44 +440,55 @@ if($_SESSION['username'] == null)
             <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
 
 	     <script type="text/javascript" class="init">
+                 $('#q_list').dataTable( {
+                   "columns": [
+                     { "width": "10%" },
+                     { "width": "10%" },
+                     { "width": "10%" },
+                     { "width": "20%" },
+                     { "width": "10%" },
+                     { "width": "20%" },
+                     { "width": "10%" },
+                     { "width": "10%" },
+                   ]
+                 } );
+
                 $(document).ready
                 (
-                        function(){
-                              var count_max = <?php echo "$count_max";?>;
+                  function(){
+                     var count_max = <?php echo "$count_max";?>;
 
-                              if(count_max > 1){
-                                     var No_fromPHP = <? echo $No_to_json ?>;
-				     var ShowName_fromPHP=<? echo $ShowName_to_json ?>;
-                                     var Name_fromPHP=<? echo $Name_to_json ?>;
-                                     var ExamTime_fromPHP=<? echo $ExamTime_to_json ?>;
-                                     var ExamNo_fromPHP=<? echo $ExamNo_to_json ?>;
-                                     var ExamTitle_fromPHP=<? echo $ExamTitle_to_json ?>;
-                                     var Teacher_fromPHP=<? echo $Teacher_to_json ?>;
-				     var Point_fromPHP = <? echo $Point_to_json?>;
-				     var State_fromPHP = <? echo $State_to_json?>;
-				     var ButtonState_fromPHP = <? echo $Button_state_to_json?>;
+                     if(count_max > 1){
+                     var No_fromPHP = <? echo $No_to_json ?>;
+                     var ShowName_fromPHP=<? echo $ShowName_to_json ?>;
+                     var Name_fromPHP=<? echo $Name_to_json ?>;
+                     var ExamTime_fromPHP=<? echo $ExamTime_to_json ?>;
+                     var ExamNo_fromPHP=<? echo $ExamNo_to_json ?>;
+                     var ExamTitle_fromPHP=<? echo $ExamTitle_to_json ?>;
+                     var UUID_GROUP_fromPHP=<? echo $UUID_GROUP_to_json ?>;
+                     var Teacher_fromPHP=<? echo $Teacher_to_json ?>;
+                     var Point_fromPHP = <? echo $Point_to_json?>;
+        				     var State_fromPHP = <? echo $State_to_json?>;
+        				     var ButtonState_fromPHP = <? echo $Button_state_to_json?>;
+                     var t = $('#q_list').DataTable();
 
-                                     var t = $('#q_list').DataTable();
-
-
-
-                              for (var i=2 ; i< <?php echo "$count_max";?> ; i++)
-                              {
-                                    t.row.add(
-                                    [
-                                    No_fromPHP[i],
-                                    ShowName_fromPHP[i],
-                                    ExamTitle_fromPHP[i],
-                                    Teacher_fromPHP[i],
-                                    ExamTime_fromPHP[i],			    
-				    "<div class=\"progress progress_sm\"><div class=\"progress-bar "+State_fromPHP+" role=\"progressbar\" data-transitiongoal=\""+Point_fromPHP[i]+"\"></div></div><small>"+Point_fromPHP[i]+" Point.</small>",
-				    "<button type=\"button\" class=\"btn"+ButtonState_fromPHP[i],
-			            "<a href=\"AnswerRecord.php?ExamResultNo="+No_fromPHP[i]+"&WhosAnswer="+Name_fromPHP[i]+"\" class=\"btn btn-primary btn-xs\"><i class=\"fa fa-folder\"></i>作答詳情</a>",
-                                    ]).draw(false);
-
-                              }
-                              }
-                        }
+                    for (var i=2 ; i< <?php echo "$count_max";?> ; i++)
+                    {
+                      t.row.add(
+                      [
+                      No_fromPHP[i],
+                      UUID_GROUP_fromPHP[i],
+                      ShowName_fromPHP[i],
+                      ExamTitle_fromPHP[i],
+                      Teacher_fromPHP[i],
+                      ExamTime_fromPHP[i],
+                      "<div class=\"progress progress_sm\"><div class=\"progress-bar "+State_fromPHP+" role=\"progressbar\" data-transitiongoal=\""+Point_fromPHP[i]+"\"></div></div><small>"+Point_fromPHP[i]+" Point.</small>",
+                      //"<button type=\"button\" class=\"btn"+ButtonState_fromPHP[i],
+                     "<a href=\"AnswerRecord.php?ExamResultNo="+No_fromPHP[i]+"&WhosAnswer="+Name_fromPHP[i]+"\" class=\"btn btn-primary btn-xs\"><i class=\"fa fa-folder\"></i>作答詳情</a>",
+                      ]).draw(false);
+                    }
+                  }
+                  }
 
                 );
              </script>
