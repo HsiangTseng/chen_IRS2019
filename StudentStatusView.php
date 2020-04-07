@@ -19,8 +19,8 @@ else if ($_SESSION['type']!='T')
 <?php
 	include("connects.php");
 
-	$sql = "select * from UserList where StudentNumber ='".$student_id."'";
-	
+	$sql = "SELECT * FROM UserList WHERE StudentNumber ='".$student_id."'";
+
 	if($stmt = $db->query($sql)){
 		while($result = mysqli_fetch_object($stmt)){
 			$Name = $result->Name;
@@ -31,6 +31,8 @@ else if ($_SESSION['type']!='T')
 			$Birth = $result->Birth;
 			$TestTeacher = $result->TestTeacher;
 			$Category = $result->Category;
+      $id = $result->id;
+      $password = $result->password;
 		}
 	}
 ?>
@@ -154,90 +156,97 @@ else if ($_SESSION['type']!='T')
                   </div>
                   <div class="x_content">
                     <br />
-
                     <form class="form-horizontal form-label-left input_mask" method="post" action="updateSignUpStudent.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
                       <div class="ln_solid"></div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">學生姓名 : <?php echo $Name;?></label>
-		      </div>
 
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀學校 : <?php echo $School;?> 國小</label>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">就讀年級 : <?php echo $Grade;?> 年  <?php echo $Class;?></label>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生姓名 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $Name;?>" disabled/>
+                        </div>
                       </div>
 
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3" for="first-name">性別 : 
-				<?php
-					if($Gender == "boy"){
-						echo "男";
-					}
-					else{
-						echo "女";
-					}					
-				?>
-			</label>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">就讀學校 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $School;?>" disabled/>
+                        </div>
                       </div>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">出生日期 : <?php echo $Birth;?></label>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">就讀年級 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $Grade.'年'.$Class;?>" disabled/>
+                        </div>
                       </div>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">施測人員 : <?php echo $TestTeacher?></label>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">性別 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php if($Gender=="boy")echo '男'; else{echo '女';}?>" disabled/>
+                        </div>
                       </div>
 
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">障礙類別 :
-				<?php
-					if($Category=="0"){
-						echo "無 (一般生)";
-					}
-					elseif($Category=="1"){
-						echo "智能障礙";
-					}
-					elseif($Category=="2"){
-						echo "視覺障礙";
-                                        }
-					elseif($Category=="3"){
-						echo "聽覺障礙";
-                                        }
-					elseif($Category=="4"){
-						echo "語言障礙";
-                                        }
-					elseif($Category=="5"){
-						echo "腦性麻痺 (Cerbral Palsy)";
-                                        }
-					elseif($Category=="6"){
-						echo "肢體障礙";
-                                        }
-					elseif($Category=="7"){
-						echo "身體病弱";
-                                        }
-					elseif($Category=="8"){
-						echo "身情緒行為障礙";
-                                        }
-					elseif($Category=="9"){
-						echo "學習障礙";
-                                        }
-					elseif($Category=="10"){
-						echo "多重障礙";
-                                        }
-					elseif($Category=="11"){
-						echo "自閉症";
-                                        }
-					elseif($Category=="12"){
-						echo "發展遲緩";
-                                        }
-				?>			
-			</label>
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">出生日期 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $Birth;?>" disabled/>
+                        </div>
                       </div>
 
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">施測人員 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $TestTeacher;?>" disabled/>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">障礙類別 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                          <input type="text" value="<?php
+                          if($Category=="0"){echo "無 (一般生)";}
+                          elseif($Category=="1"){echo "智能障礙";}
+                          elseif($Category=="2"){echo "視覺障礙";}
+                          elseif($Category=="3"){echo "聽覺障礙";}
+                          elseif($Category=="4"){echo "語言障礙";}
+                          elseif($Category=="5"){echo "腦性麻痺 (Cerbral Palsy)";}
+                          elseif($Category=="6"){echo "肢體障礙";}
+                          elseif($Category=="7"){echo "身體病弱";}
+                          elseif($Category=="8"){echo "身情緒行為障礙";}
+                          elseif($Category=="9"){echo "學習障礙";}
+                          elseif($Category=="10"){echo "多重障礙";}
+                          elseif($Category=="11"){echo "自閉症";}
+                          elseif($Category=="12"){echo "發展遲緩";}
+                          ?>" disabled/>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生帳號 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $id;?>" disabled/>
+                        </div>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生密碼 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" value="<?php echo $password;?>" disabled/>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>

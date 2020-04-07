@@ -2,6 +2,7 @@
 	session_start();
 	include("connects.php");
 
+
 	if(isset($_SESSION['Teacher_ID'])){
 		$Teacher_ID = $_SESSION['Teacher_ID'];
 		$sql = "SELECT * FROM Now_state where Teacher_ID = '".$Teacher_ID."'";

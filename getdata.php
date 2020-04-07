@@ -62,7 +62,7 @@
 			echo "</div>";
 		}
 
-		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:80%;margin-top:8%;margin-bottom:5%;'>";
+		echo "<div class='col-md-12 col-sm-12 col-xs-12' style='height:70%;margin-top:8%;margin-bottom:5%;'>";
 		$sql_catch_exam = "select * from Keyboard where KeyboardNo = '".$No_keyboard."'";
 		$result = mysqli_fetch_object($db->query($sql_catch_exam));
 

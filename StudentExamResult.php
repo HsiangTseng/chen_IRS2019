@@ -130,7 +130,6 @@ if($_SESSION['username'] == null)
 			        		<option value="6">六</option>
 			        	</select>
 		                </div>
-                	        <label class="control-label">年</label>
 
 	                        <label class="control-label col-md-1 col-sm-1 col-xs-12">就讀班級 :</label>
         	                <div class="col-md-2 col-sm-2">
@@ -178,7 +177,7 @@ if($_SESSION['username'] == null)
 				$button_state_Array = array();
 				$ShowName_Array = array();
 
-				if(strpos($_POST['search_student'],'0') === false){
+				if(strcmp($_POST['search_student'],'0') != 0){
  	        $search_student = $_POST['search_student'];
 
           //UUID GROUP ARRAY

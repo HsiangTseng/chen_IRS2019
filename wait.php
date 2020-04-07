@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<?php 
-	session_start(); 
+<?php
+	session_start();
 	if($_SESSION['username'] == null)
         {
                 header ('location: IRS_Login.php');
@@ -11,7 +11,7 @@
             header ('location: IRS_Login.php');
             exit;
         }
-	
+
 	$WhosAnswer = $_SESSION['username'];
 ?>
 <?php
@@ -33,10 +33,30 @@
 
 	if($catch_count > 0){
 		$sql_catch_teacher = "select * from ClassList where StudentNumberList like '%".$userStudentNumber."%'";
-		$stmt3 = $db->query($sql_catch_teacher);
-        	$result3 = mysqli_fetch_object($stmt3);
+		if($stmt3 = $db->query($sql_catch_teacher))
+		{
+				while($result3 = mysqli_fetch_object($stmt3))
+				{
+					$Studentlist_array = array();
+					$temp_list = $result3->StudentNumberList;
+					$Studentlist_array = explode("-",$temp_list);
+					foreach ($Studentlist_array as $key => $value) {
+						if($Studentlist_array[$key]==$userStudentNumber)
+						{
+							$Teacher_ID = $result3->Teacher_ID;
+							$_SESSION['Teacher_ID'] =  $Teacher_ID;
+							//echo $Teacher_ID;
+							//print_r($Studentlist_array);
+						}
+					}
+				}
+		}
+		/*$stmt3 = $db->query($sql_catch_teacher);
+    $result3 = mysqli_fetch_object($stmt3);
 		$Teacher_ID = $result3->Teacher_ID;
-		$_SESSION['Teacher_ID'] =  $Teacher_ID;
+		$_SESSION['Teacher_ID'] =  $Teacher_ID;*/
+
+
 		$sql = "SELECT * FROM Now_state where Teacher_ID='".$Teacher_ID."'";
 		$temp = "SELECT * FROM temp_for_state where Teacher_ID='".$Teacher_ID."'";
 		$now = 0;
@@ -49,9 +69,9 @@
 				$result = mysqli_fetch_object($stmt);
 				$last = $result->No_temp;
 				$UUID_last = $result->UUID;
-	
+
 			}
-		}	
+		}
 	}
 
 ?>
@@ -84,7 +104,7 @@
 		<link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 		<!-- Custom Theme Style -->
-		<link href="../build/css/custom.min.css" rel="stylesheet">						
+		<link href="../build/css/custom.min.css" rel="stylesheet">
 	</head>
 	<body class="nav-md">
     <div class="container body">
@@ -123,12 +143,12 @@
                   </div>
                   <div class="x_content">
                       <h1>等待進入考試中,請稍後</h1>
-			<?php	
-				include("connects.php");	
-				$sql = "select * from UserList where id ='".$_SESSION['username']."'";	
+			<?php
+				include("connects.php");
+				$sql = "select * from UserList where id ='".$_SESSION['username']."'";
 				if($stmt = $db->query($sql)){
 					while($result = mysqli_fetch_object($stmt)){
-						$id = $result-> id;
+						$id = $result->id;
 						$Name = $result->Name;
 						$School = $result->School;
 						$Grade = $result->Grade;
@@ -159,7 +179,7 @@
 						echo "</div>";
 					echo "</div>";
 				echo "</div>";
-			?>		
+			?>
                   </div>
                 </div>
               </div>
@@ -187,7 +207,7 @@
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
-    
+
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
 		<script>
@@ -196,7 +216,7 @@
                                 var get_last_UUID = "<?php echo $UUID_last;?>";
                                 var get_now_UUID = "<?php echo $UUID_now;?>";
                                 var get_teacher = "<?php echo $Teacher_ID;?>";
-		
+
 			function set_status(){
 					if(get_now_UUID.trim()!=get_last_UUID.trim()){
 						$.ajax(
@@ -211,10 +231,10 @@
 						$.ajax(
 						{
 							type:"POST",
-							url:"mobile_reset.php"															
+							url:"mobile_reset.php"
 						}
 						).done(function(msg){});
-						document.location.href="setstudentdata.php";														
+						document.location.href="setstudentdata.php";
 					}
 					$.ajax(
                                         {
@@ -233,7 +253,7 @@
 						}
 					});
 					$.ajax(
-					{	
+					{
 						type:"POST",
 						url:"mobile_reset.php",
 						success:function(data){
@@ -242,7 +262,7 @@
 					});
 			}
 			setInterval(set_status,1000);
-		</script>	
+		</script>
 
 		<!-- jQuery -->
 		<script src="../vendors/jquery/dist/jquery.min.js"></script>
