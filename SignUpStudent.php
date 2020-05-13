@@ -238,7 +238,6 @@ else if ($_SESSION['type']!='T')
                             <option value="資源班">資源班</option>
                             <option value="特教班">特教班</option>
                           </select>
-                          <!--input type="text" class="form-control" name="class" placeholder="請輸入班級" required="required"-->
                         </div>
                         <!--label class="control-label">班</label-->
                       </div>
@@ -324,7 +323,6 @@ else if ($_SESSION['type']!='T')
                           </select>
                         </div>
                       </div>
-
 
                       <div class="ln_solid"></div>
                       <div class="form-group">

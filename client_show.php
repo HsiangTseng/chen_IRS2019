@@ -26,7 +26,9 @@
 	$last = 0;
 	if($stmt = $db->query($sql)){
 		while($result = mysqli_fetch_object($stmt)){
-			$now = $result->No;
+			$now = $result->No;			
+			$ExamNo = $result->ExamNumber;
+                        $UUID = $result->UUID;
 			$stmt = $db->query($temp);
 			$result = mysqli_fetch_object($stmt);
 			$last = $result->No_temp;
@@ -39,7 +41,7 @@
 	}
 ?>
 
-
+		
 
 <html lang="en" style="height:100%">
 	<head>
@@ -296,7 +298,24 @@
 							include("getdata.php");
 						?>
 						<div class="col-md-12 col-sm-12 col-xs-12 rwdtxt" style="height:10%; position:fixed; bottom:0; z-index:1;">
-							<input type="submit" value="確定" name="submit" style="width:25%; height:100%;">
+							<?
+							        $WhosAnswer = $_SESSION['username'];
+	
+        							$Answer_sql = "Select * from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";
+								$stmt2 = $db->query($Answer_sql);
+							        $result = mysqli_fetch_object($stmt2);
+							        $Answer_get = $result->Answer;
+
+							        $Answer_arr = mb_split("-",$Answer_get);
+								if($Answer_arr{$now-1} != "N"){
+									echo "<input type='submit' value='已作答' name='submit' style='width:25%; height:100%; color:green; font-weight:bold; border-color:#00FF00;'>";
+							        }
+								else{
+									echo "<input type='submit' value='確定' name='submit' style='width:25%; height:100%; font-weight:bold;' >";
+								}
+							?>
+
+
 						</div>
 					</form>
 					<!-- question form-->
@@ -384,9 +403,8 @@
 						[].forEach.call(audios, function (i) {
 						        i.addEventListener("play", pauseAll.bind(i));
 					        })
-
-
-
+					
+							
 					</script>
 
 					<script>

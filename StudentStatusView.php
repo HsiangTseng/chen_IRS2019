@@ -29,6 +29,7 @@ else if ($_SESSION['type']!='T')
 			$Class = $result->Class;
 			$Gender = $result->Gender;
 			$Birth = $result->Birth;
+      $TestTime = $result->TestTime;
 			$TestTeacher = $result->TestTeacher;
 			$Category = $result->Category;
       $id = $result->id;
@@ -156,14 +157,14 @@ else if ($_SESSION['type']!='T')
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask" method="post" action="updateSignUpStudent.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
+                    <form class="form-horizontal form-label-left input_mask" method="post" action="updateEdit_Student.php" enctype="multipart/form-data" onKeyDown="if (event.keyCode == 13) {return false;}">
                       <div class="ln_solid"></div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生姓名 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $Name;?>" disabled/>
+                          <input type="text" name="name" value="<?php echo $Name;?>" required="required" />
                         </div>
                       </div>
 
@@ -172,7 +173,7 @@ else if ($_SESSION['type']!='T')
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">就讀學校 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $School;?>" disabled/>
+                          <input type="text" name="school" value="<?php echo $School;?>" required="required" />
                         </div>
                       </div>
 
@@ -180,55 +181,209 @@ else if ($_SESSION['type']!='T')
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">就讀年級 : <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $Grade.'年'.$Class;?>" disabled/>
+                        <div class="col-md-2 col-sm-2">
+                          <select id="grade" name="grade" class="form-control" required>
+                            <?php
+                            for($i=1;$i<=6;$i++)
+                            {
+                              if($i==1)
+                              {
+                                echo '<option value="1"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>一</option>';
+                              }
+                              if($i==2)
+                              {
+                                echo '<option value="2"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>二</option>';
+                              }
+                              if($i==3)
+                              {
+                                echo '<option value="3"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>三</option>';
+                              }
+                              if($i==4)
+                              {
+                                echo '<option value="4"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>四</option>';
+                              }
+                              if($i==5)
+                              {
+                                echo '<option value="5"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>五</option>';
+                              }
+                              if($i==6)
+                              {
+                                echo '<option value="6"';
+                                if($Grade==$i) {echo 'selected="selected"';}
+                                echo '>六</option>';
+                              }
+                            }
+                            ?>
+                          </select>
+                        </div>
+                        <label class="control-label">年</label>
+                      </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">就讀班級 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-2 col-sm-2">
+                          <select id="class" name="class" class="form-control" required>
+                            <?php
+                            for($i=1;$i<=3;$i++)
+                            {
+                              if($i==1)
+                              {
+                                echo '<option value="普通班"';
+                                if($Class=="普通班"){echo 'selected="selected"';}
+                                echo '>普通班</option>';
+                              }
+                              if($i==2)
+                              {
+                                echo '<option value="資源班"';
+                                if($Class=="資源班"){echo 'selected="selected"';}
+                                echo '>資源班</option>';
+                              }
+                              if($i==3)
+                              {
+                                echo '<option value="特教班"';
+                                if($Class=="特教班"){echo 'selected="selected"';}
+                                echo '>特教班</option>';
+                              }
+
+                            }
+                            ?>
+                          </select>
                         </div>
                       </div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">性別 : <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php if($Gender=="boy")echo '男'; else{echo '女';}?>" disabled/>
-                        </div>
+                        <input type="radio" class="radio-inline flat" name="gender" value="boy" <?php if($Gender=="boy")echo 'checked';?>><label>男</label>
+                        <input type="radio" class="radio-inline flat" name="gender" value="girl" <?php if($Gender=="girl")echo 'checked';?>><label>女</label>
                       </div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">出生日期 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $Birth;?>" disabled/>
+                          <input type="date" name="bday" value="<?php echo $Birth;?>" required="required"/>
                         </div>
                       </div>
+
+                      <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">測驗日期 : <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="date" name="test_time" value="<?php echo $TestTime;?>" required="required">
+                        </div>
+                      </div>
+
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">施測人員 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $TestTeacher;?>" disabled/>
+                          <input type="text" name="test_teacher" value="<?php echo $TestTeacher;?>" required="required"/>
                         </div>
                       </div>
 
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">障礙類別 : <span class="required">*</span>
                         </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-4 col-sm-4">
+                          <select id="category" name="category" class="form-control" required>
+                            <?php
+                            for($i=0;$i<=12;$i++)
+                            {
+                              if($i==0)
+                              {
+                                echo '<option value="0" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>無 (一般生)</option>';
+                              }
+                              if($i==1)
+                              {
+                                echo '<option value="1" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>智能障礙</option>';
+                              }
+                              if($i==2)
+                              {
+                                echo '<option value="2" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>視覺障礙</option>';
+                              }
+                              if($i==3)
+                              {
+                                echo '<option value="3" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>聽覺障礙</option>';
+                              }
+                              if($i==4)
+                              {
+                                echo '<option value="4" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>語言障礙</option>';
+                              }
+                              if($i==5)
+                              {
+                                echo '<option value="5" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>腦性麻痺 (Cerbral Palsy)</option>';
+                              }
+                              if($i==6)
+                              {
+                                echo '<option value="6" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>肢體障礙</option>';
+                              }
+                              if($i==7)
+                              {
+                                echo '<option value="7" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>身體病弱</option>';
+                              }
+                              if($i==8)
+                              {
+                                echo '<option value="8" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>情緒行為障礙</option>';
+                              }
+                              if($i==9)
+                              {
+                                echo '<option value="9" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>學習障礙</option>';
+                              }
+                              if($i==10)
+                              {
+                                echo '<option value="10" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>多重障礙</option>';
+                              }
+                              if($i==11)
+                              {
+                                echo '<option value="11" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>自閉症</option>';
+                              }
+                              if($i==12)
+                              {
+                                echo '<option value="12" ';
+                                if($Category==$i) {echo'selected="selected"';}
+                                echo '>發展遲緩</option>';
+                              }
+                            }
+                            ?>
 
-                          <input type="text" value="<?php
-                          if($Category=="0"){echo "無 (一般生)";}
-                          elseif($Category=="1"){echo "智能障礙";}
-                          elseif($Category=="2"){echo "視覺障礙";}
-                          elseif($Category=="3"){echo "聽覺障礙";}
-                          elseif($Category=="4"){echo "語言障礙";}
-                          elseif($Category=="5"){echo "腦性麻痺 (Cerbral Palsy)";}
-                          elseif($Category=="6"){echo "肢體障礙";}
-                          elseif($Category=="7"){echo "身體病弱";}
-                          elseif($Category=="8"){echo "身情緒行為障礙";}
-                          elseif($Category=="9"){echo "學習障礙";}
-                          elseif($Category=="10"){echo "多重障礙";}
-                          elseif($Category=="11"){echo "自閉症";}
-                          elseif($Category=="12"){echo "發展遲緩";}
-                          ?>" disabled/>
+                          </select>
                         </div>
                       </div>
 
@@ -236,7 +391,7 @@ else if ($_SESSION['type']!='T')
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生帳號 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $id;?>" disabled/>
+                          <input type="text" name="account" value="<?php echo $id;?>" required="required"/>
                         </div>
                       </div>
 
@@ -244,9 +399,20 @@ else if ($_SESSION['type']!='T')
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">學生密碼 : <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" value="<?php echo $password;?>" disabled/>
+                          <input type="text" name="password" value="<?php echo $password;?>" required="required"/>
                         </div>
                       </div>
+
+                      <input type="hidden" name="student_id" value="<?php echo $student_id;?>">
+
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                          <button type="submit" id="btn_submit" class="btn btn-success">編輯</button>
+                        </div>
+                      </div>
+
                     </form>
                   </div>
                 </div>

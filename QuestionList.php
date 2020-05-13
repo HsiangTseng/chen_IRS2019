@@ -185,7 +185,7 @@ if($_SESSION['username'] == null)
 
                     for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
                     {
-            						$sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`='1'";
+            						$sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`!='0'";
 
             						if(isset($_POST['search_type'])){
             							if(strpos($_POST['search_type'],'0') === false){
@@ -346,7 +346,7 @@ if($_SESSION['username'] == null)
 
               for ( $a = 1, $count_index = 1 ; $a<=$max_number ; $a++)
               {
-						    $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`='1'";
+						    $sql2 = "SELECT * FROM `QuestionList` WHERE `No` = $a AND `QA` = 'Q' AND `status`!='0'";
 
     						if(isset($_POST['search_type'])){
     							 if(strpos($_POST['search_type'],'0') === false){

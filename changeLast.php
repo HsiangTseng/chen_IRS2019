@@ -3,7 +3,7 @@
 	$Teacher_ID = $_POST['Teacher_ID'];
 	$now = 0;
 
-	$sql = "SELECT * FROM Now_state";
+	$sql = "SELECT * FROM Now_state Where Teacher_ID ='$Teacher_ID'";
 	if($stmt = $db->query($sql))
 	{
 		while($result = mysqli_fetch_object($stmt))

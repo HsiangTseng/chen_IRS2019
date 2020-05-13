@@ -232,7 +232,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3" for="last-name">選項(A) :<span class="required"></span></label>
                     <div class="col-md-5">
-                        <input type="text"  name="A1" id="A1" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text"  name="A1" id="A1"  class="form-control col-md-7 col-xs-12">
                     </div>
                     <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
                     <div class="col-md-3">
@@ -254,7 +254,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3" for="last-name">選項(B) :<span class="required"></span></label>
                     <div class="col-md-5">
-                        <input type="text"  name="A2" id="A2" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text"  name="A2" id="A2" class="form-control col-md-7 col-xs-12">
                     </div>
                     <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
                     <div class="col-md-3">
@@ -275,7 +275,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3" for="last-name">選項(C) :<span class="required"></span></label>
                     <div class="col-md-5">
-                        <input type="text"  name="A3" id="A3" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text"  name="A3" id="A3" class="form-control col-md-7 col-xs-12">
                     </div>
                     <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
                     <div class="col-md-3">
@@ -297,7 +297,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3" for="last-name">選項(D) :<span class="required"></span></label>
                     <div class="col-md-5">
-                        <input type="text"  name="A4" id="A4" required="required" class="form-control col-md-7 col-xs-12">
+                        <input type="text"  name="A4" id="A4" class="form-control col-md-7 col-xs-12">
                     </div>
                     <label class="control-label col-md-1" for="last-name">附加音檔: <span></span></label>
                     <div class="col-md-3">

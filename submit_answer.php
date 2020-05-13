@@ -1,3 +1,36 @@
+<html>
+
+<head>
+</head>
+
+<body>
+</body>
+<script>
+	function alertTimeout(mymsg,mymsecs)
+	{
+		var myelement = document.createElement("div");
+		myelement.setAttribute("style","background-color: red;color:white; width: 450px;height: 200px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 4px solid black;font-family:arial;font-size:25px;font-weight:bold;display: flex; align-items: center; justify-content: center; text-align: center;");
+		myelement.innerHTML = mymsg;
+		setTimeout(function(){
+			myelement.parentNode.removeChild(myelement);
+			location.href = 'client_show.php';
+		},mymsecs);
+		document.body.appendChild(myelement);
+	}
+
+	function alertRightTimeout(mymsg,mymsecs)
+        {
+                var myelement = document.createElement("div");
+                myelement.setAttribute("style","background-color: green;color:white; width: 450px;height: 200px;position: absolute;top:0;bottom:0;left:0;right:0;margin:auto;border: 4px solid black;font-family:arial;font-size:25px;font-weight:bold;display: flex; align-items: center; justify-content: center; text-align: center;");
+                myelement.innerHTML = mymsg;
+                setTimeout(function(){
+                        myelement.parentNode.removeChild(myelement);
+                        location.href = 'client_show.php';
+                },mymsecs);
+                document.body.appendChild(myelement);
+        }
+</script>
+
 <?php
 	session_start();
 	include("connects.php");
@@ -62,10 +95,12 @@
 			
 		        if($This_answer_get != ''){
 				if(strpos($This_answer_get,$Answer_CA)!==false){
-					echo "<script>alert('恭喜答對'); location.href='client_show.php'</script>";
+					echo "<script>
+						alertRightTimeout('答對了喔',5000);
+						</script>";
 				}
 				else{
-					echo "<script>alert('答錯了喔'); location.href='client_show.php'</script>";
+					echo "<script>alertTimeout('答錯了喔',5000); </script>";
 				}
                         }
 		}
@@ -124,3 +159,4 @@
 		}
 	}
 ?>	
+</html>

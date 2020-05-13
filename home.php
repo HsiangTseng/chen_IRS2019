@@ -150,7 +150,7 @@ if($_SESSION['username'] == null)
                 <!-- title bar-->
                 <div class="x_title">
                   <h1>
-                      <b>題目</b>
+                      <b style="color:black;">題目</b>
                       <!--button type="button" id="zeroquiz" class="btn btn-success btn-lg" style="float: right;">歸零(test)</button-->
                       <button type="button" class="btn btn-success btn-lg" onClick = "timedMsg()" style="float: right;">5秒換題</button>
                       <button type="button" id="lastquiz" class="btn btn-danger btn-lg" style="float: right;">前一題</button>
@@ -202,8 +202,8 @@ if($_SESSION['username'] == null)
                                           else if ($q_type!="INSTR")//NORMAL EXAM
                                           {
                                             $picture_ext = $result->picture_ext;
-                                            echo '<p style="font-size:60px;"><b>題號: '.$question_number.'</b></p>';
-                                            echo '<p style="font-size:60px;"><b>'.$result->Content.'</b></p>';
+                                            echo '<p style="font-size:60px; color:black;"><b>題號: '.$question_number.'</b></p>';
+                                            echo '<p style="font-size:60px; color:black;"><b>'.$result->Content.'</b></p>';
                                             if(!(empty($picture_ext)||is_null($picture_ext)))//if have picture in the question
                                             {
                                               if(strpos($picture_ext,'upload') === false)
