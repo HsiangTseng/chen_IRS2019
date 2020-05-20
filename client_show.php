@@ -298,7 +298,7 @@
 							include("getdata.php");
 						?>
 						<div class="col-md-12 col-sm-12 col-xs-12 rwdtxt" style="height:10%; position:fixed; bottom:0; z-index:1;">
-							<?
+							<?php
 							        $WhosAnswer = $_SESSION['username'];
 	
         							$Answer_sql = "Select * from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";

@@ -194,6 +194,9 @@ if($_SESSION['username'] == null)
                                             if($INSTR_TYPE=="A1")echo 'A卷 第一部份：詞彙理解';
                                             else if($INSTR_TYPE=="A2")echo 'A卷 第二部份：詞彙表達';
                                             else if($INSTR_TYPE=="A3")echo 'A卷 第三部份：語法表現';
+                                            else if($INSTR_TYPE=="B1")echo 'B卷 第一部份：詞彙理解';
+                                            else if($INSTR_TYPE=="B2")echo 'B卷 第二部份：詞彙表達';
+                                            else if($INSTR_TYPE=="B3")echo 'B卷 第三部份：語法表現';
                                             echo '</b></p>';
                                             echo '<hr />';
                                             echo '<p style="font-size:45px; color:black;"><b>'.$INSTR_CONTENT.'</b></p>';
