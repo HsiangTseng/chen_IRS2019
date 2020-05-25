@@ -20,20 +20,19 @@
 			}
                 }
 		
-/*		$msg = array();
-                $index = 0;
-                if($stmt = $db->query($sql)){
-                        while($result = mysqli_fetch_object($stmt)){
-                                $WhosAnswer = $result->WhosAnswer;
-                                $datetime = date("Y-m-d",strtotime($result->ExamTime));
-                                $msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer);
-                                $index++;
-                        }
-                }
-
-                echo json_encode($msg);
-*/
         }
+
+	if(isset($_POST['exam_num'])){
+		if($_POST['exam_num']!="0"){
+			if(strpos($sql,"WHERE")){
+                                $sql = $sql." AND UUID = '".$_POST['exam_num']."'";
+                        }
+                        else{
+                               $sql = $sql." WHERE UUID = '".$_POST['exam_num']."'";
+                        }
+		}
+	}
+
 	
 	$msg = array();
         $index = 0;
@@ -41,42 +40,17 @@
 	        while($result = mysqli_fetch_object($stmt)){
         	        $WhosAnswer = $result->WhosAnswer;
                         $datetime = date("Y-m-d",strtotime($result->ExamTime));
-                        $msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer);
+			$UUID = $result->UUID;
+			
+			$sql_student = "SELECT * FROM UserList WHERE id = '".$WhosAnswer."'";
+			$stmt1 = $db->query($sql_student);
+			$result1 = mysqli_fetch_object($stmt1);
+			$WhosAnswer_Name = $result1->Name;
+
+                        $msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer, "UUID"=>$UUID, "WhosAnswer_Name"=>$WhosAnswer_Name);
                         $index++;
                 }
         }
 
         echo json_encode($msg);
-
-
-
-	/*else{	
-		$msg = array();
-		$msg2 = array();
-		$index = 0;
-		if($stmt = $db->query($sql)){
-			while($result = mysqli_fetch_object($stmt)){
-				$WhosAnswer = $result->WhosAnswer;
-				$datetime = date("Y-m-d",strtotime($result->ExamTime));			
-				$msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer);
-				$index++;
-			}
-		}
-		$index2 = 0;
-		for($i = 0 ; $i < $index ; $i++){
-			if($i > 0){			
-				if($msg[$i]["ExamTime"]!=$msg[$i-1]["ExamTime"]){
-					$msg2[$index2] = $msg[$i];
-					$index2++;
-				}
-			}
-			else{
-				$msg2[$index2] = $msg[$i]; 
-				$index2++;
-			}
-		}
-
-		echo json_encode($msg2);
-	}*/
-
 ?>

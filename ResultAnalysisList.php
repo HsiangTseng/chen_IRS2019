@@ -16,11 +16,16 @@ else if ($_SESSION['type']!='T')
 ?>
 
 <?php
+/*
 $ExamNumber = $_POST['search_exam'];
 $ExamDate = $_POST['search_date'];
 $StudentList = $_POST['student'];
-//echo $ExamNumber.'  '.$ExamDate;
-//print_r($StudentList);
+*/
+$ExamNumber = 10;
+$ExamDate = '2020-05-20';
+$StudentList = ['student1','student2'];
+echo $ExamNumber.'  '.$ExamDate;
+print_r($StudentList);
 
 ?>
 <html lang="en">
@@ -148,6 +153,7 @@ $StudentList = $_POST['student'];
 
                   <?php
                     include("connects.php");
+                    include("CalculateScore.php");
                     $sql = "SELECT question_list FROM ExamList WHERE No = $ExamNumber ";
                     $result = mysqli_fetch_object($db->query($sql));
                     $question_list = $result->question_list;
@@ -156,7 +162,7 @@ $StudentList = $_POST['student'];
                     $question_number_array = explode(",",$question_list);
                     $question_count = count($question_number_array);
                     //print_r($question_array);
-
+                    print_r($question_number_array);
 
                     //GET THE QUESTUON'S CONTENT AND CURRECT ANSWER
                     $content_array = array();
@@ -212,6 +218,41 @@ $StudentList = $_POST['student'];
                     $content_array_to_json = json_encode((array)$content_array);
                     $good_array_to_json = json_encode((array)$good_array);
                     $wrong_array_to_json = json_encode((array)$wrong_array);
+
+                    //Cal Student's score
+                    $ExamResultNo_array = array();
+                    $Score_array = array();
+                    foreach ($StudentList as $key => $value) {
+                      $sql_get_resultno = "SELECT No FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$StudentList[$key]' AND ExamTime LIKE '$ExamDate%' ";
+                      $resultno = mysqli_fetch_object($db->query($sql_get_resultno));
+                      //echo $resultno->No.'  ';
+                      array_push($ExamResultNo_array,$resultno->No); //$ExamResultNo_array[0]=>205, $ExamResultNo_array[1]=>206...
+                      $score = calScore($ExamResultNo_array[$key], $ExamNumber);
+                      array_push($Score_array, $score);//$Score_array[0]=>11,...
+                    }
+
+                    $temp_array = array();
+                    $temp_array = $Score_array;
+
+
+
+                    $StudentNum = count($StudentList);
+                    $HighLevelPeopleCount = floor($StudentNum*0.27);//高分組人數
+                    $LowLevelPeopleCount = floor($StudentNum*0.27);//低分組人數
+
+                    if($HighLevelPeopleCount==0)$HighLevelPeopleCount=1;
+                    if($LowLevelPeopleCount==0)$LowLevelPeopleCount=1;
+
+                    rsort($temp_array);//由大到小排列分數
+                    $HighLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$HighLevelLimit以上為高分組
+
+                    sort($temp_array);//由小道大排列分數
+                    $LowLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$LowLevelLimit以下為低分組
+
+                    echo'高分組門檻：'.$HighLevelLimit.' 低分組門檻：'.$LowLevelLimit;
+
+
+
                   ?>
 
                   <tbody>

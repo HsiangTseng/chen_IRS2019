@@ -13,7 +13,7 @@
                 }
 	}
 
-       	$WhosAnswer = $_SESSION['username'];        
+       	$WhosAnswer = $_SESSION['username'];
 
         $Answer_count_sql = "Select count(Answer) AS Answer_count from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";
         $stmt1 = $db->query($Answer_count_sql);
@@ -31,7 +31,7 @@
         	$result = mysqli_fetch_object($db->query($sql_catch));
 	        $examstr = $result->question_list;
         	$qlist = array();
-	        $qlist = mb_split(",",$examstr);        	
+	        $qlist = mb_split(",",$examstr);
 	        $exam_num = count($qlist);
         	$Answer = '';
 	        $Answertime = '';
@@ -47,6 +47,21 @@
 		}
 	        $inser_sql = "insert into ExamResult (No,ExamNo,UUID,Answer,WhosAnswer,ExamTime,AnswerTime) Values ('".$No."','".$ExamNo."','".$UUID."','".$Answer."','".$WhosAnswer."','".$date."','".$Answertime."')";
         	$db->query($inser_sql);
+
+		while(1){
+			$Answer_count_sql = "Select count(Answer) AS Answer_count from ExamResult Where ExamNo ='".$ExamNo."' and UUID ='".$UUID."' and WhosAnswer='".$WhosAnswer."'";
+		        $stmt1 = $db->query($Answer_count_sql);
+		        $result = mysqli_fetch_object($stmt1);
+		        $Answer_number = $result->Answer_count;
+
+			if($Answer_number != 0){
+				break;
+			}
+			else{
+				$inser_sql = "insert into ExamResult (No,ExamNo,UUID,Answer,WhosAnswer,ExamTime,AnswerTime) Values ('".$No."','".$ExamNo."','".$UUID."','".$Answer."','".$WhosAnswer."','".$date."','".$Answertime."')";
+		    $db->query($inser_sql);
+			}
+		}
 	}
         header('location: client_show.php');
 ?>

@@ -1,10 +1,7 @@
-<html>
-<button onclick=aa();>GGGG</button>
+<?php
+include("CalculateScore.php");
+$a = GetQuestionsScore('4','A1,A2,A4');
 
-<script>
-  function aa()
-  {
-    alert("答對囉");
-  }
-</script>
-</html>
+echo $a;
+
+?>

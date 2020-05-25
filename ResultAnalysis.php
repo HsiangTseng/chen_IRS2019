@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <?php
 session_start();
 if($_SESSION['username'] == null)
@@ -42,6 +41,16 @@ if($_SESSION['username'] == null)
 
             <!-- Custom Theme Style -->
             <link href="../build/css/custom.min.css" rel="stylesheet">
+
+		<style type="text/css">
+			table{
+			    border-collapse:collapse;
+			    border:1px solid black;
+			}
+			td{
+			    border:1px solid black;
+			}
+		</style>
           </head>
 
 
@@ -118,39 +127,43 @@ if($_SESSION['username'] == null)
                 </div>
         	<form class="form-horizontal form-label-left input_mask" method="POST" action="ResultAnalysisList.php">
 			<div>
-                        	<label class="control-label col-md-1 col-sm-1 col-xs-12">試卷名稱 :</label>
-		                <div class="col-md-2 col-sm-2">
-        	        		<select id="search_exam" name="search_exam" class="form-control" onChange="catch_exam()">
-						<option value="0">請選擇試卷</option>
-					        <?php
-							include("connects.php");
+				<label class="control-label col-md-1 col-sm-1 col-xs-12">試卷名稱 :</label>
+					<div class="col-md-2 col-sm-2">
+						<select id="search_exam" name="search_exam" class="form-control" onChange="catch_exam()">
+							<option value="0">請選擇試卷</option>
+								<?php
+								include("connects.php");
 
-							$sql_str = "select * from ExamList";
+								$sql_str = "select * from ExamList";
 
-							$stmt = $db->query($sql_str);
+								$stmt = $db->query($sql_str);
 
-							while($result = mysqli_fetch_object($stmt)){
-								echo "<option value='".$result->No."'>".$result->ExamTitle."</option>";
-							}
-						?>
-			        	</select>
-		                </div>
+								while($result = mysqli_fetch_object($stmt)){
+									echo "<option value='".$result->No."'>".$result->ExamTitle."</option>";
+								}
+							?>
+						</select>
+					</div>
 
-	                        <label class="control-label col-md-1 col-sm-1 col-xs-12">考試日期 :</label>
-        	                <div class="col-md-2 col-sm-2">
-                	        	<select id="search_date" name="search_date" class="form-control"  onChange="catch_date()" >
-						<option value="0">請選擇日期</option>
-	  	                        </select>
-            	                </div>
+				<label class="control-label col-md-1 col-sm-1 col-xs-12">考試日期 :</label>
+					<div class="col-md-2 col-sm-2">
+						<select id="search_date" name="search_date" class="form-control"  onChange="catch_date()" >
+							<option value="0">請選擇日期</option>
+						</select>
+					</div>
+	
+				<label class="control-label col-md-1 col-sm-1 col-xs-12">第幾次考試 :</label>
+                                        <div class="col-md-2 col-sm-2">
+                                                <select id="search_num" name="search_num" class="form-control"  onChange="catch_examnum()" >
+                                                        <option value="0">請選擇第幾次考試</option>
+                                                </select>
+                                        </div>
 
-				<label class="control-label col-md-1 col-sm-1 col-xs-12">考試學生 :</label>
-<!--                                <div class="col-md-12 col-sm-12" id="exam_student" name="exam_student">
-
-                                </div>
--->
+				<label class="col-md-12 col-sm-12 col-xs-12">考試學生 :</label>
 				<table class="col-md-12 col-sm-12" id="exam_student" name="exam_student">
+
 				</table>
-				<button type="submit" id="btn_submit" class="btn btn-success">搜尋</button>
+				<button type="submit" id="btn_submit" class="btn btn-success" disabled>搜尋</button>
 			</div>
                 </form>
 
@@ -172,210 +185,327 @@ if($_SESSION['username'] == null)
       </div>
     </div>
 	    <script>
-		function catch_exam(){
-			var exam_no = document.getElementById("search_exam").value;
-			var exam_time = document.getElementById("search_date").value;
+			function catch_exam(){
+				var exam_no = document.getElementById("search_exam").value;
+				var exam_time = document.getElementById("search_date").value;
+				var exam_num = document.getElementById("search_num").value;
+				if(exam_no!=""){
+					$.ajax(
+						{
+							type: "POST",
+							url: "GetExamData.php",
+							dataType:"json",
+							data: {
+								exam_no : exam_no,
+								exam_time : exam_time,
+								exam_num :exam_num
+							},
+							success:function(msg)
+							{
+								var msg_length = msg.length;
+								$('#search_date').empty();
+								$('#search_num').empty();
+								$('#exam_student').empty();
 
-			if(exam_no!=""){
-                                $.ajax(
-                                {
-                                        type: "POST",
-                                        url: "GetExamData.php",
-                                        dataType:"json",
-                                        data: {
-                                                exam_no : exam_no
-                                        },
-                                        success:function(msg)
-                                        {
-                                                var msg_length = msg.length;
-                                                $('#search_date').empty();
-						$('#exam_student').empty();
-                                                $('#search_date').append('<option value="0">請選擇考試日期</option>');
-                                                for(var i = 0 ; i <  msg_length ; i++){
-							if(i > 0){
-								if(msg[i]["ExamTime"]!=msg[i-1]["ExamTime"]){
-                                                        		$('#search_date').append('<option value="'+msg[i]["ExamTime"]+'">'+msg[i]["ExamTime"]+'</option>');
+								$('#search_num').append('<option value="0">請選擇第幾次考試</option>');
+								$('#search_date').append('<option value="0">請選擇考試日期</option>');
+								for(var i = 0 ; i < msg_length ; i++){
+									if(i > 0){
+										if(msg[i]["ExamTime"]!=msg[i-1]["ExamTime"]){
+											$('#search_date').append('<option value="'+msg[i]["ExamTime"]+'">'+msg[i]["ExamTime"]+'</option>');
+										}
+									}
+									else{
+										$('#search_date').append('<option value="'+msg[i]["ExamTime"]+'">'+msg[i]["ExamTime"]+'</option>');
+									}
 								}
+
+								msg = msg.sort(function(a,b){
+									return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+								});
+								counter = 0;
+								var textContent = "";
+								for(var i = 0 ; i <  msg_length ; i++){
+									if(i > 0){
+										if(msg[i]["WhosAnswer"] != msg[i-1]["WhosAnswer"]){
+											if(counter % 6 == 0){
+												textContent	+= "<tr>";
+											}
+											textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											if(counter % 6 == 5){
+												textContent	+= "</tr>";
+											}
+											else if(i == (msg_length-1)){
+												textContent	+= "</tr>";
+											}
+											counter = counter + 1;
+										}
+									}
+									else{
+										if(counter % 6 == 0){
+											textContent	+= "<tr>";
+										}
+										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										if(counter % 6 == 5){
+											textContent	+= "</tr>";
+										}
+										else if(i == (msg_length-1)){
+											textContent	+= "</tr>";
+										}
+										counter = counter + 1;
+									}
+								}
+								exam_student.innerHTML += textContent;
 							}
-							else{
-								 $('#search_date').append('<option value="'+msg[i]["ExamTime"]+'">'+msg[i]["ExamTime"]+'</option>');
-							}
+						}
+					)
+				}
+				document.getElementById("btn_submit").disabled = true;
+			}
+
+			function catch_date(){
+				var exam_no = document.getElementById("search_exam").value;
+				var exam_time = document.getElementById("search_date").value;
+				var exam_num = document.getElementById("search_num").value;
+
+				if(exam_time!=""){
+					$.ajax(
+						{
+							type: "POST",
+							url: "GetExamData.php",
+							dataType:"json",
+							data: {
+								exam_no : exam_no,
+								exam_time : exam_time,
+								exam_num : exam_num
+							},
+							success:function(msg)
+							{
+								$('#search_num').empty();
+		                                                $('#search_num').append('<option value="0">請選擇第幾次考試</option>');
+
+								$('#exam_student').empty();
+								
+								msg = msg.sort(function(a,b){
+                                                                        return a.UUID > b.UUID ? 1 : -1;
+                                                                });			
+
+								counter_UUID = 1;
+//                                                                var msg_length = msg.length;
+
+                                                                for(var i = 0 ; i < msg.length ; i++){
+//                                                                        $('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
+                                                                        if(i > 0){
+                                                                                if(msg[i]["UUID"] != msg[i-1]["UUID"]){
+                                                                                        $('#search_num').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+											counter_UUID++;
+                                                                                }
+                                                                        }
+
+                                                                        else{
+                                                                                $('#search_num').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+										counter_UUID++;
+                                                                        }
+
+                                                                }
 
 
-                                                }
-
-						msg = msg.sort(function(a,b){
-							return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
-						});
-						counter = 0;
-      					        for(var i = 0 ; i <  msg_length ; i++){
-                                                        if(i > 0){
-                                                                if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
-									if(counter % 6 == 0){
-	                                                                        $('#exam_student').append('<tr class="col-md-2 col-sm-2">');
-        	                                                        }
-                	                                                $('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-                        	                                        if(counter % 6 == 5){
-                                	                                        $('#exam_student').append('</tr>');
-                                        	                        }
-									else if(i == (msg_length-1)){
-										$('#exam_student').append('</tr>');
+			
+							
+				
+								msg = msg.sort(function(a,b){
+									return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+								});
+								
+/*								counter_UUID = 1;
+								var msg_length = msg.length;
+									
+								for(var i = 0 ; i < msg_length ; i++){
+									$('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
+	
+									if(i > 0){
+										if(msg[i]["UUID"] != msg[i-1]["UUID"]){
+											$('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
+										}
 									}
 
-                                                	                counter = counter + 1;	
-                                                                }
-                                                        }
-                                                        else{
-								if(counter % 6 == 0){
-									$('#exam_student').append('<tr>');
+									else{
+										 $('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
+									}
+
 								}
-								$('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-								if(counter % 6 == 5){
-									$('#exam_student').append('</tr>');
+*/
+
+
+								var msg_length = msg.length;
+								var counter = 0;
+								var textContent = "";
+								for(var i = 0 ; i < msg_length ; i++){
+									if(i > 0){
+										if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
+											if(counter % 6 == 0){
+												textContent	+= "<tr>";
+											}
+											textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											if(counter % 6 == 5){
+												textContent	+= "</tr>";
+											}
+											else if(i == (msg_length-1)){
+												textContent	+= "</tr>";
+											}
+											counter = counter + 1;
+										}
+									}
+									else{
+										if(counter % 6 == 0){
+											textContent	+= "<tr>";
+										}
+										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										if(counter % 6 == 5){
+											textContent	+= "</tr>";
+										}
+										else if(i == (msg_length-1)){
+											textContent	+= "</tr>";
+										}
+										counter = counter + 1;
+									}
 								}
-								else if(i == (msg_length-1)){
-                                                                                $('#exam_student').append('</tr>');
-                                                                }
 
-								counter = counter + 1;
-                                                        }
-                                               }
-                                        }
-                                })
-
-                        }
-		}
-
-		function catch_date(){
-			var exam_no = document.getElementById("search_exam").value;
-                        var exam_time = document.getElementById("search_date").value;
-
-			if(exam_time!=""){
-                                $.ajax(
-                                {
-                                        type: "POST",
-                                        url: "GetExamData.php",
-                                        dataType:"json",
-                                        data: {
-						exam_no : exam_no,
-                                                exam_time : exam_time
-                                        },
-                                        success:function(msg)
-                                        {
-//                                              var msg_length = msg.length;
-						$('#exam_student').empty();
-						 msg = msg.sort(function(a,b){
-                                                        return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
-                                                });
-						var msg_length = msg.length;
-						var counter = 0;
-						for(var i = 0 ; i < msg_length ; i++){
-							if(i > 0){
-                                                                if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
-                                                                        if(counter % 6 == 0){
-                                                                                $('#exam_student').append('<tr class="col-md-2 col-sm-2">');
-                                                                        }
-                                                                        $('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-                                                                        if(counter % 6 == 5){
-                                                                                $('#exam_student').append('</tr>');
-                                                                        }
-                                                                        else if(i == (msg_length - 1)){
-                                                                                $('#exam_student').append('</tr>');
-                                                                        }
-                                                                        counter = counter + 1;
-                                                                }
-                                                        }
-                                                        else{
-                                                                if(counter % 6 == 0){
-                                                                        $('#exam_student').append('<tr>');
-                                                                }
-                                                                $('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-                                                                if(counter % 6 == 5){
-                                                                        $('#exam_student').append('</tr>');
-                                                                }
-                                                                counter = counter + 1;
-                                                        }
-
-/*							if(i > 0){
-								if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
-								$('#exam_student').append('<input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label>');
-								}
+								exam_student.innerHTML += textContent;
 							}
-							else{
-								$('#exam_student').append('<input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label>');
-							}
-*/	
-//							$('#exam_student').append('<input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label>');
-						
-}
-                                        }
-                                })
+						}
+					)
+				}
+				document.getElementById("btn_submit").disabled = true;
+			}
+			
+			function catch_examnum(){
+				var exam_no = document.getElementById("search_exam").value;
+				var exam_time = document.getElementById("search_date").value;
+				var exam_num = document.getElementById("search_num").value;
 
-                        }
-		}
+				if(exam_num!=""){
+        	                        $.ajax(
+                	                {
+                        	                type: "POST",
+                                	        url: "GetExamData.php",
+                                        	dataType:"json",
+	                                        data: {
+        	                                        exam_no : exam_no,
+							exam_time: exam_time,
+							exam_num : exam_num
+                	                        },
+                        	                success:function(msg)
+	                               	        {
+							$('#exam_student').empty();
+                                        	        var msg_length = msg.length;
+							msg = msg.sort(function(a,b){
+								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+							});
+							counter = 0;
+      					        	for(var i = 0 ; i <  msg_length ; i++){
+                                                        	if(i > 0){
+                                                                	if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
+										if(counter % 6 == 0){
+		                                                                        $('#exam_student').append('<tr class="col-md-2 col-sm-2">');
+        		                                                        }
+                		                                                $('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
+                        		                                        if(counter % 6 == 5){
+                                		                                        $('#exam_student').append('</tr>');
+                                        		                        }
+										else if(i == (msg_length-1)){
+											$('#exam_student').append('</tr>');
+										}
+	
+        	                                        	                counter = counter + 1;	
+                	                                                }
+                        	                                }
+                                	                        else{
+									if(counter % 6 == 0){
+										$('#exam_student').append('<tr>');
+									}
+									$('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
+									if(counter % 6 == 5){
+										$('#exam_student').append('</tr>');
+									}
+									else if(i == (msg_length-1)){
+                                                                                $('#exam_student').append('</tr>');
+	                                                                }
+
+									counter = counter + 1;
+                	                                        }
+                        	                       }
+                                	        }
+                                	})
+                        	}
+			}
+			
+
 	    </script>
 
+		<script>
+			function choose_student(id){
+				var counter = 0;
+				if(document.getElementById(id).checked){
+					counter++;
+				}
+				else{
+					counter--;
+				}
+
+				if(counter > 0){
+					document.getElementById("btn_submit").disabled = false;
+				}
+				else{
+					document.getElementById("btn_submit").disabled = true;
+				}
+			}
+		</script>
 
 
+		<!-- jQuery -->
+		<script src="../vendors/jquery/dist/jquery.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+		<!-- FastClick -->
+		<script src="../vendors/fastclick/lib/fastclick.js"></script>
+		<!-- NProgress -->
+		<script src="../vendors/nprogress/nprogress.js"></script>
+		<!-- Chart.js -->
+		<script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+		<!-- gauge.js -->
+		<script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+		<!-- bootstrap-progressbar -->
+		<script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+		<!-- iCheck -->
+		<script src="../vendors/iCheck/icheck.min.js"></script>
+		<!-- Skycons -->
+		<script src="../vendors/skycons/skycons.js"></script>
+		<!-- Flot -->
+		<script src="../vendors/Flot/jquery.flot.js"></script>
+		<script src="../vendors/Flot/jquery.flot.pie.js"></script>
+		<script src="../vendors/Flot/jquery.flot.time.js"></script>
+		<script src="../vendors/Flot/jquery.flot.stack.js"></script>
+		<script src="../vendors/Flot/jquery.flot.resize.js"></script>
+		<!-- Flot plugins -->
+		<script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+		<script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+		<script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+		<!-- DateJS -->
+		<script src="../vendors/DateJS/build/date.js"></script>
+		<!-- JQVMap -->
+		<script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+		<script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+		<script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+		<!-- bootstrap-daterangepicker -->
+		<script src="../vendors/moment/min/moment.min.js"></script>
+		<script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<!-- DataTable -->
+		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+		<!--script src="../vendors/DataTables_new/datatables.js"></script-->
 
-
-
-
-            <!-- jQuery -->
-            <script src="../vendors/jquery/dist/jquery.min.js"></script>
-            <!-- Bootstrap -->
-            <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-            <!-- FastClick -->
-            <script src="../vendors/fastclick/lib/fastclick.js"></script>
-            <!-- NProgress -->
-            <script src="../vendors/nprogress/nprogress.js"></script>
-            <!-- Chart.js -->
-            <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
-            <!-- gauge.js -->
-            <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
-            <!-- bootstrap-progressbar -->
-            <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-            <!-- iCheck -->
-            <script src="../vendors/iCheck/icheck.min.js"></script>
-            <!-- Skycons -->
-            <script src="../vendors/skycons/skycons.js"></script>
-            <!-- Flot -->
-            <script src="../vendors/Flot/jquery.flot.js"></script>
-            <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-            <script src="../vendors/Flot/jquery.flot.time.js"></script>
-            <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-            <script src="../vendors/Flot/jquery.flot.resize.js"></script>
-            <!-- Flot plugins -->
-            <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-            <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-            <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-            <!-- DateJS -->
-            <script src="../vendors/DateJS/build/date.js"></script>
-            <!-- JQVMap -->
-            <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-            <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-            <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-            <!-- bootstrap-daterangepicker -->
-            <script src="../vendors/moment/min/moment.min.js"></script>
-            <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-            <!-- DataTable -->
-            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
-            <!--script src="../vendors/DataTables_new/datatables.js"></script-->
-
-            <!-- Custom Theme Scripts -->
-            <script src="../build/js/custom.min.js"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
-
-	     <script type="text/javascript" class="init">
-                 $('#q_list').dataTable( {
-                   "columns": [
-                     { "width": "25%" },
-                     { "width": "25%" },
-                     { "width": "25%" },
-                     { "width": "25%" },
-                   ]
-                 } );
-             </script>
-
+		<!-- Custom Theme Scripts -->
+		<script src="../build/js/custom.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/dojo/1.13.0/dojo/dojo.js"></script>
   </body>
 </html>
