@@ -16,15 +16,18 @@ else if ($_SESSION['type']!='T')
 ?>
 
 <?php
-/*
+
 $ExamNumber = $_POST['search_exam'];
 $ExamDate = $_POST['search_date'];
 $StudentList = $_POST['student'];
-*/
+$UUID = $_POST['search_UUID'];
+
+/*
 $ExamNumber = 10;
-$ExamDate = '2020-05-20';
+$ExamDate = '2020-05-25';
 $StudentList = ['student1','student2'];
-echo $ExamNumber.'  '.$ExamDate;
+$UUID = 'CASV7';*/
+echo $ExamNumber.'  '.$ExamDate.' '.$UUID;
 print_r($StudentList);
 
 ?>
@@ -133,7 +136,7 @@ print_r($StudentList);
             <div class="x_panel">
                 <!-- title bar-->
                 <div class="x_title">
-                  <h1><b>學生清單</b></h1>
+                  <h1><b>資料統計</b></h1>
                   <div class="clearfix"></div>
                 </div>
                 <!-- title bar-->
@@ -147,6 +150,8 @@ print_r($StudentList);
                       <th>正解</th>
                       <th>答對</th>
                       <th>答錯</th>
+                      <th>高對</th>
+                      <th>低對</th>
                     </tr>
                   </thead>
 
@@ -181,7 +186,7 @@ print_r($StudentList);
                     $student_answer_array = array();
                     foreach ($StudentList as $key => $value) {
                       $student_id = $StudentList[$key];
-                      $sql_student_result = "SELECT Answer FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$student_id' AND ExamTime LIKE '$ExamDate%' ";
+                      $sql_student_result = "SELECT Answer FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$student_id' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
                       //echo $sql_student_result;
                       $result_sq = mysqli_fetch_object($db->query($sql_student_result));
                       $student_answer_array[$key]= $result_sq->Answer;
@@ -197,12 +202,15 @@ print_r($StudentList);
                       $good_array[$key] = 0;
                       $wrong_array[$key] = 0;
                     }
-                    foreach ($ca_array as $key => $value) {
+                    foreach ($question_number_array as $key => $value) {
                       for ($i = 0 ; $i < $student_number ; $i++)
                       {
                         $temp = array();
                         $temp = explode('-',$student_answer_array[$i]);
-                        if($ca_array[$key] == $temp[$key])
+                        //echo $temp[$key].'*<br />';
+                        //if($ca_array[$key] == $temp[$key]);
+                        $s = GetQuestionsScore($question_number_array[$key],$temp[$key]);
+                        if($s > 0)
                         {
                           $good_array[$key]+=1;
                         }
@@ -214,16 +222,13 @@ print_r($StudentList);
                     }
                     //wrong_array[i] + good_array[i] = all student's number
 
-                    $ca_array_to_json = json_encode((array)$ca_array);
-                    $content_array_to_json = json_encode((array)$content_array);
-                    $good_array_to_json = json_encode((array)$good_array);
-                    $wrong_array_to_json = json_encode((array)$wrong_array);
+
 
                     //Cal Student's score
                     $ExamResultNo_array = array();
                     $Score_array = array();
                     foreach ($StudentList as $key => $value) {
-                      $sql_get_resultno = "SELECT No FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$StudentList[$key]' AND ExamTime LIKE '$ExamDate%' ";
+                      $sql_get_resultno = "SELECT No FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$StudentList[$key]' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
                       $resultno = mysqli_fetch_object($db->query($sql_get_resultno));
                       //echo $resultno->No.'  ';
                       array_push($ExamResultNo_array,$resultno->No); //$ExamResultNo_array[0]=>205, $ExamResultNo_array[1]=>206...
@@ -245,13 +250,44 @@ print_r($StudentList);
 
                     rsort($temp_array);//由大到小排列分數
                     $HighLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$HighLevelLimit以上為高分組
-
                     sort($temp_array);//由小道大排列分數
                     $LowLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$LowLevelLimit以下為低分組
 
                     echo'高分組門檻：'.$HighLevelLimit.' 低分組門檻：'.$LowLevelLimit;
+                    $HighLevelCount = array();
+                    $LowLevelCount = array();
+                    for($i = 0 ; $i < $question_count ; $i++)
+                    {
+                      $HighLevelCount[$i]=0;
+                      $LowLevelCount[$i]=0;
+                    }
 
 
+                    for ($i = 0 ; $i < $question_count ; $i++){
+                      for ($j = 0 ;$j < $student_number ; $j++){
+                        $temp = array();
+                        $temp = explode('-',$student_answer_array[$j]);
+                        $s = GetQuestionsScore($question_number_array[$i],$temp[$i]);
+                        if($s>0)//如果該學生答對
+                        {
+                          if($Score_array[$j]>=$HighLevelLimit)//且該學生為高分組
+                          {
+                            $HighLevelCount[$i]+=1;//此題的高分組答對人數++
+                          }
+                          if($Score_array[$j]<=$LowLevelLimit)//且該學生為低分組
+                          {
+                            $LowLevelCount[$i]+=1;//此題的低分組答對人數++
+                          }
+                        }
+                      }
+                    }
+
+                    $ca_array_to_json = json_encode((array)$ca_array);
+                    $content_array_to_json = json_encode((array)$content_array);
+                    $good_array_to_json = json_encode((array)$good_array);
+                    $wrong_array_to_json = json_encode((array)$wrong_array);
+                    $HighLevelCount_to_json = json_encode((array)$HighLevelCount);
+                    $LowLevelCount_to_json = json_encode((array)$LowLevelCount);
 
                   ?>
 
@@ -263,6 +299,8 @@ print_r($StudentList);
                       echo '<td>'.$ca_array[0].'</td>';
                       echo '<td>'.$good_array[0].'</td>';
                       echo '<td>'.$wrong_array[0].'</td>';
+                      echo '<td>'.$HighLevelCount[0].'</td>';
+                      echo '<td>'.$LowLevelCount[0].'</td>';
                       ?>
                     </tr>
                   </tbody>
@@ -350,8 +388,10 @@ print_r($StudentList);
 		                { "width": "5%" },
                     { "width": "20%" },
                     { "width": "35%" },
-                    { "width": "20%" },
-                    { "width": "20%" },
+                    { "width": "10%" },
+                    { "width": "10%" },
+                    { "width": "10%" },
+                    { "width": "10%" },
                   ]
                 } );
 
@@ -364,7 +404,8 @@ print_r($StudentList);
                           var content_arrayfromPHP=<? echo $content_array_to_json ?>;
                           var good_arrayfromPHP=<? echo $good_array_to_json ?>;
                           var wrong_arrayfromPHP=<? echo $wrong_array_to_json ?>;
-
+                          var HighCount =<? echo $HighLevelCount_to_json ?>;
+                          var LowCount =<? echo $LowLevelCount_to_json ?>;
                           var t = $('#e_list').DataTable();
                           for (var i=1 ; i< <?php echo "$question_count";?> ; i++)
                           {
@@ -375,6 +416,8 @@ print_r($StudentList);
 			                      ca_arrayfromPHP[i],
                             good_arrayfromPHP[i],
                             wrong_arrayfromPHP[i],
+                            HighCount[i],
+                            LowCount[i],
                             ]).draw(false);
                           }
                         }

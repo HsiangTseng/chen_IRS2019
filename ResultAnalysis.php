@@ -58,6 +58,7 @@ if($_SESSION['username'] == null)
 
   <body class="nav-md">
     <div class="container body">
+w
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
@@ -154,10 +155,15 @@ if($_SESSION['username'] == null)
 	
 				<label class="control-label col-md-1 col-sm-1 col-xs-12">第幾次考試 :</label>
                                         <div class="col-md-2 col-sm-2">
-                                                <select id="search_num" name="search_num" class="form-control"  onChange="catch_examnum()" >
+                                                <select id="search_UUID" name="search_UUID" class="form-control"  onChange="catch_examnum()" >
                                                         <option value="0">請選擇第幾次考試</option>
                                                 </select>
                                         </div>
+				<input type="button" id="btn_check_all" class="btn btn-success" onclick="check_all()" disabled value="全選">
+
+				<input type="button" id="btn_clear_all" class="btn btn-success" onclick="clear_all()" disabled value="全部取消">
+
+				
 
 				<label class="col-md-12 col-sm-12 col-xs-12">考試學生 :</label>
 				<table class="col-md-12 col-sm-12" id="exam_student" name="exam_student">
@@ -185,10 +191,12 @@ if($_SESSION['username'] == null)
       </div>
     </div>
 	    <script>
+		var counter_student = 0;
 			function catch_exam(){
+				counter_student = 0;
 				var exam_no = document.getElementById("search_exam").value;
 				var exam_time = document.getElementById("search_date").value;
-				var exam_num = document.getElementById("search_num").value;
+				var exam_num = document.getElementById("search_UUID").value;
 				if(exam_no!=""){
 					$.ajax(
 						{
@@ -196,18 +204,16 @@ if($_SESSION['username'] == null)
 							url: "GetExamData.php",
 							dataType:"json",
 							data: {
-								exam_no : exam_no,
-								exam_time : exam_time,
-								exam_num :exam_num
+								exam_no : exam_no
 							},
 							success:function(msg)
 							{
 								var msg_length = msg.length;
 								$('#search_date').empty();
-								$('#search_num').empty();
+								$('#search_UUID').empty();
 								$('#exam_student').empty();
 
-								$('#search_num').append('<option value="0">請選擇第幾次考試</option>');
+								$('#search_UUID').append('<option value="0">請選擇第幾次考試</option>');
 								$('#search_date').append('<option value="0">請選擇考試日期</option>');
 								for(var i = 0 ; i < msg_length ; i++){
 									if(i > 0){
@@ -225,6 +231,195 @@ if($_SESSION['username'] == null)
 								});
 								counter = 0;
 								var textContent = "";
+								for(var i = 0 ; i <  msg_length ; i++){
+									if(i > 0){
+										if(msg[i]["WhosAnswer"] != msg[i-1]["WhosAnswer"]){
+											if(counter % 6 == 0){
+												textContent	+= "<tr>";
+											}
+											textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											if(counter % 6 == 5){
+												textContent	+= "</tr>";
+											}
+											else if(i == (msg_length-1)){
+												textContent	+= "</tr>";
+											}
+											counter = counter + 1;
+										}
+									}
+									else{
+										if(counter % 6 == 0){
+											textContent	+= "<tr>";
+										}
+										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										if(counter % 6 == 5){
+											textContent	+= "</tr>";
+										}
+										else if(i == (msg_length-1)){
+											textContent	+= "</tr>";
+										}
+										counter = counter + 1;
+									}
+								}
+								exam_student.innerHTML += textContent;
+							}
+						}
+					)
+				}
+				document.getElementById("btn_submit").disabled = true;
+				document.getElementById("btn_check_all").disabled = true;
+				document.getElementById("btn_clear_all").disabled = true;
+			}
+
+			function catch_date(){
+				counter_student = 0;
+				var exam_no = document.getElementById("search_exam").value;
+				var exam_time = document.getElementById("search_date").value;
+				var exam_num = document.getElementById("search_UUID").value;
+
+				if(exam_time!=""){
+					$.ajax(
+						{
+							type: "POST",
+							url: "GetExamData.php",
+							dataType:"json",
+							data: {
+								exam_no : exam_no,
+								exam_time : exam_time
+							},
+							success:function(msg)
+							{
+								$('#search_UUID').empty();
+		                                                $('#search_UUID').append('<option value="0">請選擇第幾次考試</option>');
+
+								$('#exam_student').empty();
+/*								
+								msg = msg.sort(function(a,b){
+                                                                        return a.UUID > b.UUID ? 1 : -1;
+                                                                });			
+*/
+								counter_UUID = 1;
+								
+                                                                for(var i = 0 ; i < msg.length ; i++){
+									count_isame = 0;
+									for(var j = 0; j < i ;j++){
+										//count_isame = 0;
+                                                	                        if(i > 0){				
+                                        	                                        if(msg[i]["UUID"] != msg[j]["UUID"]){
+												count_isame++;
+												//alert(count_isame);
+												if(count_isame == i){
+	                                	                                                        $('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+													counter_UUID++;
+												}
+                	                                                                }
+        	                                                                }
+	
+                        	                                                else{
+                	                                                                $('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+											counter_UUID++;
+	                                                                        }
+									}
+									if(i == 0){
+										$('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+                                                                                counter_UUID++;
+									}
+                                                                }
+
+
+			
+							
+				
+								msg = msg.sort(function(a,b){
+									return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+								});							
+
+
+								var msg_length = msg.length;
+								var counter = 0;
+								var textContent = "";
+								for(var i = 0 ; i < msg_length ; i++){
+									if(i > 0){
+										if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
+											if(counter % 6 == 0){
+												textContent	+= "<tr>";
+											}
+											textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											if(counter % 6 == 5){
+												textContent	+= "</tr>";
+											}
+											else if(i == (msg_length-1)){
+												textContent	+= "</tr>";
+											}
+											counter = counter + 1;
+										}
+									}
+									else{
+										if(counter % 6 == 0){
+											textContent	+= "<tr>";
+										}
+										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										if(counter % 6 == 5){
+											textContent	+= "</tr>";
+										}
+										else if(i == (msg_length-1)){
+											textContent	+= "</tr>";
+										}
+										counter = counter + 1;
+									}
+								}
+
+								exam_student.innerHTML += textContent;
+							}
+						}
+					)
+				}
+				document.getElementById("btn_submit").disabled = true;
+				document.getElementById("btn_check_all").disabled = true;
+				document.getElementById("btn_clear_all").disabled = true;
+			}
+			
+			function catch_examnum(){
+				counter_student = 0;
+				var exam_no = document.getElementById("search_exam").value;
+				var exam_time = document.getElementById("search_date").value;
+				var exam_num = document.getElementById("search_UUID").value;
+				document.getElementById("btn_submit").disabled = true;
+
+				if(exam_num!=""){
+        	                        $.ajax(
+                	                {
+                        	                type: "POST",
+                                	        url: "GetExamData.php",
+                                        	dataType:"json",
+	                                        data: {
+        	                                        exam_no : exam_no,
+							exam_time: exam_time,
+							exam_num : exam_num
+                	                        },
+                        	                success:function(msg)
+	                               	        {	
+							if(exam_num != "0"){
+								document.getElementById("btn_check_all").disabled = false;
+								document.getElementById("btn_clear_all").disabled = false;
+							}
+							else{
+								document.getElementById("btn_check_all").disabled = true;
+                                                                document.getElementById("btn_clear_all").disabled = true;
+								document.getElementById("btn_submit").disabled = true;
+							}
+							$('#exam_student').empty();
+                                        	        var msg_length = msg.length;
+							msg = msg.sort(function(a,b){
+								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+							});
+							
+							msg = msg.sort(function(a,b){
+								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
+							});
+							counter = 0;
+							var textContent = "";
+							if(exam_num !="0"){
 								for(var i = 0 ; i <  msg_length ; i++){
 									if(i > 0){
 										if(msg[i]["WhosAnswer"] != msg[i-1]["WhosAnswer"]){
@@ -255,214 +450,84 @@ if($_SESSION['username'] == null)
 										counter = counter + 1;
 									}
 								}
-								exam_student.innerHTML += textContent;
-							}
-						}
-					)
-				}
-				document.getElementById("btn_submit").disabled = true;
-			}
-
-			function catch_date(){
-				var exam_no = document.getElementById("search_exam").value;
-				var exam_time = document.getElementById("search_date").value;
-				var exam_num = document.getElementById("search_num").value;
-
-				if(exam_time!=""){
-					$.ajax(
-						{
-							type: "POST",
-							url: "GetExamData.php",
-							dataType:"json",
-							data: {
-								exam_no : exam_no,
-								exam_time : exam_time,
-								exam_num : exam_num
-							},
-							success:function(msg)
-							{
-								$('#search_num').empty();
-		                                                $('#search_num').append('<option value="0">請選擇第幾次考試</option>');
-
-								$('#exam_student').empty();
-								
-								msg = msg.sort(function(a,b){
-                                                                        return a.UUID > b.UUID ? 1 : -1;
-                                                                });			
-
-								counter_UUID = 1;
-//                                                                var msg_length = msg.length;
-
-                                                                for(var i = 0 ; i < msg.length ; i++){
-//                                                                        $('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
+							}	
+							else{
+								 for(var i = 0 ; i <  msg_length ; i++){
                                                                         if(i > 0){
-                                                                                if(msg[i]["UUID"] != msg[i-1]["UUID"]){
-                                                                                        $('#search_num').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
-											counter_UUID++;
+                                                                                if(msg[i]["WhosAnswer"] != msg[i-1]["WhosAnswer"]){
+                                                                                        if(counter % 6 == 0){
+                                                                                                textContent     += "<tr>";
+                                                                                        }
+                                                                                        textContent     += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+                                                                                        if(counter % 6 == 5){
+                                                                                                textContent     += "</tr>";
+                                                                                        }
+                                                                                        else if(i == (msg_length-1)){
+                                                                                                textContent     += "</tr>";
+                                                                                        }
+                                                                                        counter = counter + 1;
                                                                                 }
                                                                         }
-
                                                                         else{
-                                                                                $('#search_num').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
-										counter_UUID++;
+                                                                                if(counter % 6 == 0){
+                                                                                        textContent     += "<tr>";
+                                                                                }
+                                                                                textContent     += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+                                                                                if(counter % 6 == 5){
+                                                                                        textContent     += "</tr>";
+                                                                                }
+                                                                                else if(i == (msg_length-1)){
+                                                                                        textContent     += "</tr>";
+                                                                                }
+                                                                                counter = counter + 1;
                                                                         }
-
                                                                 }
-
-
-			
-							
-				
-								msg = msg.sort(function(a,b){
-									return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
-								});
-								
-/*								counter_UUID = 1;
-								var msg_length = msg.length;
-									
-								for(var i = 0 ; i < msg_length ; i++){
-									$('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
-	
-									if(i > 0){
-										if(msg[i]["UUID"] != msg[i-1]["UUID"]){
-											$('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
-										}
-									}
-
-									else{
-										 $('#search_num').append('<option value="'+msg[i]["UUID"]+'">'+msg[i]["UUID"]+'</option>');
-									}
-
-								}
-*/
-
-
-								var msg_length = msg.length;
-								var counter = 0;
-								var textContent = "";
-								for(var i = 0 ; i < msg_length ; i++){
-									if(i > 0){
-										if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
-											if(counter % 6 == 0){
-												textContent	+= "<tr>";
-											}
-											textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
-											if(counter % 6 == 5){
-												textContent	+= "</tr>";
-											}
-											else if(i == (msg_length-1)){
-												textContent	+= "</tr>";
-											}
-											counter = counter + 1;
-										}
-									}
-									else{
-										if(counter % 6 == 0){
-											textContent	+= "<tr>";
-										}
-										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['WhosAnswer']+"' onclick='choose_student(this.id)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
-										if(counter % 6 == 5){
-											textContent	+= "</tr>";
-										}
-										else if(i == (msg_length-1)){
-											textContent	+= "</tr>";
-										}
-										counter = counter + 1;
-									}
-								}
-
-								exam_student.innerHTML += textContent;
 							}
+
+							exam_student.innerHTML += textContent;
 						}
-					)
-				}
-				document.getElementById("btn_submit").disabled = true;
-			}
-			
-			function catch_examnum(){
-				var exam_no = document.getElementById("search_exam").value;
-				var exam_time = document.getElementById("search_date").value;
-				var exam_num = document.getElementById("search_num").value;
-
-				if(exam_num!=""){
-        	                        $.ajax(
-                	                {
-                        	                type: "POST",
-                                	        url: "GetExamData.php",
-                                        	dataType:"json",
-	                                        data: {
-        	                                        exam_no : exam_no,
-							exam_time: exam_time,
-							exam_num : exam_num
-                	                        },
-                        	                success:function(msg)
-	                               	        {
-							$('#exam_student').empty();
-                                        	        var msg_length = msg.length;
-							msg = msg.sort(function(a,b){
-								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
-							});
-							counter = 0;
-      					        	for(var i = 0 ; i <  msg_length ; i++){
-                                                        	if(i > 0){
-                                                                	if(msg[i]["WhosAnswer"]!=msg[i-1]["WhosAnswer"]){
-										if(counter % 6 == 0){
-		                                                                        $('#exam_student').append('<tr class="col-md-2 col-sm-2">');
-        		                                                        }
-                		                                                $('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-                        		                                        if(counter % 6 == 5){
-                                		                                        $('#exam_student').append('</tr>');
-                                        		                        }
-										else if(i == (msg_length-1)){
-											$('#exam_student').append('</tr>');
-										}
-	
-        	                                        	                counter = counter + 1;	
-                	                                                }
-                        	                                }
-                                	                        else{
-									if(counter % 6 == 0){
-										$('#exam_student').append('<tr>');
-									}
-									$('#exam_student').append('<td class="col-md-2 col-sm-2"><input type="checkbox" id="'+msg[i]["WhosAnswer"]+'" name="student[]" value="'+msg[i]["WhosAnswer"]+'"><label for="'+msg[i]["WhosAnswer"]+'">'+msg[i]["WhosAnswer"]+'</label></td>');
-									if(counter % 6 == 5){
-										$('#exam_student').append('</tr>');
-									}
-									else if(i == (msg_length-1)){
-                                                                                $('#exam_student').append('</tr>');
-	                                                                }
-
-									counter = counter + 1;
-                	                                        }
-                        	                       }
-                                	        }
                                 	})
                         	}
 			}
 			
 
-	    </script>
-
-		<script>
 			function choose_student(id){
-				var counter = 0;
 				if(document.getElementById(id).checked){
-					counter++;
+					counter_student++;
 				}
 				else{
-					counter--;
+					counter_student--;
 				}
 
-				if(counter > 0){
+				if(counter_student > 0){
 					document.getElementById("btn_submit").disabled = false;
 				}
 				else{
 					document.getElementById("btn_submit").disabled = true;
 				}
 			}
+
+			function check_all(){
+				checkboxes = document.getElementsByName('student[]');
+				for(var i = 0 ; i< checkboxes.length ; i++){
+					checkboxes[i].checked = true;
+				}
+				counter_student = checkboxes.length;
+				document.getElementById("btn_submit").disabled = false;
+			}
+			
+			function clear_all(){
+                                checkboxes = document.getElementsByName('student[]');
+                                for(var i = 0 ; i< checkboxes.length ; i++){
+                                        checkboxes[i].checked = false;
+                                }
+                                counter_student = 0;
+                                document.getElementById("btn_submit").disabled = true;
+                        }
+
+
+	
 		</script>
-
-
 		<!-- jQuery -->
 		<script src="../vendors/jquery/dist/jquery.min.js"></script>
 		<!-- Bootstrap -->

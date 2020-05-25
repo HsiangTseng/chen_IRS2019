@@ -1,7 +1,7 @@
 <?php
 	include("connects.php");
 	
-	$sql = "SELECT * FROM ExamResult";
+	$sql = "SELECT * FROM `ExamResult`";
 
 	if(isset($_POST['exam_no'])){
 		if($_POST['exam_no']!="0"){
@@ -33,6 +33,16 @@
 		}
 	}
 
+	if(strpos($sql,"WHERE")){
+        	$sql = $sql." AND WhosAnswer != ''";
+        }
+        else{
+        	$sql = $sql." WHERE WhosAnswer != ''";
+        }
+
+
+	
+	$sql = $sql." ORDER BY `ExamTime` ASC ";
 	
 	$msg = array();
         $index = 0;
