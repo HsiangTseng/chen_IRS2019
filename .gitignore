@@ -19,6 +19,7 @@ connects.php
 door/
 sent/
 old_file/
+images/
 
 # keep some hiddens
 !.htaccess
