@@ -58,7 +58,6 @@ if($_SESSION['username'] == null)
 
   <body class="nav-md">
     <div class="container body">
-w
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
@@ -152,7 +151,7 @@ w
 							<option value="0">請選擇日期</option>
 						</select>
 					</div>
-	
+
 				<label class="control-label col-md-1 col-sm-1 col-xs-12">第幾次考試 :</label>
                                         <div class="col-md-2 col-sm-2">
                                                 <select id="search_UUID" name="search_UUID" class="form-control"  onChange="catch_examnum()" >
@@ -163,7 +162,7 @@ w
 
 				<input type="button" id="btn_clear_all" class="btn btn-success" onclick="clear_all()" disabled value="全部取消">
 
-				
+
 
 				<label class="col-md-12 col-sm-12 col-xs-12">考試學生 :</label>
 				<table class="col-md-12 col-sm-12" id="exam_student" name="exam_student">
@@ -293,18 +292,18 @@ w
 		                                                $('#search_UUID').append('<option value="0">請選擇第幾次考試</option>');
 
 								$('#exam_student').empty();
-/*								
+/*
 								msg = msg.sort(function(a,b){
                                                                         return a.UUID > b.UUID ? 1 : -1;
-                                                                });			
+                                                                });
 */
 								counter_UUID = 1;
-								
+
                                                                 for(var i = 0 ; i < msg.length ; i++){
 									count_isame = 0;
 									for(var j = 0; j < i ;j++){
 										//count_isame = 0;
-                                                	                        if(i > 0){				
+                                                	                        if(i > 0){
                                         	                                        if(msg[i]["UUID"] != msg[j]["UUID"]){
 												count_isame++;
 												//alert(count_isame);
@@ -314,7 +313,7 @@ w
 												}
                 	                                                                }
         	                                                                }
-	
+
                         	                                                else{
                 	                                                                $('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
 											counter_UUID++;
@@ -327,12 +326,12 @@ w
                                                                 }
 
 
-			
-							
-				
+
+
+
 								msg = msg.sort(function(a,b){
 									return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
-								});							
+								});
 
 
 								var msg_length = msg.length;
@@ -378,7 +377,7 @@ w
 				document.getElementById("btn_check_all").disabled = true;
 				document.getElementById("btn_clear_all").disabled = true;
 			}
-			
+
 			function catch_examnum(){
 				counter_student = 0;
 				var exam_no = document.getElementById("search_exam").value;
@@ -398,7 +397,7 @@ w
 							exam_num : exam_num
                 	                        },
                         	                success:function(msg)
-	                               	        {	
+	                               	        {
 							if(exam_num != "0"){
 								document.getElementById("btn_check_all").disabled = false;
 								document.getElementById("btn_clear_all").disabled = false;
@@ -413,7 +412,7 @@ w
 							msg = msg.sort(function(a,b){
 								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
 							});
-							
+
 							msg = msg.sort(function(a,b){
 								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
 							});
@@ -450,7 +449,7 @@ w
 										counter = counter + 1;
 									}
 								}
-							}	
+							}
 							else{
 								 for(var i = 0 ; i <  msg_length ; i++){
                                                                         if(i > 0){
@@ -489,7 +488,7 @@ w
                                 	})
                         	}
 			}
-			
+
 
 			function choose_student(id){
 				if(document.getElementById(id).checked){
@@ -515,7 +514,7 @@ w
 				counter_student = checkboxes.length;
 				document.getElementById("btn_submit").disabled = false;
 			}
-			
+
 			function clear_all(){
                                 checkboxes = document.getElementsByName('student[]');
                                 for(var i = 0 ; i< checkboxes.length ; i++){
@@ -526,7 +525,7 @@ w
                         }
 
 
-	
+
 		</script>
 		<!-- jQuery -->
 		<script src="../vendors/jquery/dist/jquery.min.js"></script>

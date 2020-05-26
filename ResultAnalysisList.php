@@ -22,13 +22,9 @@ $ExamDate = $_POST['search_date'];
 $StudentList = $_POST['student'];
 $UUID = $_POST['search_UUID'];
 
-/*
-$ExamNumber = 10;
-$ExamDate = '2020-05-25';
-$StudentList = ['student1','student2'];
-$UUID = 'CASV7';*/
-echo $ExamNumber.'  '.$ExamDate.' '.$UUID;
-print_r($StudentList);
+
+//echo $ExamNumber.'  '.$ExamDate.' '.$UUID;
+//print_r($StudentList);
 
 ?>
 <html lang="en">
@@ -150,8 +146,9 @@ print_r($StudentList);
                       <th>正解</th>
                       <th>答對</th>
                       <th>答錯</th>
-                      <th>高對</th>
-                      <th>低對</th>
+                      <th>難易度</th>
+                      <th>鑑別度</th>
+
                     </tr>
                   </thead>
 
@@ -167,7 +164,7 @@ print_r($StudentList);
                     $question_number_array = explode(",",$question_list);
                     $question_count = count($question_number_array);
                     //print_r($question_array);
-                    print_r($question_number_array);
+                    //print_r($question_number_array);
 
                     //GET THE QUESTUON'S CONTENT AND CURRECT ANSWER
                     $content_array = array();
@@ -253,7 +250,9 @@ print_r($StudentList);
                     sort($temp_array);//由小道大排列分數
                     $LowLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$LowLevelLimit以下為低分組
 
-                    echo'高分組門檻：'.$HighLevelLimit.' 低分組門檻：'.$LowLevelLimit;
+                    echo'高分組門檻：'.$HighLevelLimit.', 低分組門檻：'.$LowLevelLimit.', 高低分組各'.$HighLevelPeopleCount.'人';
+                    echo'<br />'.'*難易度運算:(該題高分組答對率+該題低分組答對率)/2';
+                    echo'<br />'.'*鑑別度運算:(高分組答對率-低分組答對率)';
                     $HighLevelCount = array();
                     $LowLevelCount = array();
                     for($i = 0 ; $i < $question_count ; $i++)
@@ -282,12 +281,31 @@ print_r($StudentList);
                       }
                     }
 
+                    $Difficulty_array = array();//每題的難易度
+                    $Discrimination_array = array();//每題的鑑別度
+
+                    for ($i = 0 ; $i < $question_count ; $i++)
+                    {
+                      $HighPercent = $HighLevelCount[$i]/$HighLevelPeopleCount;//高分組答對率
+                      $LowPercent = $LowLevelCount[$i]/$LowLevelPeopleCount;//低分組答對率
+                      $diff = ($HighPercent+$LowPercent)/2;//難易度=(高分組答對率+低分組答對率)/2
+                      $Dis = $HighPercent-$LowPercent;//鑑別度=(高分組答對率-低分組答對率)
+                      array_push($Difficulty_array,$diff);
+                      array_push($Discrimination_array,$Dis);
+                    }
+
+                    //print_r($Score_array);
+                    //print_r($HighLevelCount);
+                    //echo '<br />'.$HighLevelPeopleCount;
+
                     $ca_array_to_json = json_encode((array)$ca_array);
                     $content_array_to_json = json_encode((array)$content_array);
                     $good_array_to_json = json_encode((array)$good_array);
                     $wrong_array_to_json = json_encode((array)$wrong_array);
                     $HighLevelCount_to_json = json_encode((array)$HighLevelCount);
                     $LowLevelCount_to_json = json_encode((array)$LowLevelCount);
+                    $Difficulty_array_to_json = json_encode((array)$Difficulty_array);
+                    $Discrimination_array_to_json = json_encode((array)$Discrimination_array);
 
                   ?>
 
@@ -406,6 +424,8 @@ print_r($StudentList);
                           var wrong_arrayfromPHP=<? echo $wrong_array_to_json ?>;
                           var HighCount =<? echo $HighLevelCount_to_json ?>;
                           var LowCount =<? echo $LowLevelCount_to_json ?>;
+                          var Diff_arrayfromPHP =<? echo $Difficulty_array_to_json ?>;
+                          var Dis_arrayfromPHP =<? echo $Discrimination_array_to_json ?>;
                           var t = $('#e_list').DataTable();
                           for (var i=1 ; i< <?php echo "$question_count";?> ; i++)
                           {
@@ -416,8 +436,8 @@ print_r($StudentList);
 			                      ca_arrayfromPHP[i],
                             good_arrayfromPHP[i],
                             wrong_arrayfromPHP[i],
-                            HighCount[i],
-                            LowCount[i],
+                            Diff_arrayfromPHP[i],
+                            Dis_arrayfromPHP[i],
                             ]).draw(false);
                           }
                         }
