@@ -16,6 +16,10 @@ Desktop.ini
 #the dir that save upload data
 upload/
 connects.php
+images/
+old_file/
+sent/
+door/
 
 # keep some hiddens
 !.htaccess
