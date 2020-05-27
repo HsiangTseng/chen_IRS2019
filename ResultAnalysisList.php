@@ -247,12 +247,46 @@ $UUID = $_POST['search_UUID'];
 
                     rsort($temp_array);//由大到小排列分數
                     $HighLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$HighLevelLimit以上為高分組
-                    sort($temp_array);//由小道大排列分數
+                    sort($temp_array);//由小到大排列分數
                     $LowLevelLimit = $temp_array[$HighLevelPeopleCount-1];//分數為$LowLevelLimit以下為低分組
 
-                    echo'高分組門檻：'.$HighLevelLimit.', 低分組門檻：'.$LowLevelLimit.', 高低分組各'.$HighLevelPeopleCount.'人';
+                    //重新確認高低分組人數
+                    //若高分組人數為4人，但前幾分數為25,24,23,23,23,23,23則高分組門檻為23分，而所有分數大於等於23者皆為高分組，低分組同理
+                    //若前幾分數為25,24,24,23,22,21..則照原規則取最高分四人（因只有一位23分）
+                    $new_HighLevelPeopleCount = 0;
+                    $new_LowLevelPeopleCount = 0;
+                    for($i = 0 ; $i < $student_number ; $i++)
+                    {
+                      if($Score_array[$i]>=$HighLevelLimit)
+                      {
+                        $new_HighLevelPeopleCount += 1;
+                      }
+                      if($Score_array[$i]<=$LowLevelLimit)
+                      {
+                        $new_LowLevelPeopleCount += 1;
+                      }
+                    }
+                    if($new_HighLevelPeopleCount>$HighLevelPeopleCount)
+                    {
+                      $HighLevelPeopleCount = $new_HighLevelPeopleCount; //若高分組人數超過原高分組人數，則更新高分組人數
+                    }
+                    if($new_LowLevelPeopleCount>$LowLevelPeopleCount)
+                    {
+                      $LowLevelPeopleCount = $new_LowLevelPeopleCount;
+                    }
+
+
+
+                    echo'高分組門檻：'.$HighLevelLimit.', 低分組門檻：'.$LowLevelLimit.', 高分組'.$HighLevelPeopleCount.'人, 低分組'.$LowLevelPeopleCount.'人';
                     echo'<br />'.'*難易度運算:(該題高分組答對率+該題低分組答對率)/2';
                     echo'<br />'.'*鑑別度運算:(高分組答對率-低分組答對率)';
+                    echo'<br />答對：該學生於該題得分1分以上, 答錯：學生於該題得分為0分';
+
+                    /*print_r($Score_array);
+                    rsort($temp_array);//由大到小排列分數
+                    echo '<br />';
+                    print_r($temp_array);*/
+
                     $HighLevelCount = array();
                     $LowLevelCount = array();
                     for($i = 0 ; $i < $question_count ; $i++)
@@ -294,6 +328,11 @@ $UUID = $_POST['search_UUID'];
                       array_push($Discrimination_array,$Dis);
                     }
 
+                    for ($i = 0 ; $i < $question_count ; $i++)
+                    {
+                      $Difficulty_array[$i] = floor($Difficulty_array[$i]*100)/100; //至保留小數點後兩位, ex:13.33333->1333->13.33
+                      $Discrimination_array[$i] = floor($Discrimination_array[$i]*100)/100;
+                    }
                     //print_r($Score_array);
                     //print_r($HighLevelCount);
                     //echo '<br />'.$HighLevelPeopleCount;
