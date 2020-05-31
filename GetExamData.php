@@ -51,13 +51,14 @@
         	        $WhosAnswer = $result->WhosAnswer;
                         $datetime = date("Y-m-d",strtotime($result->ExamTime));
 			$UUID = $result->UUID;
+			$No = $result->No;
 			
 			$sql_student = "SELECT * FROM UserList WHERE id = '".$WhosAnswer."'";
 			$stmt1 = $db->query($sql_student);
 			$result1 = mysqli_fetch_object($stmt1);
 			$WhosAnswer_Name = $result1->Name;
 
-                        $msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer, "UUID"=>$UUID, "WhosAnswer_Name"=>$WhosAnswer_Name);
+                        $msg[$index] = array("ExamTime"=>$datetime, "WhosAnswer"=>$WhosAnswer, "UUID"=>$UUID, "WhosAnswer_Name"=>$WhosAnswer_Name, "No"=>$No);
                         $index++;
                 }
         }

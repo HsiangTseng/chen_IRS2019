@@ -21,7 +21,8 @@ $ExamNumber = $_POST['search_exam'];
 $ExamDate = $_POST['search_date'];
 $StudentList = $_POST['student'];
 $UUID = $_POST['search_UUID'];
-
+$ExamResultNoList = $_POST['chosen_student'];
+print_r($ExamResultNoList);
 
 //echo $ExamNumber.'  '.$ExamDate.' '.$UUID;
 //print_r($StudentList);
