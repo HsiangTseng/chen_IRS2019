@@ -158,7 +158,6 @@ if($_SESSION['username'] == null)
 						</div>
 <!--						<input type="checkbox" id="btn_check_all" class="btn btn-success" onclick="check_all()" disabled value="全選">
 							<label for="btn_check_all">全選</label>
-
 						<input type="checkbox" id="btn_clear_all" class="btn btn-success" onclick="clear_all()" disabled value="全部取消">
 							<label for="btn_clear_all">全部取消</label>
 -->
@@ -192,6 +191,9 @@ if($_SESSION['username'] == null)
 		</div>
 		<script>
 			var counter_student = 0;
+			var exam_num_array = new Array();
+			var count_isame_num = 0;
+			
 			function catch_exam(){
 				counter_student = 0;
 				var exam_no = document.getElementById("search_exam").value;
@@ -238,7 +240,19 @@ if($_SESSION['username'] == null)
 										if(counter % 6 == 0){
 											textContent	+= "<tr>";
 										}
-										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+										if(document.getElementById(newid)){																					
+											if(document.getElementById(newid).checked == true){
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+											else{
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+										}
+										else{
+											textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}	
 										if(counter % 6 == 5){
 											textContent	+= "</tr>";
 										}
@@ -252,7 +266,21 @@ if($_SESSION['username'] == null)
 									if(counter % 6 == 0){
 										textContent	+= "<tr>";
 									}
-									textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									
+									newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+									newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+									if(document.getElementById(newid)){																					
+										if(document.getElementById(newid).checked == true){
+											textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}
+										else{
+											textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}
+									}
+									else{
+										textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									}
+									
 									if(counter % 6 == 5){
 										textContent	+= "</tr>";
 									}
@@ -295,13 +323,12 @@ if($_SESSION['username'] == null)
 							for(var i = 0 ; i < msg.length ; i++){
 								count_isame = 0;
 								for(var j = 0; j < i ;j++){
-									//count_isame = 0;
 									if(i > 0){
 										if(msg[i]["UUID"] != msg[j]["UUID"]){
 											count_isame++;
-											//alert(count_isame);
 											if(count_isame == i){
 												$('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+												exam_num_array[counter_UUID]=msg[i]["UUID"];
 												counter_UUID++;
 											}
 										}
@@ -309,19 +336,19 @@ if($_SESSION['username'] == null)
 
 									else{
 										$('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+										exam_num_array[counter_UUID]=msg[i]["UUID"];
 										counter_UUID++;
 									}
-								}
+								}								
+								
 								if(i == 0){
 									$('#search_UUID').append('<option value="'+msg[i]["UUID"]+'">第'+counter_UUID+'次考試</option>');
+									exam_num_array[counter_UUID]=msg[i]["UUID"];
 									counter_UUID++;
 								}
 							}
-
-
-
-
-
+							count_isame_num = counter_UUID;
+							
 							msg = msg.sort(function(a,b){
 								return a.WhosAnswer > b.WhosAnswer ? 1 : -1;
 							});
@@ -336,7 +363,21 @@ if($_SESSION['username'] == null)
 										if(counter % 6 == 0){
 											textContent	+= "<tr>";
 										}
-										textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										
+										newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+										if(document.getElementById(newid)){																					
+											if(document.getElementById(newid).checked == true){
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+											else{
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+										}
+										else{
+											textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}	
+										
 										if(counter % 6 == 5){
 											textContent	+= "</tr>";
 										}
@@ -350,7 +391,19 @@ if($_SESSION['username'] == null)
 								if(counter % 6 == 0){
 									textContent	+= "<tr>";
 								}
-								textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+								newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+								newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+								if(document.getElementById(newid)){																					
+									if(document.getElementById(newid).checked == true){
+										textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									}
+									else{
+										textContent     += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									}
+								}
+								else{
+									textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+								}								
 								if(counter % 6 == 5){
 									textContent	+= "</tr>";
 								}
@@ -364,7 +417,12 @@ if($_SESSION['username'] == null)
 						}
 					})
 				}
-				document.getElementById("btn_submit").disabled = true;
+				if(counter_student == 0){
+					document.getElementById("btn_submit").disabled = true;
+				}
+				else{
+					document.getElementById("btn_submit").disabled = false;
+				}
 //				document.getElementById("btn_check_all").disabled = true;
 //				document.getElementById("btn_clear_all").disabled = true;
 			}
@@ -413,16 +471,12 @@ if($_SESSION['username'] == null)
 										}
 										newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
 										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
-										if(document.getElementById(newid)){											
-											
+										if(document.getElementById(newid)){																					
 											if(document.getElementById(newid).checked == true){
 												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
-
-//												textContent += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
 											}
 											else{
 												textContent     += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
-//												textContent     += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
 											}
 										}
 										else{
@@ -441,7 +495,19 @@ if($_SESSION['username'] == null)
 									if(counter % 6 == 0){
 										textContent	+= "<tr>";
 									}
-									textContent	+= "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+										if(document.getElementById(newid)){																					
+											if(document.getElementById(newid).checked == true){
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+											else{
+												textContent     += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+										}
+										else{
+											textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}
 									if(counter % 6 == 5){
 										textContent	+= "</tr>";
 									}
@@ -459,7 +525,19 @@ if($_SESSION['username'] == null)
 										if(counter % 6 == 0){
 											textContent     += "<tr>";
 										}
-										textContent     += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+										if(document.getElementById(newid)){																					
+											if(document.getElementById(newid).checked == true){
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+											else{
+												textContent     += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+										}
+										else{
+											textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}
 										if(counter % 6 == 5){
 											textContent     += "</tr>";
 										}
@@ -473,7 +551,19 @@ if($_SESSION['username'] == null)
 									if(counter % 6 == 0){
 										textContent     += "<tr>";
 									}
-									textContent     += "<td><input type='checkbox' id='"+msg[i]['WhosAnswer']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' disabled><label for='"+msg[i]['WhosAnswer']+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+									newid = 'chosen'+ exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];
+										newid2 = exam_time + ' ' + exam_num + ' '  + msg[i]["WhosAnswer"];										
+										if(document.getElementById(newid)){																					
+											if(document.getElementById(newid).checked == true){
+												textContent += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)' checked='true'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+											else{
+												textContent     += "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+											}
+										}
+										else{
+											textContent	+= "<td><input type='checkbox' id='"+newid2+"' placeholder='"+msg[i]['WhosAnswer_Name']+"' name='student[]' value='"+msg[i]['No']+"' onclick='choose_student(this.id,this.placeholder,this.value)'><label for='"+newid2+"'>"+msg[i]['WhosAnswer_Name']+"</label></td>";
+										}
 									if(counter % 6 == 5){
 										textContent     += "</tr>";
 									}
@@ -498,27 +588,29 @@ if($_SESSION['username'] == null)
 				if (document.getElementById(id).checked){
 					counter_student++;
 					var div_form = document.createElement("div");
-					div_form.setAttribute("class","col-md-2 col-sm-2 col-xs-2");
+					div_form.setAttribute("class","col-md-3 col-sm-3 col-xs-3");
 					newid = 'divchosen' + id;
 					div_form.setAttribute("id",newid);				
-					
-					var inner = '<input type="checkbox" id="chosen'+id+'" value="'+value+'" onclick="choose_student(this.id,this.placeholder,this.value)" name="chosen_student[]" placeholder="'+placeholder+'" checked="true"><label for="chosen'+ id +'">'+exam_time+' '+placeholder+'</label>';
-
+					var id_array = new Array();
+					id_array = newid.split(' ');
+					for(var i = 1 ; i < count_isame_num ; i++){
+						if(id_array[1] == exam_num_array[i]){
+							var inner = '<input type="checkbox" id="chosen'+id+'" value="'+value+'" onclick="choose_student(this.id,this.placeholder,this.value)" name="chosen_student[]" placeholder="'+placeholder+'" checked="true"><label for="chosen'+ id +'">'+exam_time+' 第'+ i +'次考試 '+placeholder+'</label>';
+						}
+					}
 					div_form.innerHTML = inner;
 					document.getElementById("student_chosen").appendChild(div_form);
 				}
 				else{
 					if(id.indexOf("chosen") >= 0){
-				//		id =  'div' + exam_time+' '+exam_num+' '+ 'chosen' + id;
 						id = 'div' + id;
 						document.getElementById(id).remove();
 						id = id.substring(9,id.length);
 						if(document.getElementById(id)){
-                                                	document.getElementById(id).checked=false;
+                            document.getElementById(id).checked=false;
 						}
 					}	
 					else{
-//						alert(id);						
 						id = 'divchosen' + id;
 						document.getElementById(id).remove();
 					}
@@ -540,7 +632,6 @@ if($_SESSION['username'] == null)
 				counter_student += checkboxes.length;
 				document.getElementById("btn_submit").disabled = false;
 			}
-
 			function clear_all(id){
 				checkboxes = document.getElementsByName('student[]');
 				for(var i = 0 ; i< checkboxes.length ; i++){

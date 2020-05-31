@@ -17,15 +17,7 @@ else if ($_SESSION['type']!='T')
 
 <?php
 
-$ExamNumber = $_POST['search_exam'];
-$ExamDate = $_POST['search_date'];
-$StudentList = $_POST['student'];
-$UUID = $_POST['search_UUID'];
 $ExamResultNoList = $_POST['chosen_student'];
-print_r($ExamResultNoList);
-
-//echo $ExamNumber.'  '.$ExamDate.' '.$UUID;
-//print_r($StudentList);
 
 ?>
 <html lang="en">
@@ -157,6 +149,13 @@ print_r($ExamResultNoList);
                   <?php
                     include("connects.php");
                     include("CalculateScore.php");
+                    //Get ExamNo
+                    $sql = "SELECT ExamNo FROM ExamResult WHERE No = '$ExamResultNoList[0]' ";
+                    $result = mysqli_fetch_object($db->query($sql));
+                    $ExamNumber = $result->ExamNo;
+                    //echo ' '.$ExamNumber;
+
+                    //Get question_list
                     $sql = "SELECT question_list FROM ExamList WHERE No = $ExamNumber ";
                     $result = mysqli_fetch_object($db->query($sql));
                     $question_list = $result->question_list;
@@ -182,9 +181,10 @@ print_r($ExamResultNoList);
 
                     //GET STUDENT'S AnswerRecord
                     $student_answer_array = array();
-                    foreach ($StudentList as $key => $value) {
-                      $student_id = $StudentList[$key];
-                      $sql_student_result = "SELECT Answer FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$student_id' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
+                    foreach ($ExamResultNoList as $key => $value) {
+                      //$student_id = $StudentList[$key];
+                      //$sql_student_result = "SELECT Answer FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$student_id' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
+                      $sql_student_result = "SELECT Answer FROM ExamResult WHERE No = '$ExamResultNoList[$key]' ";
                       //echo $sql_student_result;
                       $result_sq = mysqli_fetch_object($db->query($sql_student_result));
                       $student_answer_array[$key]= $result_sq->Answer;
@@ -195,7 +195,7 @@ print_r($ExamResultNoList);
                     //COUNT CURRECT ANSWER'S NUMBER
                     $good_array = array();//array index = question_index, good_array[0] = 10, means 10 students have currect answer in question 1
                     $wrong_array = array();//array index = question_index, wrong_array[2] = 7, means 7 students answer wrong answer in question 3
-                    $student_number = count($StudentList);
+                    $student_number = count($ExamResultNoList);
                     foreach ($ca_array as $key => $value) {
                       $good_array[$key] = 0;
                       $wrong_array[$key] = 0;
@@ -225,12 +225,12 @@ print_r($ExamResultNoList);
                     //Cal Student's score
                     $ExamResultNo_array = array();
                     $Score_array = array();
-                    foreach ($StudentList as $key => $value) {
-                      $sql_get_resultno = "SELECT No FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$StudentList[$key]' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
-                      $resultno = mysqli_fetch_object($db->query($sql_get_resultno));
+                    foreach ($ExamResultNoList as $key => $value) {
+                      //$sql_get_resultno = "SELECT No FROM ExamResult WHERE ExamNo = '$ExamNumber' AND WhosAnswer = '$StudentList[$key]' AND UUID = '$UUID' AND ExamTime LIKE '$ExamDate%' ";
+                      //$resultno = mysqli_fetch_object($db->query($sql_get_resultno));
                       //echo $resultno->No.'  ';
-                      array_push($ExamResultNo_array,$resultno->No); //$ExamResultNo_array[0]=>205, $ExamResultNo_array[1]=>206...
-                      $score = calScore($ExamResultNo_array[$key], $ExamNumber);
+                      //array_push($ExamResultNo_array,$resultno->No); //$ExamResultNo_array[0]=>205, $ExamResultNo_array[1]=>206...
+                      $score = calScore($ExamResultNoList[$key], $ExamNumber);
                       array_push($Score_array, $score);//$Score_array[0]=>11,...
                     }
 
@@ -239,7 +239,7 @@ print_r($ExamResultNoList);
 
 
 
-                    $StudentNum = count($StudentList);
+                    $StudentNum = count($ExamResultNoList);
                     $HighLevelPeopleCount = floor($StudentNum*0.27);//高分組人數
                     $LowLevelPeopleCount = floor($StudentNum*0.27);//低分組人數
 
