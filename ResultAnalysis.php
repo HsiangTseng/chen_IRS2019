@@ -156,11 +156,9 @@ if($_SESSION['username'] == null)
 								<option value="0">請選擇第幾次考試</option>
 							</select>
 						</div>
-<!--						<input type="checkbox" id="btn_check_all" class="btn btn-success" onclick="check_all()" disabled value="全選">
-							<label for="btn_check_all">全選</label>
-						<input type="checkbox" id="btn_clear_all" class="btn btn-success" onclick="clear_all()" disabled value="全部取消">
-							<label for="btn_clear_all">全部取消</label>
--->
+						<input type="button" id="btn_check_all" class="btn btn-success" onclick="check_all()" disabled value="全選">
+						<input type="button" id="btn_clear_all" class="btn btn-success" onclick="clear_all()" disabled value="全部取消">
+
 						<label class="col-md-12 col-sm-12 col-xs-12">考試學生 :</label>
 						<table class="col-md-12 col-sm-12" id="exam_student" name="exam_student">
 
@@ -295,8 +293,8 @@ if($_SESSION['username'] == null)
 					})
 				}
 				document.getElementById("btn_submit").disabled = true;
-//				document.getElementById("btn_check_all").disabled = true;
-//				document.getElementById("btn_clear_all").disabled = true;
+				document.getElementById("btn_check_all").disabled = true;
+				document.getElementById("btn_clear_all").disabled = true;
 			}
 
 			function catch_date(){
@@ -423,16 +421,22 @@ if($_SESSION['username'] == null)
 				else{
 					document.getElementById("btn_submit").disabled = false;
 				}
-//				document.getElementById("btn_check_all").disabled = true;
-//				document.getElementById("btn_clear_all").disabled = true;
+				document.getElementById("btn_check_all").disabled = true;
+				document.getElementById("btn_clear_all").disabled = true;
 			}
 
 			function catch_examnum(){
 			var exam_no = document.getElementById("search_exam").value;
 			var exam_time = document.getElementById("search_date").value;
 			var exam_num = document.getElementById("search_UUID").value;
-			document.getElementById("btn_submit").disabled = true;
+			if(counter_student == 0){
+                                document.getElementById("btn_submit").disabled = true;
+                        }
+                        else{
+                                document.getElementById("btn_submit").disabled = false;
+                        }
 
+			
 			if(exam_num!=""){
 				$.ajax({
 					type: "POST",
@@ -446,12 +450,12 @@ if($_SESSION['username'] == null)
 					success:function(msg)
 					{
 						if(exam_num != "0"){
-//							document.getElementById("btn_check_all").disabled = false;
-//							document.getElementById("btn_clear_all").disabled = false;
+							document.getElementById("btn_check_all").disabled = false;
+							document.getElementById("btn_clear_all").disabled = false;
 						}
 						else{
-//							document.getElementById("btn_check_all").disabled = true;
-//							document.getElementById("btn_clear_all").disabled = true;
+							document.getElementById("btn_check_all").disabled = true;
+							document.getElementById("btn_clear_all").disabled = true;
 							document.getElementById("btn_submit").disabled = true;
 						}
 						$('#exam_student').empty();
@@ -623,26 +627,72 @@ if($_SESSION['username'] == null)
 					document.getElementById("btn_submit").disabled = true;
 				}
 			}
-/*
-			function check_all(id){
+
+			function check_all(){
+				var exam_time = document.getElementById("search_date").value;
+                                var exam_num = document.getElementById("search_UUID").value;
+				var counter_check = 0;
 				checkboxes = document.getElementsByName('student[]');
-				for(var i = 0 ; i< checkboxes.length ; i++){
-					checkboxes[i].checked = true;
+				for(var i = 0 ; i< checkboxes.length ; i++){					
+					if(checkboxes[i].checked == false){
+						checkboxes[i].checked = true;
+						counter_check++;
+						var div_form = document.createElement("div");
+		                                div_form.setAttribute("class","col-md-3 col-sm-3 col-xs-3");
+                                	        newid = 'divchosen' + checkboxes[i].id;
+						div_form.setAttribute("id",newid);
+						var id_array = new Array();
+		                                id_array = newid.split(' ');
+                		                for(var j = 1 ; j < count_isame_num ; j++){
+                                		        if(id_array[1] == exam_num_array[j]){
+                                                	        var inner = '<input type="checkbox" id="chosen'+checkboxes[i].id+'" value="'+checkboxes[i].value+'" onclick="choose_student(this.id,this.placeholder,this.value)" name="chosen_student[]" placeholder="'+checkboxes[i].placeholder+'" checked="true"><label for="chosen'+ checkboxes[i].id +'">'+exam_time+' 第'+ j +'次考試 '+checkboxes[i].placeholder+'</label>';
+		                                        }
+                		                }
+                                		div_form.innerHTML = inner;
+		                                document.getElementById("student_chosen").appendChild(div_form);
+					}
 				}
-				counter_student += checkboxes.length;
-				document.getElementById("btn_submit").disabled = false;
-			}
-			function clear_all(id){
-				checkboxes = document.getElementsByName('student[]');
-				for(var i = 0 ; i< checkboxes.length ; i++){
-					checkboxes[i].checked = false;
+				
+				counter_student += counter_check;
+				if(counter_student > 0){
+					document.getElementById("btn_submit").disabled = false;
 				}
-				counter_student -= checkboxes.length;
-				if(counter_student == 0){
+				else{
 					document.getElementById("btn_submit").disabled = true;
 				}
 			}
-*/
+			function clear_all(){
+				var exam_time = document.getElementById("search_date").value;
+                                var exam_num = document.getElementById("search_UUID").value;
+                                var counter_check = 0;
+				checkboxes = document.getElementsByName('student[]');
+				for(var i = 0 ; i< checkboxes.length ; i++){
+					if(checkboxes[i].checked == true){
+						checkboxes[i].checked = false;
+						counter_check++;
+						if(checkboxes[i].id.indexOf("chosen") >= 0){
+							newid = 'div' + checkboxes[i].id;
+							document.getElementById(newid).remove();
+							newid = newid.substring(9,newid.length);
+							if(document.getElementById(newid)){
+					                        document.getElementById(newid).checked=false;
+							}
+						}	
+						else{
+							newid = 'divchosen' + checkboxes[i].id;
+							document.getElementById(newid).remove();
+						}
+					}
+				}			
+					counter_student -= counter_check;
+				if(counter_student > 0){
+					document.getElementById("btn_submit").disabled = false;
+				}
+				else{
+					document.getElementById("btn_submit").disabled = true;
+				}
+			}
+
 		</script>
 		<!-- jQuery -->
 		<script src="../vendors/jquery/dist/jquery.min.js"></script>
