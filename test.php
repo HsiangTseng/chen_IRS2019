@@ -1,7 +1,6 @@
-<?php
-include("CalculateScore.php");
-$a = GetQuestionsScore('568','A1,A2');
-
-echo $a;
-
-?>
+<script>
+  var a = "11";
+  <?php
+  echo 'alert(a);';
+  ?>
+</script>

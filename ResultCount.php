@@ -120,10 +120,10 @@ if($_SESSION['username'] == null)
 			<div class="x_panel">
 			<!-- title bar-->
 				<div class="x_title">
-					<h1><b>考試分析(難易度/鑑別度)</b></h1>
+					<h1><b>考試分析(對錯情形)</b></h1>
 					<div class="clearfix"></div>
 				</div>
-				<form class="form-horizontal form-label-left input_mask" method="POST" action="ResultAnalysisList.php">
+				<form class="form-horizontal form-label-left input_mask" method="POST" action="ResultCountList.php">
 					<div>
 						<label class="control-label col-md-1 col-sm-1 col-xs-12">試卷名稱 :</label>
 						<div class="col-md-2 col-sm-2">
@@ -167,7 +167,7 @@ if($_SESSION['username'] == null)
 					</div>
 				</form>
 
-				<form class="form-horizontal form-label-left input_mask" method="POST" action="ResultAnalysisList.php">
+				<form class="form-horizontal form-label-left input_mask" method="POST" action="ResultCountList.php">
 					<div>
 						<label class="col-md-12 col-sm-12 col-xs-12">選擇的學生 :</label>
 						<div class="col-md-12 col-sm-12" id="student_chosen" name="student_chosen">
