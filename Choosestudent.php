@@ -27,7 +27,7 @@
 			$OtherTeacherarray[$count_other_teacher] = $result3->id;
 			$count_other_teacher++;
 		}
-	}	
+	}
 	//獲取其他老師的班級學生
 	$OtherTeacherStudentarray = array();
 	$OtherTeacherStudentCount = 0;
@@ -45,9 +45,10 @@
 			}
 		}
 	}
-	
+
 	sort($OtherTeacherStudentarray);
-		
+	//print_r($OtherTeacherStudentarray);
+	
 	
 	//獲取所有學生
 	$studentnumberarray = array();
@@ -70,10 +71,13 @@
 			$count++;
 		}
 	}
-
 	$check_i = 0;
 	$other_i = 0;
-	for($i = 0 ; $i < $count ; $i++){
+	//echo "<script>alert('".$OtherTeacherStudentarray[2]."');</script>";
+	sort($studentnumberarray);
+	//print_r($studentnumberarray);
+
+	for($i = 0 ; $i < $count ; $i=$i+1){
 		$check_show = 0;
 		if($other_i != $OtherTeacherStudentCount){
 			if($OtherTeacherStudentarray[$other_i] == $studentnumberarray[$i]){
@@ -94,6 +98,7 @@
 				echo "</tr>";
 				$other_i++;
 				$check_show = 1;
+				//print_r($other_i);
 			}
 		}
 		if($check_i!=$check_count && $check_show ==0){

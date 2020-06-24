@@ -175,13 +175,15 @@ if($_SESSION['username'] == null)
 
 		 <script type="text/javascript" class="init">
 	         	$('#q_list').dataTable( {
+                   "lengthMenu" : [[10,25,50,100,500,-1],[10,25,50,100,500,"ALL"]],
  	                 "columns": [
         	            { "width": "10%" },
                 	    { "width": "20%" },
-                            { "width": "30%" },
+                      { "width": "30%" },
 	                    { "width": "40%" },
 	                  ]
          	       } );
+
 		</script>
 
 	</body>
